@@ -22,18 +22,17 @@
         <div class="section-marker" data-section="home"></div>
         <div class="section-marker" data-section="about"></div>
         <div class="section-marker" data-section="projects"></div>
-        <div class="section-marker" data-section="contact"></div>
     </div>
 
     <main>
         <section id="home" class="hero">
-            <h1>Welcome to My Portfolio</h1>
-            <p class="subtitle">Full-Stack Developer</p>
+            <h1>Welcome</h1>
         </section>
 
         <section id="about">
             <h2>About Me</h2>
-            <p>A passionate developer dedicated to creating beautiful and functional web experiences. With several years of experience in full-stack development, I specialize in building responsive and user-friendly applications. My journey in software development began with a curiosity for problem-solving and has evolved into a deep appreciation for clean code and innovative solutions.</p>
+            <p> I am a student at The University of Oklahoma, currently pursuing a B.S. in computer science. Through my time in school I have gained experience in a variety of languages and technologies, including C++, Python, Java, and more. I plan to continue learning and growing as a developer, and I am always looking for new opportunities to do so. </p>
+            <p> I also ... </p>
             <div class="section-link">
                 <a href="about.html" class="btn">Learn More About Me <i class="fas fa-arrow-right"></i></a>
             </div>
@@ -44,37 +43,34 @@
             <div class="projects-grid">
                 <div class="project-card" onclick="window.location.href='projects.html'">
                     <h3>Casino Game</h3>
-                    <p>A comprehensive C++ casino game featuring multiple classic games including Blackjack, Slots, and Poker.</p>
+                    <p>A C++ project emulating a casino, including games like Blackjack, Slots, and Poker.</p>
                 </div>
                 <div class="project-card" onclick="window.location.href='projects.html'">
                     <h3>Base Conversion</h3>
-                    <p>A Python application for converting numbers between different number bases with a user-friendly interface.</p>
+                    <p>A simple python script to convert numbers between various bases.</p>
                 </div>
                 <div class="project-card" onclick="window.location.href='projects.html'">
-                    <h3>Map Background</h3>
-                    <p>A Python project implementing map visualization and background processing capabilities.</p>
+                    <h3>Map maker</h3>
+                    <p>A Python project rendering and processing a map of a desired location to create a custom desktop background.</p>
                 </div>
                 <div class="project-card" onclick="window.location.href='projects.html'">
-                    <h3>Project 4</h3>
-                    <p>A C++ project showcasing advanced programming concepts and problem-solving skills.</p>
+                    <h3>M-tree</h3>
+                    <p>A C++ project creating an M-tree data structure for efficient spatial indexing.</p>
                 </div>
             </div>
             <div class="section-link">
                 <a href="projects.html" class="btn">View All Projects <i class="fas fa-arrow-right"></i></a>
             </div>
         </section>
-
-        <section id="contact">
-            <h2>Contact Me</h2>
-            <div class="social-links">
-                <a href="https://github.com/Colby-Frison" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/colby-frison-892680327" class="social-icon" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <div class="section-link">
-                <a href="contact.html" class="btn">Get in Touch <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </section>
     </main>
+
+    <footer class="footer">
+        <div class="copyright">© 2025. All rights reserved.</div>
+        <div class="social-links">
+            <a href="https://github.com/Colby-Frison" class="social-icon" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/colby-frison-892680327" class="social-icon" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </footer>
 
     <script>
         const sections = document.querySelectorAll('section');
@@ -138,63 +134,40 @@
             const windowHeight = window.innerHeight;
             const scrollHeight = document.documentElement.scrollHeight - windowHeight;
             const scrolled = window.scrollY;
-            const isAtBottom = Math.ceil(scrolled) >= scrollHeight - 10;
             
-            // Update scroll progress
-            const progress = (scrolled / scrollHeight) * 100;
-            scrollProgress.style.height = `${progress}%`;
+            // Update scroll progress marker position
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const scrollIndicatorHeight = scrollIndicator.offsetHeight;
+            const progressBarHeight = scrollProgress.offsetHeight;
+            const maxPosition = scrollIndicatorHeight - progressBarHeight;
+            const progress = (scrolled / scrollHeight);
+            const markerPosition = Math.min(maxPosition, Math.max(0, progress * scrollIndicatorHeight));
+            scrollProgress.style.top = `${markerPosition}px`;
             
+            // Determine which section should be active based on progress bar position
+            const progressBarCenter = markerPosition + (progressBarHeight / 2);
             let newCurrent = null;
             
-            // Check if we're at the bottom of the page
-            if (isAtBottom) {
-                newCurrent = 'contact';
-                navBrand.classList.remove('active');
-            } else {
-                // If we just left the bottom, immediately switch to projects
-                if (currentSection === 'contact') {
-                    newCurrent = 'projects';
-                }
+            // Check each marker's position
+            sectionMarkers.forEach(marker => {
+                const markerTop = parseFloat(marker.style.top);
+                // Define a larger "zone" around each marker (25px above and below)
+                const zoneStart = markerTop - 25;
+                const zoneEnd = markerTop + 25;
                 
-                // Check each section's heading position
-                sections.forEach((section) => {
-                    const sectionId = section.getAttribute('id');
-                    if (sectionId === 'home') {
-                        // Home section is active when at the top
-                        if (scrolled < windowHeight / 2) {
-                            newCurrent = 'home';
-                            navBrand.classList.add('active');
-                        } else {
-                            navBrand.classList.remove('active');
-                        }
-                    } else if (sectionId === 'projects') {
-                        // For projects section (second to last), check if we're past its heading
-                        const heading = section.querySelector('h2');
-                        if (heading) {
-                            const headingRect = heading.getBoundingClientRect();
-                            const headingMiddle = headingRect.top + headingRect.height / 2;
-                            if (Math.abs(headingMiddle - windowHeight / 2) < 100 || 
-                                (headingRect.top < windowHeight / 2 && !isAtBottom)) {
-                                newCurrent = sectionId;
-                                navBrand.classList.remove('active');
-                            }
-                        }
-                    } else if (sectionId === 'about') {
-                        // For about section, check heading position
-                        const heading = section.querySelector('h2');
-                        if (heading) {
-                            const headingRect = heading.getBoundingClientRect();
-                            const headingMiddle = headingRect.top + headingRect.height / 2;
-                            if (Math.abs(headingMiddle - windowHeight / 2) < 100) {
-                                newCurrent = sectionId;
-                                navBrand.classList.remove('active');
-                            }
-                        }
-                    }
-                });
+                if (progressBarCenter >= zoneStart && progressBarCenter <= zoneEnd) {
+                    newCurrent = marker.getAttribute('data-section');
+                }
+            });
+
+            // Update navigation brand active state
+            if (newCurrent === 'home') {
+                navBrand.classList.add('active');
+            } else {
+                navBrand.classList.remove('active');
             }
 
-            // Only update if we have a new active section
+            // Update navigation links and section markers
             if (newCurrent !== null) {
                 // Update navigation links
                 navLinks.forEach(link => {
@@ -204,6 +177,11 @@
                 
                 // Update section markers
                 updateSectionMarkers(newCurrent);
+            } else {
+                // If no section is current, remove all active states
+                navLinks.forEach(link => link.classList.remove('active'));
+                sectionMarkers.forEach(marker => marker.classList.remove('active'));
+                currentSection = null;
             }
         });
 
