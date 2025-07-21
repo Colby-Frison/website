@@ -1,0 +1,206 @@
+.projects-container {
+  padding: 6rem 2rem 4rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+  color: #ffffff;
+  text-align: center;
+  width: 100%;
+}
+
+.section-description {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem !important;
+  width: 100%;
+}
+
+.projects-grid {
+  margin-top: 2rem;
+  width: 70% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.project-card {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100% !important;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.project-title {
+  color: #7b40e5 !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600 !important;
+}
+
+.project-type {
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin-bottom: 1rem !important;
+  font-size: 0.9rem !important;
+}
+
+.project-description {
+  color: rgba(255, 255, 255, 0.8) !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.6 !important;
+}
+
+.achievements {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.achievement-chip {
+  background-color: rgba(123, 64, 229, 0.15) !important;
+  color: #7b40e5 !important;
+  border: 1px solid rgba(123, 64, 229, 0.3) !important;
+  font-weight: 500 !important;
+}
+
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tech-chip {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  font-size: 0.8rem !important;
+}
+
+.project-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-link {
+  color: #7b40e5 !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  border: 1px solid rgba(123, 64, 229, 0.3) !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.project-link:hover {
+  background-color: rgba(123, 64, 229, 0.1) !important;
+}
+
+.expand-button {
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: transform 0.3s ease !important;
+  margin-left: auto !important;
+}
+
+.expand-button.expanded {
+  transform: rotate(180deg);
+}
+
+.expanded-content {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.full-description {
+  color: rgba(255, 255, 255, 0.8) !important;
+  margin-bottom: 2rem !important;
+  line-height: 1.8 !important;
+}
+
+.section-subtitle {
+  color: #7b40e5 !important;
+  margin: 2rem 0 1rem !important;
+  font-weight: 600 !important;
+}
+
+.role-title {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 1rem !important;
+  font-weight: 500 !important;
+}
+
+.feature-list,
+.impact-list,
+.contributions-list,
+.architecture-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.feature-list li,
+.impact-list li,
+.contributions-list li,
+.architecture-list li {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.feature-list li::before,
+.impact-list li::before,
+.contributions-list li::before,
+.architecture-list li::before {
+  content: '•';
+  color: #7b40e5;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1200px) {
+  .projects-grid {
+    width: 85% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-container {
+    padding: 5rem 1rem 3rem;
+  }
+
+  .projects-grid {
+    width: 95% !important;
+  }
+
+  .section-title {
+    font-size: 2rem !important;
+  }
+
+  .project-actions {
+    flex-wrap: wrap;
+  }
+
+  .project-link {
+    flex: 1;
+    text-align: center;
+  }
+
+  .expand-button {
+    margin-left: 0 !important;
+  }
+} 
