@@ -1,0 +1,205 @@
+personal:
+  name: Colby Frison
+  contact:
+    email: Colby.p.frison-1@ou.edu
+    phone: 832 763-7988
+    github: github.com/Colby-Frison
+  pronouns: null
+
+education:
+  degree: Bachelor of Science in Computer Science
+  institution: University of Oklahoma, Gallogly College of Engineering
+  location: Norman, OK
+  graduation: Expected May 2027
+  gpa: 3.60/4.00
+  honors:
+    - President's Honor Roll (Spring 2025)
+  minors: []
+  certificates: []
+  notable_courses: []
+  notes:
+    - Rigorous academic schedule balanced with extracurriculars
+
+skills:
+  languages: [C++, Java, Python, HTML/CSS, Matlab]
+  dev_tools: [Git, GitHub, VSCode, IntelliJ, Eclipse]
+  operating_systems: [Windows, Linux]
+  focus_areas: [Software Development, User Interface (UI), Full-Stack Development, Game Development, AI, Machine Learning, Graphic Design, UI/UX, Data Science, Quality Assurance, Project Management]
+  certifications: []
+  soft_skills:
+    - Time management
+    - Collaboration
+    - Communication
+    - Leadership
+    - Adaptability
+    - Problem solving
+    - Task completion
+    - Persistence
+    - Resilience
+    - Determination
+    - Honesty
+    - Asking questions
+    - Quick learning
+
+work_experience:
+  - title: Engineering Ambassador
+    employer: University of Oklahoma, Gallogly College of Engineering
+    location: Norman, OK
+    start: March 2024
+    end: Present
+    details:
+      - Recruit prospective students for the College of Engineering, providing detailed information about all engineering majors and departmental opportunities
+      - Lead campus tours of the engineering facilities, engaging with students and families to showcase resources and student life
+      - Conduct research on peer institutions and high schools to inform and improve recruitment strategies
+      - Develop strong communication and presentation skills by answering questions and representing the college at outreach events
+      - Sole Computer Science ambassador, fielding all CS-related questions
+      - Regular use of Microsoft environment (basic level)
+      - Required to have broad knowledge of all engineering majors and department resources
+      - Research and analyze recruitment strategies from other colleges and high schools
+  - title: Teacher's Assistant
+    employer: Houston Museum of Natural Science
+    location: Sugar Land, TX
+    start: March 2020
+    end: May 2024
+    details:
+      - Independently led and managed summer camp classes in instructor's absence, demonstrating leadership and adaptability
+      - Developed and organized daily lesson plans and educational materials for science-focused summer programs
+      - Fostered an engaging learning environment that promoted student participation and scientific curiosity
+      - Collaborated with team members to streamline workflows and enhance operational efficiency
+      - Mentored both junior staff members and students, contributing to their professional and academic growth
+      - Demonstrated ability to manage groups and communicate complex topics to young audiences
+
+projects:
+  - name: Classroom Q&A
+    type: Personal/Academic
+    organization: University of Oklahoma
+    start: March 2025
+    end: May 2025
+    description: |
+      Web application enabling students to anonymously ask questions during class without raising hands. Started as a side project for practicing databases and websockets, evolved into a practical tool used in actual classroom settings.
+    role: Solo Developer
+    technologies: [TypeScript, React, Next.js, Firebase, Firestore, Node.js, Tailwind CSS]
+    features:
+      - Anonymous question submission system
+      - Real-time updates using websockets
+      - Professor dashboard for managing questions
+      - Student interface for asking and viewing questions
+      - Theme toggle support (light/dark modes)
+      - Responsive design for all devices
+    impact:
+      - Successfully implemented in actual classroom environment
+      - Improved student engagement by removing barriers to asking questions
+      - Enhanced learning experience through anonymous participation
+      - Collaborated with professor to integrate into classroom workflow
+    technical_highlights:
+      - Implemented Firebase/Firestore for real-time data synchronization
+      - Built with TypeScript for type safety and code reliability
+      - Used Next.js and React for optimal performance
+      - Integrated Tailwind CSS for responsive design
+      - Implemented caching and debouncing for performance optimization
+      - Created comprehensive security rules for Firebase
+    challenges:
+      - Managing real-time updates efficiently
+      - Implementing proper caching and debouncing mechanisms
+      - Ensuring reliable data synchronization
+    accomplishments:
+      - Successfully deployed to production using Vercel
+      - Implemented comprehensive error handling
+      - Created efficient caching system for active questions
+      - Built robust state management for session persistence
+    link: https://github.com/Colby-Frison/Question-website
+  - name: SmartWrite
+    type: Academic/Group
+    organization: University of Oklahoma
+    start: Jan 2024
+    end: Present
+    description: Innovative note-taking application with handwriting recognition and AI-assisted writing features
+    role: Team member (collaborating with 6 others)
+    technologies: [GitHub, CI/CD, version control, agile development]
+    impact:
+      - Enhanced note-taking efficiency, organization, and collaboration
+      - Designed a comprehensive organization system for managing and categorizing academic notes
+      - Implemented handwriting recognition and AI-assisted writing features
+      - Utilized agile development practices to coordinate with team members and meet project milestones
+      - Gained experience with GitHub workflows, version control, and CI/CD pipelines for automated testing and deployment
+  - name: FreshStart
+    type: Hackathon
+    organization: Hacklahoma
+    start: Feb 2024
+    end: Feb 2024
+    description: |
+      FreshStart is a web application that helps users plan, build, and maintain a home garden or small farm, minimizing time spent online researching. Inspired by the lush gardens at OU and a desire to make growing fresh food accessible, it provides a comprehensive suite of tools for new and experienced growers alike.
+    role: Front-end developer, team member
+    technologies: [MongoDB, Express, React, Node.js, Machine Learning, LLM, JavaScript]
+    features:
+      - Farm Mapping Layout Tool: Define width, height, and soil variables; drag and create crop areas; edit crop attributes (type, irrigation, fertilizer, density)
+      - Crop Yield Prediction: ML model predicts crop yield (kg/m2) based on soil and crop variables
+      - Personalized Schedule Task Generation: Uses LLM to generate specific farm tasks based on layout and crop data
+      - Equipment Suggestion Page: Lists equipment, products, and tools needed to build the farm in one place
+      - Farm Creation: Set up space, arrange plots, view statistics, dashboard for comparing layouts, predicted yield, and to-do list
+    impact:
+      - Award-winning project (2nd place at Hacklahoma 2024)
+      - Led front-end development for the team
+      - Created drag-and-drop crop area functionality for visualization
+      - Integrated ML and LLM for personalized user experience
+      - Helped users efficiently plan and manage gardens/farms
+    challenges:
+      - Compiling and saving complex farm layout and crop area data to MongoDB for reliable rendering
+    accomplishments:
+      - Trained a model to predict crop yield from user input
+      - Integrated LLM for personalized farm task generation
+      - Built intuitive drag-and-drop interface for farm design
+    lessons_learned:
+      - Deepened understanding of client-server relationships
+      - Gained experience with full-stack development and AI integration
+    future_plans:
+      - Add AI-powered layout suggestions for maximum yield based on user preferences and goals
+    link: https://devpost.com/software/fresh-start-q5f92s#updates
+
+extracurriculars:
+  - name: Pride of Oklahoma Marching Band
+    role: Member
+    start: Aug 2023
+    end: Dec 2024
+    description:
+      - Developed strong time management skills balancing rigorous band schedule with academic commitments
+      - Collaborated effectively in fast-paced, high-pressure performance environments
+      - Demonstrated preparation and resilience through challenging performances and conditions
+  - name: Engineer's Club at OU
+    role: Member
+    description: Participates in engineering-related events and networking
+  - name: Game Developers Association (GDA) at OU
+    role: Member
+    description: Engages with game development community and activities
+
+competitions:
+  - name: Hacklahoma 2024
+    project: FreshStart
+    result: 2nd place
+    link: https://devpost.com/software/fresh-start-q5f92s#updates
+
+qualities:
+  - Planning
+  - Problem solving
+  - Teamwork
+  - Task completion
+  - Persistence
+  - Resilience
+  - Determination
+  - Honesty
+  - Communication
+  - Asking questions
+  - Quick learning
+  - Leadership
+  - Adaptability
+
+preferences:
+  work_environment: "No strong preference; prefers remote and task-driven environments, values open communication and ability to ask questions."
+  company_types: [Open to all, interested in research (including non-CS fields)]
+
+other:
+  languages: [English]
+  hobbies: [Working out, Reading, Video games, Walking, Basketball, Cooking, Building/Designing]
+  notes:
+    - Enjoys managing projects and systems for efficiency
+    - Interested in research opportunities, especially outside CS but open to CS research 

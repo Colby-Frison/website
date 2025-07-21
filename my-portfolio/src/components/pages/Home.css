@@ -1,0 +1,131 @@
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-size: 3.5rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+  color: #ffffff;
+}
+
+.accent {
+  color: #7b40e5;
+  position: relative;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 2rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 1.5rem !important;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-description {
+  font-size: 1.1rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 2rem !important;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.cta-button {
+  background: linear-gradient(45deg, #7b40e5, #9b4dff) !important;
+  padding: 0.8rem 2rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  border-radius: 8px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+.secondary-button {
+  border: 2px solid #7b40e5 !important;
+  color: #7b40e5 !important;
+  padding: 0.8rem 2rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.secondary-button:hover {
+  background-color: rgba(123, 64, 229, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+.skills-preview {
+  margin-top: 2rem;
+}
+
+.skills-title {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem !important;
+  font-weight: 600 !important;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.skill-tag {
+  background: rgba(123, 64, 229, 0.1);
+  color: #7b40e5;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid rgba(123, 64, 229, 0.3);
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(123, 64, 229, 0.2);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .hero-content {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .skills-grid {
+    justify-content: center;
+  }
+} 
