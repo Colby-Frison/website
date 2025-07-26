@@ -39,7 +39,7 @@ const NumberGrid = () => {
   const MAX_SCALE = 2;
   const HOVER_LERP_FACTOR = 0.15;
   const MOUSE_LERP_FACTOR = 0.2;
-  const CLICKED_SCALE_BOOST = 1.2; // Additional scale for clicked numbers
+  const CLICKED_SCALE_BOOST = 1.5; // Additional scale for clicked numbers
 
   // Global mouse position and click tracking
   useEffect(() => {
@@ -56,7 +56,6 @@ const NumberGrid = () => {
       const clickX = e.clientX + window.scrollX - rect.left;
       const clickY = e.clientY + window.scrollY - rect.top;
 
-      // Find and toggle clicked number
       numbersRef.current.forEach(number => {
         const centerX = number.x + CELL_SIZE / 2;
         const centerY = number.y + CELL_SIZE / 2;
@@ -64,7 +63,7 @@ const NumberGrid = () => {
           Math.abs(clickX - centerX) < CELL_SIZE / 2 &&
           Math.abs(clickY - centerY) < CELL_SIZE / 2
         ) {
-          number.isClicked = !number.isClicked; // Toggle clicked state
+          number.isClicked = !number.isClicked;
         }
       });
     };
@@ -105,14 +104,14 @@ const NumberGrid = () => {
         const dy = currentMousePosRef.current.y - (number.y + CELL_SIZE / 2);
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Calculate base scale from hover effect
+        // Calculate hover scale
         const hoverScale = distance < HOVER_RADIUS
           ? 1 + (MAX_SCALE - 1) * Math.pow(1 - distance / HOVER_RADIUS, 1.5)
           : 1;
         
-        // Add clicked scale boost if number is clicked
+        // Use the larger scale between hover and clicked states
         const targetScale = number.isClicked 
-          ? hoverScale * CLICKED_SCALE_BOOST 
+          ? Math.max(CLICKED_SCALE_BOOST, hoverScale)
           : hoverScale;
         
         number.currentScale += (targetScale - number.currentScale) * HOVER_LERP_FACTOR;
