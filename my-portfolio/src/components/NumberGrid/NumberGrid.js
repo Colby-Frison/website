@@ -115,7 +115,7 @@ const NumberGrid = ({ content }) => {
           ctx.fillText('Colby Frison', x + beforeNameMetrics.width, y);
         }
       });
-      currentY += CELL_SIZE * 3;
+      currentY += CELL_SIZE * 3; // Reduced spacing after title
 
       // Subtitle (1 row)
       ctx.font = '24px Inter';
@@ -130,47 +130,54 @@ const NumberGrid = ({ content }) => {
         font: 'Inter',
         color: '#E8E8E8'
       });
-      currentY += CELL_SIZE * 2;
+      currentY += CELL_SIZE * 1.8; // Reduced spacing after subtitle
 
-      // Description (multiple rows)
+      // Description as a flowing paragraph
       ctx.font = '16px Inter';
+      const maxWidth = Math.min(canvas.width * 0.7, 900); // Increased max width slightly
       const words = content.description.split(' ');
-      let line = '';
       let lines = [];
-      const maxWidth = canvas.width * 0.6;
+      let currentLine = words[0];
+      let maxLineWidth = 0;
 
-      for (let word of words) {
-        const testLine = line + (line ? ' ' : '') + word;
+      // Word wrap calculation
+      for (let i = 1; i < words.length; i++) {
+        const testLine = currentLine + ' ' + words[i];
         const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth && line !== '') {
-          lines.push(line);
-          line = word;
+        
+        if (metrics.width > maxWidth) {
+          lines.push(currentLine);
+          maxLineWidth = Math.max(maxLineWidth, ctx.measureText(currentLine).width);
+          currentLine = words[i];
         } else {
-          line = testLine;
+          currentLine = testLine;
         }
       }
-      if (line !== '') lines.push(line);
+      lines.push(currentLine);
+      maxLineWidth = Math.max(maxLineWidth, ctx.measureText(currentLine).width);
 
-      lines.forEach((textLine, i) => {
-        const lineMetrics = ctx.measureText(textLine);
+      // Create zones for each line with tighter spacing
+      const lineHeight = CELL_SIZE * 1.1; // Reduced line height
+      lines.forEach((line, index) => {
+        const lineMetrics = ctx.measureText(line);
         zones.push({
-          text: textLine,
+          text: line,
           x: TEXT_MARGIN_LEFT,
-          y: currentY + (i * CELL_SIZE),
+          y: currentY + (index * lineHeight),
           width: lineMetrics.width,
-          height: CELL_SIZE,
+          height: lineHeight,
           fontSize: '16px',
           font: 'Inter',
           color: '#E8E8E8'
         });
       });
 
-      // hint box zone - now needs to accommodate two lines
+      // hint box zone
       const hintBox = {
         x: TEXT_MARGIN_LEFT,
         y: canvas.height - CELL_SIZE * 3.3,
-        width: CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length)),  // Width based on longest word
-        height: CELL_SIZE * 3,  // Height for two lines
+        width: CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length)),
+        height: CELL_SIZE * 3,
         boxWidth: CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length)),
         boxHeight: CELL_SIZE * 3,
         isHintBox: true,
@@ -179,7 +186,7 @@ const NumberGrid = ({ content }) => {
             mouseX >= this.x &&
             mouseX <= this.x + this.boxWidth &&
             mouseY >= this.y &&
-            mouseY <= this.y + this.boxHeight * 1.2  // Slightly larger hover area for two lines
+            mouseY <= this.y + this.boxHeight * 1.2
           );
         }
       };
@@ -190,7 +197,12 @@ const NumberGrid = ({ content }) => {
     };
 
     const zones = calculateTextZones();
-    const numbers = generateNumbers(canvasRef.current.width, canvasRef.current.height, CELL_SIZE, zones);
+    numbersRef.current = generateNumbers(
+      canvasRef.current.width,
+      canvasRef.current.height,
+      CELL_SIZE,
+      zones
+    );
     
     // Assign numbers to hint characters
     const hintBox = zones[zones.length - 1];
@@ -201,7 +213,7 @@ const NumberGrid = ({ content }) => {
         const y = hintBox.y + lineIndex * CELL_SIZE * 1.5;  // Space between lines
         
         // Find the closest number to this position
-        const number = numbers.find(n => 
+        const number = numbersRef.current.find(n => 
           Math.abs(n.x - x) < CELL_SIZE/2 && 
           Math.abs(n.y - y) < CELL_SIZE/2
         );
@@ -215,7 +227,7 @@ const NumberGrid = ({ content }) => {
     });
     
     hintBoxRef.current.numbers = hintChars;
-    numbersRef.current = numbers;
+    numbersRef.current = numbersRef.current; // Ensure numbersRef is updated
   }, [content]);
 
   // Global mouse position and click tracking
