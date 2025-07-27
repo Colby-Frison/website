@@ -1,8 +1,8 @@
-.home-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-top: 64px;
+.home-page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #121212;
 }
 
 .hero-content {
