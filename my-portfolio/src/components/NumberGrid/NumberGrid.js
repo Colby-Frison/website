@@ -46,6 +46,7 @@ const NumberGrid = ({ content }) => {
   const currentMousePosRef = useRef({ x: 0, y: 0 });
   const textZonesRef = useRef([]);
   const animationFrameRef = useRef();
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const hintBoxRef = useRef({
     isActive: false,
     isRevealed: false,
@@ -76,29 +77,76 @@ const NumberGrid = ({ content }) => {
   const TEXT_MARGIN_LEFT = 90;
   const COLOR_TRANSITION_SPEED = 0.02;
 
-  // Start hint box animation after delay
+  // Load fonts before rendering
   useEffect(() => {
-    const timer = setTimeout(() => {
-      hintBoxRef.current.isActive = true;
-    }, 4500);
-
-    return () => clearTimeout(timer);
+    const loadFonts = async () => {
+      try {
+        await document.fonts.load('48px Inter');
+        await document.fonts.load('24px Inter');
+        await document.fonts.load('16px Inter');
+        setFontsLoaded(true);
+      } catch (error) {
+        console.error('Font loading error:', error);
+        // Fallback to system fonts if loading fails
+        setFontsLoaded(true);
+      }
+    };
+    loadFonts();
   }, []);
 
-  useEffect(() => {
-    if (!canvasRef.current) return;
+  const generateHintBoxNumbers = (hintBox) => {
+    if (!hintBox) {
+      console.error('No hint box provided to generateHintBoxNumbers');
+      return [];
+    }
 
-    const calculateTextZones = () => {
-      const zones = [];
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      let currentY = 120;
+    const hintChars = [];
+    const words = hintBoxRef.current.text;
+    let currentY = hintBox.y;
+
+    words.forEach((word, wordIndex) => {
+      let currentX = hintBox.x;
+      [...word].forEach((char, charIndex) => {
+        const number = {
+          value: Math.floor(Math.random() * 10),
+          x: currentX,
+          y: currentY,
+          phase: Math.random() * Math.PI * 2,
+          currentScale: 1,
+          isHintChar: true,
+          finalChar: char,
+          colorTransition: 0,
+          isClicked: false
+        };
+        hintChars.push(number);
+        currentX += CELL_SIZE;
+      });
+      currentY += CELL_SIZE * 1.5;
+    });
+
+    return hintChars;
+  };
+
+  const calculateTextZones = () => {
+    if (!canvasRef.current) return null;
+    
+    const zones = [];
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let currentY = 120;
+
+      // Helper function to ensure text measurements are valid
+      const measureText = (text, fontSize, fontFamily = 'Inter') => {
+        ctx.font = `${fontSize}px ${fontFamily}`;
+        const metrics = ctx.measureText(text);
+        // Ensure we have a valid width
+        return metrics.width > 0 ? metrics : { width: fontSize * text.length * 0.6 };
+      };
 
       // Title (2 rows high)
-      ctx.font = '48px Inter';
-      const titleMetrics = ctx.measureText(content.title);
       const titleParts = content.title.split("Colby Frison");
-      const beforeNameMetrics = ctx.measureText(titleParts[0]);
+      const beforeNameMetrics = measureText(titleParts[0], 48);
+      const titleMetrics = measureText(content.title, 48);
       
       zones.push({
         text: content.title,
@@ -109,17 +157,17 @@ const NumberGrid = ({ content }) => {
         fontSize: '48px',
         font: 'Inter',
         specialRender: (ctx, x, y) => {
+          ctx.font = '48px Inter';
           ctx.fillStyle = '#E8E8E8';
           ctx.fillText(titleParts[0], x, y);
           ctx.fillStyle = '#8b5cf6';
           ctx.fillText('Colby Frison', x + beforeNameMetrics.width, y);
         }
       });
-      currentY += CELL_SIZE * 3; // Reduced spacing after title
+      currentY += CELL_SIZE * 3;
 
       // Subtitle (1 row)
-      ctx.font = '24px Inter';
-      const subtitleMetrics = ctx.measureText(content.subtitle);
+      const subtitleMetrics = measureText(content.subtitle, 24);
       zones.push({
         text: content.subtitle,
         x: TEXT_MARGIN_LEFT,
@@ -130,36 +178,36 @@ const NumberGrid = ({ content }) => {
         font: 'Inter',
         color: '#E8E8E8'
       });
-      currentY += CELL_SIZE * 1.8; // Reduced spacing after subtitle
+      currentY += CELL_SIZE * 1.8;
 
-      // Description as a flowing paragraph
-      ctx.font = '16px Inter';
-      const maxWidth = Math.min(canvas.width * 0.7, 900); // Increased max width slightly
+      // Description with proper word wrapping
+      const maxWidth = Math.min(canvas.width * 0.7, 900);
       const words = content.description.split(' ');
       let lines = [];
       let currentLine = words[0];
-      let maxLineWidth = 0;
 
-      // Word wrap calculation
+      // Ensure font is set correctly for word wrapping
+      ctx.font = '16px Inter';
+
       for (let i = 1; i < words.length; i++) {
         const testLine = currentLine + ' ' + words[i];
-        const metrics = ctx.measureText(testLine);
+        const metrics = measureText(testLine, 16);
         
-        if (metrics.width > maxWidth) {
+        if (metrics.width > maxWidth && currentLine !== '') {
           lines.push(currentLine);
-          maxLineWidth = Math.max(maxLineWidth, ctx.measureText(currentLine).width);
           currentLine = words[i];
         } else {
           currentLine = testLine;
         }
       }
-      lines.push(currentLine);
-      maxLineWidth = Math.max(maxLineWidth, ctx.measureText(currentLine).width);
+      if (currentLine !== '') {
+        lines.push(currentLine);
+      }
 
-      // Create zones for each line with tighter spacing
-      const lineHeight = CELL_SIZE * 1.1; // Reduced line height
+      // Create zones for each line
+      const lineHeight = CELL_SIZE * 1.1;
       lines.forEach((line, index) => {
-        const lineMetrics = ctx.measureText(line);
+        const lineMetrics = measureText(line, 16);
         zones.push({
           text: line,
           x: TEXT_MARGIN_LEFT,
@@ -172,63 +220,88 @@ const NumberGrid = ({ content }) => {
         });
       });
 
-      // hint box zone
+      // Create hint box zone at a fixed position from the bottom
+      const hintBoxWidth = CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length));
+      const hintBoxHeight = CELL_SIZE * (hintBoxRef.current.text.length * 1.5);
+      
       const hintBox = {
         x: TEXT_MARGIN_LEFT,
-        y: canvas.height - CELL_SIZE * 3.3,
-        width: CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length)),
-        height: CELL_SIZE * 3,
-        boxWidth: CELL_SIZE * Math.max(...hintBoxRef.current.text.map(word => word.length)),
-        boxHeight: CELL_SIZE * 3,
+        y: canvas.height - hintBoxHeight - CELL_SIZE * 2,
+        width: hintBoxWidth,
+        height: hintBoxHeight,
+        boxWidth: hintBoxWidth,
+        boxHeight: hintBoxHeight,
         isHintBox: true,
         checkHover: function(mouseX, mouseY) {
           return (
             mouseX >= this.x &&
             mouseX <= this.x + this.boxWidth &&
             mouseY >= this.y &&
-            mouseY <= this.y + this.boxHeight * 1.2
+            mouseY <= this.y + this.boxHeight
           );
         }
       };
+      
+      console.log('Created hint box zone:', hintBox);
       zones.push(hintBox);
 
       textZonesRef.current = zones;
       return zones;
-    };
+  };
 
+  // Initialization effect
+  useEffect(() => {
+    if (!canvasRef.current || !fontsLoaded) {
+      console.log('Not ready for initialization', { hasCanvas: !!canvasRef.current, fontsLoaded });
+      return;
+    }
+
+    const canvas = canvasRef.current;
+    const parent = canvas.parentElement;
+    
+    canvas.width = parent.clientWidth;
+    canvas.height = parent.clientHeight;
+    
+    console.log('Canvas dimensions:', { width: canvas.width, height: canvas.height });
+    
     const zones = calculateTextZones();
-    numbersRef.current = generateNumbers(
-      canvasRef.current.width,
-      canvasRef.current.height,
-      CELL_SIZE,
-      zones
-    );
+    if (!zones) {
+      console.error('Failed to calculate text zones');
+      return;
+    }
+
+    const hintBox = zones.find(zone => zone.isHintBox);
+    if (!hintBox) {
+      console.error('Hint box zone not found in zones');
+      return;
+    }
+
+    console.log('Found hint box zone:', hintBox);
     
-    // Assign numbers to hint characters
-    const hintBox = zones[zones.length - 1];
-    const hintChars = [];
-    hintBoxRef.current.text.forEach((word, lineIndex) => {
-      for (let i = 0; i < word.length; i++) {
-        const x = hintBox.x + i * CELL_SIZE;
-        const y = hintBox.y + lineIndex * CELL_SIZE * 1.5;  // Space between lines
-        
-        // Find the closest number to this position
-        const number = numbersRef.current.find(n => 
-          Math.abs(n.x - x) < CELL_SIZE/2 && 
-          Math.abs(n.y - y) < CELL_SIZE/2
-        );
-        
-        if (number) {
-          number.isHintChar = true;
-          number.finalChar = word[i];
-          hintChars.push(number);
-        }
-      }
-    });
-    
+    // Generate hint box numbers first
+    const hintChars = generateHintBoxNumbers(hintBox);
+    console.log(`Generated ${hintChars.length} hint characters`);
     hintBoxRef.current.numbers = hintChars;
-    numbersRef.current = numbersRef.current; // Ensure numbersRef is updated
-  }, [content]);
+
+    // Generate rest of the numbers, excluding hint box area
+    const numbers = generateNumbers(canvas.width, canvas.height, CELL_SIZE, zones);
+    numbersRef.current = numbers;
+
+    console.log('Numbers generated:', { 
+      total: numbers.length,
+      hintChars: hintChars.length,
+      zones: zones.length
+    });
+  }, [fontsLoaded]);
+
+  // Start hint box animation after delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      hintBoxRef.current.isActive = true;
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Global mouse position and click tracking
   useEffect(() => {
@@ -303,44 +376,13 @@ const NumberGrid = ({ content }) => {
     };
   }, []);
 
+  // Animation effect
   useEffect(() => {
+    if (!canvasRef.current || !fontsLoaded) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      
-      const zones = textZonesRef.current;
-      const numbers = generateNumbers(canvas.width, canvas.height, CELL_SIZE, zones);
-      
-      // Re-assign numbers to hint characters for new canvas size
-      const hintBox = zones[zones.length - 1];
-      const hintChars = [];
-      hintBoxRef.current.text.forEach((word, lineIndex) => {
-        for (let i = 0; i < word.length; i++) {
-          const x = hintBox.x + i * CELL_SIZE;
-          const y = hintBox.y + lineIndex * CELL_SIZE * 1.5;
-          
-          const number = numbers.find(n => 
-            Math.abs(n.x - x) < CELL_SIZE/2 && 
-            Math.abs(n.y - y) < CELL_SIZE/2
-          );
-          
-          if (number) {
-            number.isHintChar = true;
-            number.finalChar = word[i];
-            hintChars.push(number);
-          }
-        }
-      });
-      hintBoxRef.current.numbers = hintChars;
-      numbersRef.current = numbers;
-    };
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
+
     const animate = (time) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -468,16 +510,15 @@ const NumberGrid = ({ content }) => {
       
       animationFrameRef.current = requestAnimationFrame(animate);
     };
-    
+
     animate(0);
-    
+
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [fontsLoaded]);
 
   return (
     <canvas
