@@ -7,12 +7,12 @@
   font-size: 2.5rem !important;
   font-weight: 700 !important;
   margin-bottom: 1rem !important;
-  color: #ffffff;
+  color: #211d1e;
   text-align: center;
 }
 
 .section-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(33, 29, 30, 0.7);
   text-align: center;
   max-width: 600px;
   margin: 0 auto 3rem !important;
@@ -23,8 +23,8 @@
 }
 
 .contact-card {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(33, 29, 30, 0.05) !important;
+  border: 1px solid rgba(33, 29, 30, 0.1);
   border-radius: 12px !important;
   padding: 2rem !important;
   text-align: center;
@@ -41,7 +41,7 @@
 }
 
 .card-icon {
-  background: linear-gradient(45deg, #7b40e5, #9b4dff);
+  background: #ed2124;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -52,18 +52,18 @@
 }
 
 .card-icon svg {
-  color: #ffffff;
+  color: #f5f2ed;
   font-size: 2rem;
 }
 
 .contact-title {
-  color: #ffffff !important;
+  color: #211d1e !important;
   margin-bottom: 0.5rem !important;
   font-weight: 600 !important;
 }
 
 .contact-value {
-  color: #7b40e5 !important;
+  color: #ed2124 !important;
   margin-bottom: 1rem !important;
   font-weight: 500 !important;
   transition: all 0.3s ease;
@@ -73,7 +73,7 @@
 .contact-value.clickable {
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #7b40e5 !important;
+  color: #ed2124 !important;
 }
 
 .contact-value.clickable:hover {
@@ -82,14 +82,14 @@
 }
 
 .contact-description {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(33, 29, 30, 0.7) !important;
   margin-bottom: 1.5rem !important;
   flex-grow: 1;
 }
 
 .contact-button {
-  background: linear-gradient(45deg, #7b40e5, #9b4dff) !important;
-  color: #ffffff !important;
+  background: #ed2124 !important;
+  color: #f5f2ed !important;
   padding: 0.8rem 2rem !important;
   border-radius: 8px !important;
   text-transform: none !important;
@@ -102,7 +102,7 @@
 }
 
 .contact-button.reveal-button {
-  background: linear-gradient(45deg, #7b40e5, #9b4dff) !important;
+  background: #ed2124 !important;
   opacity: 0.9;
   transition: all 0.3s ease !important;
 }
@@ -115,16 +115,16 @@
 .contact-footer {
   text-align: center;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(33, 29, 30, 0.1);
 }
 
 .contact-footer .MuiTypography-body1 {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(33, 29, 30, 0.9) !important;
   margin-bottom: 0.5rem !important;
 }
 
 .contact-footer .MuiTypography-body2 {
-  color: rgba(255, 255, 255, 0.6) !important;
+  color: rgba(33, 29, 30, 0.6) !important;
 }
 
 @media (max-width: 768px) {

@@ -1,9 +1,10 @@
-[] categorize this list
+Top priority:
+[] Make it mobile compatible
 
-[] change number of selected numbers
-[] add zoom effect to number effect
-    [] make small custom footer so scrolling isn't needed
-[] create vhs effect for numbers so its more like the show
-
-[] make the other pages look better
-[] add a section that requires some backend functionality
+--------------------------------
+- [ ] Make directories stay next to image while scaling
+- [ ] Make a dark mode where the red becomes purple with cool transition effect
+- [ ] Add consitant styling across all pages
+- [ ] Get svg icons for color changing
+- [ ] Decide what to do for the footer
+- [ ] update project list

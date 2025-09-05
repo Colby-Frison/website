@@ -1,35 +1,33 @@
-import React from 'react';
-import { Container, Typography, Grid, Box, Paper } from '@mui/material';
-import { motion } from 'framer-motion';
-import SchoolIcon from '@mui/icons-material/School';
-import WorkIcon from '@mui/icons-material/Work';
-import CodeIcon from '@mui/icons-material/Code';
+import React, { useEffect } from 'react';
 import './About.css';
 
 const About = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px 100px 0px'
+    };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.getAttribute('data-delay') || '0';
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, parseFloat(delay) * 1000);
+        }
+      });
+    }, observerOptions);
 
+    const sections = document.querySelectorAll('.section-animate');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
   const skills = {
-    languages: ['C++', 'Java', 'Python', 'HTML/CSS', 'JavaScript', 'TypeScript', 'Matlab'],
+    languages: ['C/C++', 'Java', 'Python', 'HTML/CSS', 'JavaScript', 'TypeScript', 'Matlab'],
     devTools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse'],
     focusAreas: [
       'Software Development',
@@ -50,7 +48,7 @@ const About = () => {
     {
       title: 'Engineering Ambassador',
       company: 'University of Oklahoma, Gallogly College of Engineering',
-      period: 'March 2024 - Present',
+      period: 'March 2025 - August 2025',
       details: [
         'Recruit prospective students for the College of Engineering',
         'Lead campus tours of engineering facilities',
@@ -72,111 +70,94 @@ const About = () => {
   ];
 
   return (
-    <Container component="section" className="about-container">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <Typography variant="h2" className="section-title">
-          About Me
-        </Typography>
+    <div className="about-page">
+      <div className="about-container">
+        <h1 className="page-title">About Me</h1>
+        
+        <section className="top-section">
+          <div className="left-column">
+            <div className="bio-section">
+              <p className="bio-text">
+                I'm a Computer Science student at the University of Oklahoma, passionate about 
+                software development, AI, and creating impactful solutions. Currently serving as 
+                an Engineering Ambassador and exploring various aspects of technology.
+              </p>
+            </div>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={6}>
-            <motion.div variants={itemVariants}>
-              <Paper className="about-card">
-                <SchoolIcon className="section-icon" />
-                <Typography variant="h5" className="card-title">
-                  Education
-                </Typography>
-                <Box className="education-details">
-                  <Typography variant="h6">
-                    Bachelor of Science in Computer Science
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    University of Oklahoma, Gallogly College of Engineering
-                  </Typography>
-                  <Typography variant="subtitle2">
-                    Expected Graduation: May 2027
-                  </Typography>
-                  <Typography variant="body2">
-                    GPA: 3.60/4.00
-                  </Typography>
-                  <Typography variant="body2" className="achievement">
-                    President's Honor Roll (Spring 2025)
-                  </Typography>
-                </Box>
-              </Paper>
-            </motion.div>
-          </Grid>
+            <div className="education-section section-animate" data-delay="0.3">
+              <h2 className="section-title">Education</h2>
+              <div className="education-card content-card">
+                <h3 className="degree">Bachelor of Science in Computer Science</h3>
+                <p className="university">University of Oklahoma, Gallogly College of Engineering</p>
+                <div className="education-details">
+                  <p className="graduation">Expected Graduation: May 2027</p>
+                  <p className="gpa">GPA: 3.60/4.00</p>
+                </div>
+                <p className="achievement">President's Honor Roll (Spring 2025)</p>
+              </div>
+            </div>
+          </div>
 
-          <Grid item xs={12} md={6}>
-            <motion.div variants={itemVariants}>
-              <Paper className="about-card">
-                <CodeIcon className="section-icon" />
-                <Typography variant="h5" className="card-title">
-                  Technical Skills
-                </Typography>
-                <Box className="skills-section">
-                  <Typography variant="subtitle2">Programming Languages</Typography>
-                  <Box className="skills-chips">
+          <div className="right-column">
+            <div className="skills-section section-animate" data-delay="0.2">
+              <h2 className="section-title">Technical Skills</h2>
+              <div className="skills-content">
+                <div className="skill-category">
+                  <h4 className="category-title">Programming Languages</h4>
+                  <div className="skills-list">
                     {skills.languages.map((skill) => (
-                      <span key={skill} className="skill-chip">{skill}</span>
+                      <span key={skill} className="skill-tag">{skill}</span>
                     ))}
-                  </Box>
+                  </div>
+                </div>
 
-                  <Typography variant="subtitle2">Development Tools</Typography>
-                  <Box className="skills-chips">
+                <div className="skill-category">
+                  <h4 className="category-title">Development Tools</h4>
+                  <div className="skills-list">
                     {skills.devTools.map((tool) => (
-                      <span key={tool} className="skill-chip">{tool}</span>
+                      <span key={tool} className="skill-tag">{tool}</span>
                     ))}
-                  </Box>
+                  </div>
+                </div>
 
-                  <Typography variant="subtitle2">Focus Areas</Typography>
-                  <Box className="skills-chips">
+                <div className="skill-category">
+                  <h4 className="category-title">Focus Areas</h4>
+                  <div className="skills-list">
                     {skills.focusAreas.map((area) => (
-                      <span key={area} className="skill-chip">{area}</span>
+                      <span key={area} className="skill-tag">{area}</span>
                     ))}
-                  </Box>
-                </Box>
-              </Paper>
-            </motion.div>
-          </Grid>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-          <Grid item xs={12}>
-            <motion.div variants={itemVariants}>
-              <Paper className="about-card">
-                <WorkIcon className="section-icon" />
-                <Typography variant="h5" className="card-title">
-                  Work Experience
-                </Typography>
-                <Box className="experience-section">
-                  {workExperience.map((job, index) => (
-                    <Box key={index} className="job-item">
-                      <Typography variant="h6" className="job-title">
-                        {job.title}
-                      </Typography>
-                      <Typography variant="subtitle1" className="company-name">
-                        {job.company}
-                      </Typography>
-                      <Typography variant="subtitle2" className="job-period">
-                        {job.period}
-                      </Typography>
-                      <ul className="job-details">
-                        {job.details.map((detail, idx) => (
-                          <li key={idx}>{detail}</li>
-                        ))}
-                      </ul>
-                    </Box>
-                  ))}
-                </Box>
-              </Paper>
-            </motion.div>
-          </Grid>
-        </Grid>
-      </motion.div>
-    </Container>
+        <section className="experience-section section-animate" data-delay="0.4">
+          <div className="section-header">
+            <h2 className="section-title">Work Experience</h2>
+            <div className="section-line"></div>
+          </div>
+          <div className="experience-timeline">
+            {workExperience.map((job, index) => (
+              <div key={index} className="timeline-item">
+                <div className="timeline-marker"></div>
+                <div className="job-card content-card">
+                  <h3 className="job-title">{job.title}</h3>
+                  <p className="company">{job.company}</p>
+                  <p className="period">{job.period}</p>
+                  <ul className="job-responsibilities">
+                    {job.details.map((detail, idx) => (
+                      <li key={idx}>{detail}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
   );
 };
 

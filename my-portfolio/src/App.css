@@ -1,3 +1,32 @@
+/* Font declarations */
+@font-face {
+  font-family: 'The Loccosta Regular';
+  src: url('../public/fonts/The Loccosta Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noot Regular';
+  src: url('../public/fonts/Noot Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Ounen-mouhitsu';
+  src: url('../public/fonts/Ounen-mouhitsu.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '和風ぽっぷ';
+  src: url('../public/fonts/和風ぽっぷ.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Global styles */
 * {
   margin: 0;
@@ -15,8 +44,8 @@ html, body {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #f5f2ed;
+  color: #211d1e;
   line-height: 1.6;
   min-width: 100vw;
 }
@@ -47,22 +76,22 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(33, 29, 30, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7b40e5;
+  background: #ed2124;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9b4dff;
+  background: #d11e21;
 }
 
 /* Selection styles */
 ::selection {
-  background-color: rgba(123, 64, 229, 0.3);
-  color: #ffffff;
+  background-color: rgba(237, 33, 36, 0.3);
+  color: #211d1e;
 }
 
 /* Smooth scrolling */

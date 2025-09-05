@@ -1,7 +1,4 @@
 import React from 'react';
-import { Container, Typography, Box } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import './Footer.css';
 
 const Footer = () => {
@@ -9,33 +6,42 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      <Container>
-        <Box className="footer-content">
-          <Box className="social-links">
-            <a
-              href="https://github.com/Colby-Frison"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-link"
-            >
-              <GitHubIcon />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/colby-frison-892680327"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-link"
-            >
-              <LinkedInIcon />
-            </a>
-          </Box>
-          <Typography variant="body2" className="copyright">
-            © {currentYear} Colby Frison. All rights reserved.
-          </Typography>
-        </Box>
-      </Container>
+      <div className="footer-content">
+        <div className="copyright">
+          © {currentYear} Colby Frison. All rights reserved.
+        </div>
+        
+        <div className="social-icons">
+          <a
+            href="https://github.com/colby-frison"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="GitHub Profile"
+          >
+            <img 
+              src="/github.png" 
+              alt="GitHub" 
+              className="social-icon"
+            />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/colbyfrison"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="LinkedIn Profile"
+          >
+            <img 
+              src="/linkedIn.png" 
+              alt="LinkedIn" 
+              className="social-icon"
+            />
+          </a>
+        </div>
+      </div>
     </footer>
   );
 };
 
-export default Footer; 
+export default Footer;
