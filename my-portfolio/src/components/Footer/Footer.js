@@ -26,7 +26,7 @@ const Footer = () => {
             />
           </a>
           <a
-            href="https://www.linkedin.com/in/colbyfrison"
+            href="https://www.linkedin.com/in/colby-frison-892680327/"
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
