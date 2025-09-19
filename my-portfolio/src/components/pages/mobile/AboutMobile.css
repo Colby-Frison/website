@@ -1,0 +1,301 @@
+/* Mobile-specific styles for About page */
+.about-mobile-page {
+  min-height: 100vh;
+  background-color: #f5f2ed;
+  padding: 4rem 0 2rem;
+}
+
+.about-mobile-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Mobile Page Title */
+.mobile-page-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #211d1e;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mobileSlideUp 0.6s ease-out forwards;
+}
+
+/* Mobile Bio Section */
+.mobile-bio-section {
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mobileSlideUp 0.6s ease-out 0.2s forwards;
+}
+
+.mobile-bio-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(33, 29, 30, 0.8);
+  font-weight: 400;
+  margin: 0;
+  text-align: left;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(33, 29, 30, 0.08);
+}
+
+/* Mobile Section Animations */
+.mobile-section-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.mobile-section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mobile Section Titles */
+.mobile-section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #211d1e;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  text-align: left;
+  padding-left: 0.5rem;
+}
+
+/* Mobile Content Cards */
+.mobile-content-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33, 29, 30, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.mobile-content-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Mobile Education Section */
+.mobile-education-section {
+  margin-bottom: 2.5rem;
+}
+
+.mobile-degree {
+  color: #ed2124;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.8rem 0;
+  line-height: 1.3;
+}
+
+.mobile-university {
+  color: rgba(33, 29, 30, 0.9);
+  font-size: 1rem;
+  margin: 0 0 1.2rem 0;
+  line-height: 1.4;
+}
+
+.mobile-education-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.mobile-graduation, .mobile-gpa {
+  color: rgba(33, 29, 30, 0.7);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.mobile-achievement {
+  color: #ed2124;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0.6rem 1rem;
+  background: rgba(237, 33, 36, 0.1);
+  border-radius: 20px;
+  display: inline-block;
+  border: 1px solid rgba(237, 33, 36, 0.2);
+  text-align: center;
+}
+
+/* Mobile Skills Section */
+.mobile-skills-section {
+  margin-bottom: 2.5rem;
+}
+
+.mobile-skill-category {
+  margin-bottom: 2rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(33, 29, 30, 0.06);
+}
+
+.mobile-skill-category:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-category-title {
+  color: rgba(33, 29, 30, 0.9);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+}
+
+.mobile-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mobile-skill-tag {
+  background: rgba(237, 33, 36, 0.1);
+  color: #ed2124;
+  padding: 0.5rem 0.9rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(237, 33, 36, 0.2);
+  transition: all 0.2s ease;
+  cursor: default;
+  display: inline-block;
+  text-align: center;
+}
+
+.mobile-skill-tag:active {
+  background: rgba(237, 33, 36, 0.2);
+  transform: scale(0.95);
+}
+
+/* Mobile Experience Section */
+.mobile-experience-section {
+  margin-bottom: 2rem;
+}
+
+.mobile-experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-job-card {
+  margin-bottom: 0; /* Override default card margin */
+}
+
+.mobile-job-title {
+  color: #ed2124;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.mobile-company {
+  color: rgba(33, 29, 30, 0.9);
+  font-size: 1rem;
+  margin: 0 0 0.3rem 0;
+  line-height: 1.4;
+}
+
+.mobile-period {
+  color: rgba(33, 29, 30, 0.6);
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  font-style: italic;
+}
+
+.mobile-job-responsibilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-job-responsibilities li {
+  color: rgba(33, 29, 30, 0.7);
+  margin-bottom: 0.6rem;
+  padding-left: 1.2rem;
+  position: relative;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.mobile-job-responsibilities li::before {
+  content: '▸';
+  color: #ed2124;
+  position: absolute;
+  left: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Mobile Animations */
+@keyframes mobileSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-content-card:hover {
+    transform: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .mobile-skill-tag:hover {
+    transform: none;
+    background: rgba(237, 33, 36, 0.1);
+  }
+}
+
+/* Very small screens optimization */
+@media (max-width: 360px) {
+  .about-mobile-container {
+    padding: 0 0.8rem;
+  }
+  
+  .mobile-page-title {
+    font-size: 2rem;
+  }
+  
+  .mobile-bio-text {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  
+  .mobile-section-title {
+    font-size: 1.6rem;
+  }
+  
+  .mobile-content-card {
+    padding: 1.2rem;
+  }
+  
+  .mobile-skill-category {
+    padding: 1rem;
+  }
+  
+  .mobile-skill-tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}

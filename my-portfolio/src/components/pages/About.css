@@ -223,7 +223,7 @@ html {
 .experience-section {
   opacity: 0;
   transform: translateY(50px);
-  transition: all 0.8s ease-out;
+  transition: all 0.1s ease-out;
 }
 
 .experience-section.visible {

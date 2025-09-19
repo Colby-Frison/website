@@ -1,0 +1,287 @@
+/* Mobile-specific styles for Contact page */
+.contact-mobile-page {
+  min-height: 100vh;
+  background-color: #f5f2ed;
+  padding: 4rem 0 2rem;
+}
+
+.contact-mobile-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Mobile Contact Title */
+.mobile-contact-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #211d1e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mobileContactSlideUp 0.6s ease-out forwards;
+}
+
+.mobile-contact-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(33, 29, 30, 0.7);
+  text-align: center;
+  margin: 0 0 2.5rem 0;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: mobileContactSlideUp 0.6s ease-out 0.1s forwards;
+}
+
+/* Mobile Contact Methods */
+.mobile-contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 2rem;
+}
+
+.mobile-contact-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33, 29, 30, 0.08);
+  border-radius: 12px;
+  padding: 1.8rem;
+  text-align: center;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.mobile-contact-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-contact-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
+}
+
+.mobile-contact-icon {
+  width: 60px;
+  height: 60px;
+  background: #ed2124;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1rem;
+}
+
+.mobile-contact-icon svg {
+  color: #f5f2ed;
+  font-size: 2rem;
+}
+
+.mobile-contact-method-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #211d1e;
+  margin: 0 0 0.8rem 0;
+  letter-spacing: -0.01em;
+}
+
+.mobile-contact-value {
+  font-size: 1rem;
+  color: #ed2124;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+  transition: all 0.3s ease;
+  word-break: break-word;
+}
+
+.mobile-contact-value.clickable {
+  cursor: pointer;
+}
+
+.mobile-contact-value.clickable:active {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.mobile-contact-method-description {
+  font-size: 0.95rem;
+  color: rgba(33, 29, 30, 0.7);
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+}
+
+.mobile-contact-button {
+  background: #ed2124;
+  color: #f5f2ed;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  letter-spacing: 0.02em;
+}
+
+.mobile-contact-button:active {
+  transform: scale(0.95);
+  background: #d01e21;
+}
+
+/* Mobile Contact Footer */
+.mobile-contact-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-top: 1px solid rgba(33, 29, 30, 0.1);
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 350px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.mobile-contact-footer.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-contact-location {
+  font-size: 1rem;
+  color: rgba(33, 29, 30, 0.9);
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.mobile-contact-availability {
+  font-size: 0.9rem;
+  color: rgba(33, 29, 30, 0.6);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mobile Contact Animations */
+.mobile-contact-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.mobile-contact-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes mobileContactSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-contact-card:hover {
+    transform: none;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .mobile-contact-value.clickable:hover {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .mobile-contact-button:hover {
+    transform: none;
+    background: #ed2124;
+  }
+}
+
+/* Very small screens optimization */
+@media (max-width: 360px) {
+  .contact-mobile-container {
+    padding: 0 0.8rem;
+  }
+  
+  .mobile-contact-title {
+    font-size: 2rem;
+  }
+  
+  .mobile-contact-description {
+    font-size: 1rem;
+    max-width: 320px;
+  }
+  
+  .mobile-contact-methods {
+    max-width: 320px;
+  }
+  
+  .mobile-contact-card {
+    padding: 1.5rem;
+  }
+  
+  .mobile-contact-icon {
+    font-size: 2.2rem;
+  }
+  
+  .mobile-contact-method-title {
+    font-size: 1.2rem;
+  }
+  
+  .mobile-contact-footer {
+    max-width: 320px;
+    padding: 1.2rem 0.8rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .contact-mobile-page {
+    padding: 2rem 0 1rem;
+  }
+  
+  .mobile-contact-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-contact-description {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mobile-contact-methods {
+    gap: 1rem;
+  }
+  
+  .mobile-contact-card {
+    padding: 1.2rem;
+  }
+  
+  .mobile-contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mobile-contact-footer {
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+}

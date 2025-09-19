@@ -91,7 +91,7 @@ const About = () => {
                 <p className="university">University of Oklahoma, Gallogly College of Engineering</p>
                 <div className="education-details">
                   <p className="graduation">Expected Graduation: May 2027</p>
-                  <p className="gpa">GPA: 3.60/4.00</p>
+                  <p className="gpa">GPA: 3.70/4.00</p>
                 </div>
                 <p className="achievement">President's Honor Roll (Spring 2025)</p>
               </div>

@@ -1,6 +1,7 @@
 .projects-container {
   padding: 6rem 2rem 4rem;
   min-height: 100vh;
+  background-color: #f5f2ed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,16 +32,19 @@
 }
 
 .project-card {
-  background-color: rgba(33, 29, 30, 0.05) !important;
-  border: 1px solid rgba(33, 29, 30, 0.1);
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(33, 29, 30, 0.08);
   border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100% !important;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(237, 33, 36, 0.2);
 }
 
 .project-title {
