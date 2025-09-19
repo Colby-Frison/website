@@ -37,7 +37,7 @@ const Home = () => {
             
             <Box className="social-links">
               <a
-                href="https://github.com/colby-frison"
+                href="https://www.linkedin.com/in/colby-frison-892680327/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link"
