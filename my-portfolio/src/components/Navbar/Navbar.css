@@ -1,67 +1,92 @@
-.navbar {
-  background-color: transparent !important;
-  transition: all 0.3s ease-in-out !important;
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.3s var(--ease-out, ease),
+    border-color 0.3s var(--ease-out, ease),
+    box-shadow 0.3s var(--ease-out, ease);
 }
 
-.navbar.scrolled {
-  background-color: rgba(245, 242, 237, 0.95) !important;
-  backdrop-filter: blur(10px);
+.site-nav.is-scrolled {
+  background: rgba(245, 242, 237, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--ink-faint, rgba(33, 29, 30, 0.1));
+  box-shadow: 0 1px 0 rgba(237, 33, 36, 0.06);
 }
 
-.nav-brand {
-  text-decoration: none;
-  color: #211d1e;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.nav-links {
-  margin-left: auto;
+.site-nav-inner {
+  max-width: var(--page-max, 1100px);
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 1.75rem;
+  flex-wrap: wrap;
 }
 
-.nav-link {
-  color: rgba(33, 29, 30, 0.8) !important;
-  text-transform: none !important;
-  font-weight: 500 !important;
+.site-nav-link {
   position: relative;
-  padding: 6px 12px !important;
+  font-family: var(--font-accent, '和風ぽっぷ', serif);
+  font-size: 1.05rem;
+  word-spacing: var(--word-spacing-body, 0.22em);
+  color: var(--ink-soft, rgba(33, 29, 30, 0.78));
+  text-decoration: none;
+  padding: 0.35rem 0;
+  transition: color 0.25s var(--ease-out, ease);
 }
 
-.nav-link::after {
+.site-nav-link::after {
   content: '';
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background-color: #ed2124;
-  transition: all 0.3s ease-in-out;
-  transform: translateX(-50%);
+  height: 1px;
+  background: var(--crimson, #ed2124);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s var(--ease-out, ease);
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 80%;
+.site-nav-link:hover {
+  color: var(--crimson, #ed2124);
 }
 
-.nav-link:hover {
-  color: #211d1e !important;
+.site-nav-link:hover::after,
+.site-nav-link.is-active::after {
+  transform: scaleX(1);
 }
 
-.nav-link.active {
-  color: #211d1e !important;
+.site-nav-link.is-active {
+  color: var(--crimson, #ed2124);
 }
 
-.drawer-paper {
-  background-color: #f5f2ed !important;
-  color: #211d1e !important;
-  width: 250px;
+.site-nav-link:focus-visible {
+  outline: 2px solid var(--crimson, #ed2124);
+  outline-offset: 4px;
 }
 
-@media (max-width: 600px) {
-  .nav-brand {
-    font-size: 1.2rem !important;
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .site-nav-link,
+  .site-nav-link::after {
+    transition: none;
   }
-} 
+}
+
+@media (max-width: 900px) {
+  .site-nav-inner {
+    padding: 0.75rem 1.15rem;
+    gap: 0.2rem 1.15rem;
+  }
+
+  .site-nav-link {
+    font-size: 0.98rem;
+  }
+}

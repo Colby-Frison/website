@@ -1,12 +1,34 @@
 .home-page {
+  position: relative;
   min-height: 100vh;
   background-color: #f5f2ed;
   display: flex;
   align-items: center;
   padding: 2rem 0;
+  overflow: hidden;
+}
+
+.home-page--intro .hero-content {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.home-page--content-ready .hero-content {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-page--exit .hero-content {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .hero-content {
+  position: relative;
   max-width: 80%;
   margin: 0 auto;
   padding: 2rem;
@@ -15,6 +37,11 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.home-ui-layer {
+  position: relative;
+  z-index: 4;
 }
 
 .hero-title {
@@ -45,9 +72,12 @@
   gap: 0rem;
   width: 100%;
   margin-top: 2rem;
+  position: relative;
 }
 
 .bonsai-image {
+  position: relative;
+  z-index: 1;
   width: 35%;
   height: 35%;
   object-fit: contain;
@@ -59,6 +89,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0rem;
+  position: relative;
+  z-index: 4;
 }
 
 .directories-title {
@@ -92,6 +124,7 @@
   font-weight: 500 !important;
   color: #211d1e;
   font-family: '和風ぽっぷ', serif !important;
+  word-spacing: 0.22em;
   margin: 0 !important;
 }
 
@@ -237,4 +270,14 @@
     width: 26px;
     height: 26px;
   }
-} 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page--intro .hero-content,
+  .home-page--content-ready .hero-content,
+  .home-page--exit .hero-content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

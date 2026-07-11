@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import EmailIcon from '@mui/icons-material/Email';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import React, { useEffect, useState } from 'react';
+import PageAtmosphere from '../../motif/PageAtmosphere';
+import LeafAccent from '../../motif/LeafAccent';
 import './ContactMobile.css';
 
-const ContactMobile = ({ deviceInfo }) => {
+const ContactMobile = () => {
   const [emailRevealed, setEmailRevealed] = useState(false);
 
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px 50px 0px'
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.getAttribute('data-delay') || '0';
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, parseFloat(delay) * 1000);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px 50px 0px' }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute('data-delay') || '0';
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, parseFloat(delay) * 1000);
-        }
-      });
-    }, observerOptions);
-
-    const sections = document.querySelectorAll('.mobile-contact-animate');
+    const sections = document.querySelectorAll('.contact-mobile-page .section-animate');
     sections.forEach((section) => observer.observe(section));
 
     return () => {
@@ -32,10 +29,9 @@ const ContactMobile = ({ deviceInfo }) => {
     };
   }, []);
 
-  // Email parts encoded to prevent scraping
   const emailParts = {
     username: 'Colbyfrison100',
-    domain: 'gmail.com'
+    domain: 'gmail.com',
   };
 
   const revealEmail = () => {
@@ -46,7 +42,7 @@ const ContactMobile = ({ deviceInfo }) => {
     if (emailRevealed) {
       return `${emailParts.username}@${emailParts.domain}`;
     }
-    return 'Click to reveal email';
+    return 'Tap to reveal email';
   };
 
   const handleEmailClick = () => {
@@ -59,77 +55,76 @@ const ContactMobile = ({ deviceInfo }) => {
 
   const contactMethods = [
     {
-      icon: <EmailIcon />,
       title: 'Email',
       value: getEmailDisplay(),
+      description: 'Reach out for opportunities or collaborations',
       onClick: handleEmailClick,
-      description: 'Feel free to reach out for opportunities or collaborations',
-      buttonText: emailRevealed ? 'Send Email' : 'Reveal Email'
+      actionLabel: emailRevealed ? 'Send Email' : 'Reveal Email',
     },
     {
-      icon: <GitHubIcon />,
       title: 'GitHub',
       value: 'github.com/Colby-Frison',
+      description: 'Projects and contributions',
       link: 'https://github.com/Colby-Frison',
-      description: 'Check out my projects and contributions',
-      buttonText: 'Visit GitHub'
+      actionLabel: 'Visit GitHub',
     },
     {
-      icon: <LinkedInIcon />,
       title: 'LinkedIn',
       value: 'Colby Frison',
+      description: 'Connect professionally',
       link: 'https://www.linkedin.com/in/colby-frison-892680327',
-      description: 'Connect with me professionally',
-      buttonText: 'Connect'
-    }
+      actionLabel: 'Connect',
+    },
   ];
 
   return (
-    <div className="contact-mobile-page">
-      <div className="contact-mobile-container">
-        <h1 className="mobile-contact-title">Get in Touch</h1>
-        <p className="mobile-contact-description">
-          I'm always interested in hearing about new opportunities, collaborations, or just connecting with fellow developers.
+    <div className="interior-page contact-mobile-page">
+      <PageAtmosphere showSecondary={false} />
+      <div className="interior-page-inner contact-mobile-container">
+        <h1 className="interior-title">Get in Touch</h1>
+        <div className="interior-title-rule">
+          <LeafAccent size="sm" settle />
+        </div>
+        <p className="interior-lede contact-mobile-lede">
+          I&apos;m always interested in hearing about new opportunities, collaborations, or just
+          connecting with fellow developers.
         </p>
 
-        <div className="mobile-contact-methods">
+        <ul className="contact-mobile-list">
           {contactMethods.map((method, index) => (
-            <div 
-              key={method.title} 
-              className="mobile-contact-card mobile-contact-animate"
-              data-delay={0.2 + index * 0.1}
+            <li
+              key={method.title}
+              className="contact-mobile-row section-animate"
+              data-delay={0.1 + index * 0.08}
             >
-              <div className="mobile-contact-icon">
-                {method.icon}
+              <div className="contact-mobile-row-top">
+                <LeafAccent size="sm" settle />
+                <h2>{method.title}</h2>
               </div>
-              <h3 className="mobile-contact-method-title">{method.title}</h3>
-              <p 
-                className={`mobile-contact-value ${method.onClick ? 'clickable' : ''}`}
-                onClick={method.onClick}
-              >
-                {method.value}
-              </p>
-              <p className="mobile-contact-method-description">
-                {method.description}
-              </p>
-              <button
-                className="mobile-contact-button"
-                onClick={method.onClick || (() => window.open(method.link, '_blank'))}
-              >
-                {method.buttonText}
-              </button>
-            </div>
+              <p className="contact-mobile-value">{method.value}</p>
+              <p className="contact-mobile-desc">{method.description}</p>
+              {method.onClick ? (
+                <button type="button" className="contact-mobile-action" onClick={method.onClick}>
+                  {method.actionLabel}
+                </button>
+              ) : (
+                <a
+                  className="contact-mobile-action"
+                  href={method.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {method.actionLabel}
+                </a>
+              )}
+            </li>
           ))}
-        </div>
+        </ul>
 
-        <div className="mobile-contact-footer mobile-contact-animate" data-delay="0.6">
-          <p className="mobile-contact-location">
-            Currently based in Norman, OK
-          </p>
-          <p className="mobile-contact-availability">
-            Open to remote opportunities and collaborations
-          </p>
-        </div>
+        <footer className="contact-mobile-note section-animate" data-delay="0.4">
+          <p>Currently based in Norman, OK</p>
+          <p>Open to remote opportunities and collaborations</p>
+        </footer>
       </div>
     </div>
   );

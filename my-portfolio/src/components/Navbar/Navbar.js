@@ -1,112 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import './Navbar.css';
 
-const Navbar = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const location = useLocation();
+const navItems = [
+  { text: 'Home', path: '/' },
+  { text: 'About', path: '/about' },
+  { text: 'Projects', path: '/projects' },
+  { text: 'Contact', path: '/contact' },
+];
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+      setScrolled(window.scrollY > 24);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
-
-  const navItems = [
-    { text: 'Home', path: '/' },
-    { text: 'About', path: '/about' },
-    { text: 'Projects', path: '/projects' },
-    { text: 'Contact', path: '/contact' },
-  ];
-
-  const drawer = (
-    <List>
-      {navItems.map((item) => (
-        <ListItem 
-          button 
-          key={item.text} 
-          component={Link} 
-          to={item.path}
-          selected={location.pathname === item.path}
-          onClick={handleDrawerToggle}
-        >
-          <ListItemText primary={item.text} />
-        </ListItem>
-      ))}
-    </List>
-  );
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <>
-      <AppBar 
-        position="fixed" 
-        className={`navbar ${scrolled ? 'scrolled' : ''}`}
-        elevation={scrolled ? 4 : 0}
-      >
-        <Toolbar>
-          <Typography variant="h6" component={Link} to="/" className="nav-brand">
-            Colby Frison
-          </Typography>
-          
-          {isMobile ? (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
+    <header className={`site-nav ${scrolled ? 'is-scrolled' : ''}`}>
+      <nav className="site-nav-inner" aria-label="Primary">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`site-nav-link ${isActive ? 'is-active' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <MenuIcon />
-            </IconButton>
-          ) : (
-            <div className="nav-links">
-              {navItems.map((item) => (
-                <Button
-                  key={item.text}
-                  component={Link}
-                  to={item.path}
-                  className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                >
-                  {item.text}
-                </Button>
-              ))}
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-        variant="temporary"
-        anchor="right"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        classes={{
-          paper: 'drawer-paper',
-        }}
-        ModalProps={{
-          keepMounted: true,
-        }}
-      >
-        {drawer}
-      </Drawer>
-    </>
+              {item.text}
+            </Link>
+          );
+        })}
+      </nav>
+    </header>
   );
 };
 
-export default Navbar; 
+export default Navbar;

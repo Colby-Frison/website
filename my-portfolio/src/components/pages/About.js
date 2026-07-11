@@ -1,164 +1,185 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PageAtmosphere from '../motif/PageAtmosphere';
+import LeafAccent from '../motif/LeafAccent';
 import './About.css';
 
 const About = () => {
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px 100px 0px'
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.getAttribute('data-delay') || '0';
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, parseFloat(delay) * 1000);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px 80px 0px' }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute('data-delay') || '0';
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, parseFloat(delay) * 1000);
-        }
-      });
-    }, observerOptions);
-
-    const sections = document.querySelectorAll('.section-animate');
+    const sections = document.querySelectorAll('.about-page .section-animate');
     sections.forEach((section) => observer.observe(section));
 
     return () => {
       sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
+
   const skills = {
-    languages: ['C/C++', 'Java', 'Python', 'HTML/CSS', 'JavaScript', 'TypeScript', 'Matlab'],
-    devTools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse'],
-    focusAreas: [
-      'Software Development',
-      'User Interface (UI)',
+    languages: ['C/C++', 'Java', 'Python', 'JavaScript', 'TypeScript', 'HTML/CSS', 'Matlab'],
+    tools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse', 'Docker'],
+    platforms: ['Windows', 'Linux'],
+    focus: [
       'Full-Stack Development',
-      'Game Development',
-      'AI',
-      'Machine Learning',
-      'Graphic Design',
+      'Software Quality & Testing',
       'UI/UX',
-      'Data Science',
-      'Quality Assurance',
-      'Project Management'
-    ]
+      'AI & Machine Learning',
+      'Security',
+      'Project Management',
+    ],
   };
 
   const workExperience = [
     {
+      title: 'IT Intern',
+      company: 'ConocoPhillips',
+      period: 'May 2026 — Present',
+      details: ['Further information regarding this role is to be disclosed.'],
+    },
+    {
       title: 'Engineering Ambassador',
       company: 'University of Oklahoma, Gallogly College of Engineering',
-      period: 'March 2025 - August 2025',
+      period: 'March 2024 — Present',
       details: [
-        'Recruit prospective students for the College of Engineering',
-        'Lead campus tours of engineering facilities',
-        'Sole Computer Science ambassador',
-        'Research and analyze recruitment strategies'
-      ]
+        'Recruit prospective students and lead engineering facility tours',
+        'Sole Computer Science ambassador for CS-related outreach',
+        'Research peer institutions to improve recruitment strategies',
+      ],
     },
     {
       title: "Teacher's Assistant",
       company: 'Houston Museum of Natural Science',
-      period: 'March 2020 - May 2024',
+      period: 'March 2020 — May 2024',
       details: [
-        'Led summer camp classes independently',
-        'Developed educational materials',
-        'Fostered engaging learning environment',
-        'Mentored junior staff and students'
-      ]
-    }
+        'Led summer camp classes independently and mentored junior staff',
+        'Developed educational materials for science-focused programs',
+      ],
+    },
   ];
 
   return (
-    <div className="about-page">
-      <div className="about-container">
-        <h1 className="page-title">About Me</h1>
-        
-        <section className="top-section">
-          <div className="left-column">
-            <div className="bio-section">
-              <p className="bio-text">
-                I'm a Computer Science student at the University of Oklahoma, passionate about 
-                software development, AI, and creating impactful solutions. Currently serving as 
-                an Engineering Ambassador and exploring various aspects of technology.
+    <div className="interior-page about-page">
+      <PageAtmosphere />
+      <div className="interior-page-inner about-container">
+        <header className="about-hero">
+          <h1 className="interior-title about-page-title">About</h1>
+          <div className="interior-title-rule">
+            <LeafAccent size="sm" settle />
+          </div>
+          <p className="about-bio section-animate" data-delay="0.05">
+            Computer Science student at the University of Oklahoma. I care about building
+            software people can trust and use—from secure systems and quality testing to
+            full-stack products and thoughtful interfaces. Currently interning in IT at
+            ConocoPhillips.
+          </p>
+        </header>
+
+        <section className="about-section section-animate" data-delay="0.12">
+          <div className="about-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Education</h2>
+          </div>
+          <div className="about-edu">
+            <div className="about-edu-main">
+              <h3 className="about-degree">B.S. Computer Science</h3>
+              <p className="about-university">
+                University of Oklahoma · Gallogly College of Engineering · Norman, OK
               </p>
             </div>
-
-            <div className="education-section section-animate" data-delay="0.3">
-              <h2 className="section-title">Education</h2>
-              <div className="education-card content-card">
-                <h3 className="degree">Bachelor of Science in Computer Science</h3>
-                <p className="university">University of Oklahoma, Gallogly College of Engineering</p>
-                <div className="education-details">
-                  <p className="graduation">Expected Graduation: May 2027</p>
-                  <p className="gpa">GPA: 3.70/4.00</p>
-                </div>
-                <p className="achievement">President's Honor Roll (Spring 2025)</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="right-column">
-            <div className="skills-section section-animate" data-delay="0.2">
-              <h2 className="section-title">Technical Skills</h2>
-              <div className="skills-content">
-                <div className="skill-category">
-                  <h4 className="category-title">Programming Languages</h4>
-                  <div className="skills-list">
-                    {skills.languages.map((skill) => (
-                      <span key={skill} className="skill-tag">{skill}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="skill-category">
-                  <h4 className="category-title">Development Tools</h4>
-                  <div className="skills-list">
-                    {skills.devTools.map((tool) => (
-                      <span key={tool} className="skill-tag">{tool}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="skill-category">
-                  <h4 className="category-title">Focus Areas</h4>
-                  <div className="skills-list">
-                    {skills.focusAreas.map((area) => (
-                      <span key={area} className="skill-tag">{area}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <div className="about-edu-aside">
+              <p>
+                <span className="about-meta-label">Graduation</span>
+                May 2027
+              </p>
+              <p>
+                <span className="about-meta-label">GPA</span>
+                3.70 / 4.00
+              </p>
+              <p className="about-honor">President&apos;s Honor Roll · Spring 2025</p>
             </div>
           </div>
         </section>
 
-        <section className="experience-section section-animate" data-delay="0.4">
-          <div className="section-header">
-            <h2 className="section-title">Work Experience</h2>
-            <div className="section-line"></div>
+        <section className="about-section section-animate" data-delay="0.18">
+          <div className="about-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Experience</h2>
           </div>
-          <div className="experience-timeline">
-            {workExperience.map((job, index) => (
-              <div key={index} className="timeline-item">
-                <div className="timeline-marker"></div>
-                <div className="job-card content-card">
-                  <h3 className="job-title">{job.title}</h3>
-                  <p className="company">{job.company}</p>
-                  <p className="period">{job.period}</p>
-                  <ul className="job-responsibilities">
-                    {job.details.map((detail, idx) => (
-                      <li key={idx}>{detail}</li>
+          <div className="about-timeline">
+            {workExperience.map((job) => (
+              <article key={job.title} className="about-job">
+                <div className="about-timeline-marker" aria-hidden="true">
+                  <LeafAccent size="sm" settle />
+                </div>
+                <div className="about-job-body">
+                  <div className="about-job-top">
+                    <h3 className="about-job-title">{job.title}</h3>
+                    <p className="about-job-period">{job.period}</p>
+                  </div>
+                  <p className="about-job-company">{job.company}</p>
+                  <ul className="about-job-details">
+                    {job.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
                     ))}
                   </ul>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </section>
+
+        <section className="about-section section-animate" data-delay="0.24">
+          <div className="about-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Skills</h2>
+          </div>
+          <div className="about-skills-grid">
+            <div className="about-skill-group">
+              <h4 className="about-skill-label">Languages</h4>
+              <p className="about-skill-line">{skills.languages.join(' · ')}</p>
+            </div>
+            <div className="about-skill-group">
+              <h4 className="about-skill-label">Tools</h4>
+              <p className="about-skill-line">{skills.tools.join(' · ')}</p>
+            </div>
+            <div className="about-skill-group">
+              <h4 className="about-skill-label">Platforms</h4>
+              <p className="about-skill-line">{skills.platforms.join(' · ')}</p>
+            </div>
+            <div className="about-skill-group">
+              <h4 className="about-skill-label">Focus</h4>
+              <p className="about-skill-line">{skills.focus.join(' · ')}</p>
+            </div>
+          </div>
+        </section>
+
+        <p className="about-next section-animate" data-delay="0.3">
+          <Link to="/projects" className="about-next-link">
+            View projects
+          </Link>
+          <span className="about-next-sep" aria-hidden="true">
+            ·
+          </span>
+          <Link to="/contact" className="about-next-link">
+            Get in touch
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
 
-export default About; 
+export default About;

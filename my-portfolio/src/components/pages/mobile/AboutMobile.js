@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PageAtmosphere from '../../motif/PageAtmosphere';
+import LeafAccent from '../../motif/LeafAccent';
 import './AboutMobile.css';
 
-const AboutMobile = ({ deviceInfo }) => {
+const AboutMobile = () => {
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px 50px 0px'
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.getAttribute('data-delay') || '0';
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, parseFloat(delay) * 1000);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px 50px 0px' }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute('data-delay') || '0';
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, parseFloat(delay) * 1000);
-        }
-      });
-    }, observerOptions);
-
-    const sections = document.querySelectorAll('.mobile-section-animate');
+    const sections = document.querySelectorAll('.about-mobile-page .section-animate');
     sections.forEach((section) => observer.observe(section));
 
     return () => {
@@ -28,126 +29,134 @@ const AboutMobile = ({ deviceInfo }) => {
   }, []);
 
   const skills = {
-    languages: ['C/C++', 'Java', 'Python', 'HTML/CSS', 'JavaScript', 'TypeScript', 'Matlab'],
-    devTools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse'],
-    focusAreas: [
-      'Software Development',
-      'User Interface (UI)',
+    languages: ['C/C++', 'Java', 'Python', 'JavaScript', 'TypeScript', 'HTML/CSS', 'Matlab'],
+    tools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse', 'Docker'],
+    platforms: ['Windows', 'Linux'],
+    focus: [
       'Full-Stack Development',
-      'Game Development',
-      'AI',
-      'Machine Learning',
-      'Graphic Design',
+      'Software Quality & Testing',
       'UI/UX',
-      'Data Science',
-      'Quality Assurance',
-      'Project Management'
-    ]
+      'AI & Machine Learning',
+      'Security',
+      'Project Management',
+    ],
   };
 
   const workExperience = [
     {
+      title: 'IT Intern',
+      company: 'ConocoPhillips',
+      period: 'May 2026 — Present',
+      details: ['Further information regarding this role is to be disclosed.'],
+    },
+    {
       title: 'Engineering Ambassador',
       company: 'University of Oklahoma, Gallogly College of Engineering',
-      period: 'March 2025 - August 2025',
+      period: 'March 2024 — Present',
       details: [
-        'Recruit prospective students for the College of Engineering',
-        'Lead campus tours of engineering facilities',
-        'Sole Computer Science ambassador',
-        'Research and analyze recruitment strategies'
-      ]
+        'Recruit prospective students and lead engineering facility tours',
+        'Sole Computer Science ambassador for CS-related outreach',
+        'Research peer institutions to improve recruitment strategies',
+      ],
     },
     {
       title: "Teacher's Assistant",
       company: 'Houston Museum of Natural Science',
-      period: 'March 2020 - May 2024',
+      period: 'March 2020 — May 2024',
       details: [
-        'Led summer camp classes independently',
-        'Developed educational materials',
-        'Fostered engaging learning environment',
-        'Mentored junior staff and students'
-      ]
-    }
+        'Led summer camp classes independently and mentored junior staff',
+        'Developed educational materials for science-focused programs',
+      ],
+    },
   ];
 
   return (
-    <div className="about-mobile-page">
-      <div className="about-mobile-container">
-        <h1 className="mobile-page-title">About Me</h1>
-        
-        {/* Bio Section - Always first on mobile */}
-        <section className="mobile-bio-section">
-          <p className="mobile-bio-text">
-            I'm a Computer Science student at the University of Oklahoma, passionate about 
-            software development, AI, and creating impactful solutions. Currently serving as 
-            an Engineering Ambassador and exploring various aspects of technology.
+    <div className="interior-page about-mobile-page">
+      <PageAtmosphere showSecondary={false} />
+      <div className="interior-page-inner about-mobile-container">
+        <header className="about-mobile-hero">
+          <h1 className="interior-title about-mobile-title">About</h1>
+          <div className="interior-title-rule about-mobile-rule">
+            <LeafAccent size="sm" settle />
+          </div>
+          <p className="about-mobile-bio section-animate" data-delay="0.05">
+            Computer Science student at the University of Oklahoma. I care about building
+            software people can trust and use—from secure systems and quality testing to
+            full-stack products and thoughtful interfaces. Currently interning in IT at
+            ConocoPhillips.
           </p>
+        </header>
+
+        <section className="about-mobile-section section-animate" data-delay="0.12">
+          <div className="about-mobile-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Education</h2>
+          </div>
+          <h3 className="about-mobile-degree">B.S. Computer Science</h3>
+          <p className="about-mobile-university">
+            University of Oklahoma · Gallogly College of Engineering · Norman, OK
+          </p>
+          <p className="about-mobile-meta">
+            <span>Graduation</span> May 2027
+          </p>
+          <p className="about-mobile-meta">
+            <span>GPA</span> 3.70 / 4.00
+          </p>
+          <p className="about-mobile-honor">President&apos;s Honor Roll · Spring 2025</p>
         </section>
 
-        {/* Education Section */}
-        <section className="mobile-education-section mobile-section-animate" data-delay="0.2">
-          <h2 className="mobile-section-title">Education</h2>
-          <div className="mobile-education-card mobile-content-card">
-            <h3 className="mobile-degree">Bachelor of Science in Computer Science</h3>
-            <p className="mobile-university">University of Oklahoma, Gallogly College of Engineering</p>
-            <div className="mobile-education-details">
-              <p className="mobile-graduation">Expected Graduation: May 2027</p>
-              <p className="mobile-gpa">GPA: 3.70/4.00</p>
-            </div>
-            <p className="mobile-achievement">President's Honor Roll (Spring 2025)</p>
+        <section className="about-mobile-section section-animate" data-delay="0.18">
+          <div className="about-mobile-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Experience</h2>
           </div>
-        </section>
-
-        {/* Skills Section - Optimized for mobile scrolling */}
-        <section className="mobile-skills-section mobile-section-animate" data-delay="0.3">
-          <h2 className="mobile-section-title">Technical Skills</h2>
-          
-          <div className="mobile-skill-category">
-            <h4 className="mobile-category-title">Programming Languages</h4>
-            <div className="mobile-skills-list">
-              {skills.languages.map((skill) => (
-                <span key={skill} className="mobile-skill-tag">{skill}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mobile-skill-category">
-            <h4 className="mobile-category-title">Development Tools</h4>
-            <div className="mobile-skills-list">
-              {skills.devTools.map((tool) => (
-                <span key={tool} className="mobile-skill-tag">{tool}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mobile-skill-category">
-            <h4 className="mobile-category-title">Focus Areas</h4>
-            <div className="mobile-skills-list">
-              {skills.focusAreas.map((area) => (
-                <span key={area} className="mobile-skill-tag">{area}</span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section - Mobile optimized timeline */}
-        <section className="mobile-experience-section mobile-section-animate" data-delay="0.4">
-          <h2 className="mobile-section-title">Work Experience</h2>
-          <div className="mobile-experience-list">
-            {workExperience.map((job, index) => (
-              <div key={index} className="mobile-job-card mobile-content-card">
-                <h3 className="mobile-job-title">{job.title}</h3>
-                <p className="mobile-company">{job.company}</p>
-                <p className="mobile-period">{job.period}</p>
-                <ul className="mobile-job-responsibilities">
-                  {job.details.map((detail, idx) => (
-                    <li key={idx}>{detail}</li>
+          <div className="about-mobile-timeline">
+            {workExperience.map((job) => (
+              <article key={job.title} className="about-mobile-job">
+                <div className="about-mobile-job-marker">
+                  <LeafAccent size="sm" settle />
+                </div>
+                <h3>{job.title}</h3>
+                <p className="about-mobile-period">{job.period}</p>
+                <p className="about-mobile-company">{job.company}</p>
+                <ul>
+                  {job.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
                   ))}
                 </ul>
-              </div>
+              </article>
             ))}
           </div>
         </section>
+
+        <section className="about-mobile-section section-animate" data-delay="0.24">
+          <div className="about-mobile-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Skills</h2>
+          </div>
+          <div className="about-mobile-skill">
+            <h4>Languages</h4>
+            <p>{skills.languages.join(' · ')}</p>
+          </div>
+          <div className="about-mobile-skill">
+            <h4>Tools</h4>
+            <p>{skills.tools.join(' · ')}</p>
+          </div>
+          <div className="about-mobile-skill">
+            <h4>Platforms</h4>
+            <p>{skills.platforms.join(' · ')}</p>
+          </div>
+          <div className="about-mobile-skill">
+            <h4>Focus</h4>
+            <p>{skills.focus.join(' · ')}</p>
+          </div>
+        </section>
+
+        <p className="about-mobile-next section-animate" data-delay="0.3">
+          <Link to="/projects">View projects</Link>
+          <span aria-hidden="true"> · </span>
+          <Link to="/contact">Get in touch</Link>
+        </p>
       </div>
     </div>
   );

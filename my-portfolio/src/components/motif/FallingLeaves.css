@@ -1,0 +1,103 @@
+.falling-petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.falling-petals--behind {
+  z-index: 2;
+}
+
+.falling-petals--front {
+  z-index: 6;
+}
+
+.falling-petal {
+  position: absolute;
+  left: var(--petal-x);
+  top: var(--petal-y);
+  width: var(--petal-size);
+  height: var(--petal-size);
+  color: #ed2124;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.falling-petal--deep {
+  color: #b01518;
+}
+
+.falling-petal--crimson {
+  color: #ed2124;
+}
+
+.falling-petal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 2px rgba(56, 9, 10, 0.18));
+}
+
+.falling-petals--ambient .falling-petal {
+  /* Visible immediately for preloaded (negative-delay) petals */
+  opacity: var(--petal-opacity);
+  animation:
+    petalWindFall var(--petal-duration) linear var(--petal-delay) infinite,
+    petalTumble calc(var(--petal-duration) * 0.35) ease-in-out var(--petal-delay) infinite;
+}
+
+.falling-petals--intro .falling-petal,
+.falling-petals--exit .falling-petal {
+  animation: petalGust var(--petal-duration) linear var(--petal-delay) both;
+}
+
+@keyframes petalWindFall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: var(--petal-opacity);
+  }
+  90% {
+    opacity: var(--petal-opacity);
+  }
+  100% {
+    transform: translate3d(var(--petal-drift-x), var(--petal-drift-y), 0) rotate(var(--petal-spin));
+    opacity: 0;
+  }
+}
+
+@keyframes petalGust {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-20deg);
+    opacity: 0;
+  }
+  4% {
+    opacity: var(--petal-opacity);
+  }
+  92% {
+    opacity: var(--petal-opacity);
+  }
+  100% {
+    transform: translate3d(var(--petal-drift-x), var(--petal-drift-y), 0) rotate(var(--petal-spin));
+    opacity: 0;
+  }
+}
+
+@keyframes petalTumble {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: var(--petal-tumble);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-petals {
+    display: none;
+  }
+}

@@ -1,0 +1,172 @@
+/* Shared interior-page design tokens (paper garden) */
+:root {
+  --paper: #f5f2ed;
+  --paper-deep: #ebe6de;
+  --ink: #211d1e;
+  --ink-soft: rgba(33, 29, 30, 0.78);
+  --ink-muted: rgba(33, 29, 30, 0.55);
+  --ink-faint: rgba(33, 29, 30, 0.1);
+  --crimson: #ed2124;
+  --crimson-soft: rgba(237, 33, 36, 0.12);
+  --crimson-mid: rgba(237, 33, 36, 0.28);
+  --leaf: #c41e22;
+  --leaf-ink: #38090a;
+
+  --font-display: 'Ounen-mouhitsu', serif;
+  --font-accent: '和風ぽっぷ', serif;
+  /* Same as Home directory links (.directory-name) — preferred body text */
+  --font-body: '和風ぽっぷ', serif;
+  /* 和風ぽっぷ has a very tight space glyph; widen word gaps for readability */
+  --word-spacing-body: 0.22em;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --page-max: 1100px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 0.7s;
+}
+
+.interior-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+  font-family: var(--font-body);
+  word-spacing: var(--word-spacing-body);
+}
+
+.interior-page-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
+}
+
+.interior-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 400;
+  color: var(--crimson);
+  text-align: center;
+  letter-spacing: 0.02em;
+  word-spacing: normal;
+  margin: 0 0 var(--space-sm);
+  opacity: 0;
+  transform: translateY(24px);
+  animation: interiorFadeUp var(--duration) var(--ease-out) forwards;
+}
+
+.interior-title-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: var(--space-xl);
+  opacity: 0;
+  animation: interiorFadeUp var(--duration) var(--ease-out) 0.15s forwards;
+}
+
+.interior-title-rule::before,
+.interior-title-rule::after {
+  content: '';
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--crimson-mid), transparent);
+}
+
+.interior-lede {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto var(--space-xl);
+  opacity: 0;
+  animation: interiorFadeUp var(--duration) var(--ease-out) 0.2s forwards;
+}
+
+.interior-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  word-spacing: normal;
+  margin: 0 0 var(--space-md);
+}
+
+.section-animate {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity var(--duration) var(--ease-out), transform var(--duration) var(--ease-out);
+}
+
+.section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes interiorFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes leafSettle {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) rotate(-18deg) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interior-title,
+  .interior-title-rule,
+  .interior-lede,
+  .section-animate {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+
+  .section-animate.visible {
+    transform: none;
+  }
+
+  .leaf-accent--settle {
+    animation: none !important;
+  }
+
+  .leaf-accent--rotate {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .interior-page-inner {
+    padding: 5rem var(--space-sm) var(--space-lg);
+  }
+
+  .interior-title-rule::before,
+  .interior-title-rule::after {
+    width: 28px;
+  }
+}

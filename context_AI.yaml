@@ -42,6 +42,12 @@ skills:
     - Quick learning
 
 work_experience:
+  - title: IT Intern
+    employer: ConocoPhillips
+    start: May 2026
+    end: Present
+    details:
+      - Further information regarding this role is to be disclosed
   - title: Engineering Ambassador
     employer: University of Oklahoma, Gallogly College of Engineering
     location: Norman, OK
@@ -70,6 +76,98 @@ work_experience:
       - Demonstrated ability to manage groups and communicate complex topics to young audiences
 
 projects:
+  - name: SimpleChef
+    type: Academic/Group
+    organization: University of Oklahoma (CS4063 Human–Computer Interaction)
+    start: Spring 2026
+    end: Spring 2026
+    description: |
+      Full-stack cooking assistant combining recipe management, step-by-step cooking mode,
+      meal planning, and grocery list generation. Academic HCI course prototype with live demo.
+    role: Team member / full-stack contributor
+    technologies: [React, TypeScript, Vite, FastAPI, PostgreSQL, SQLAlchemy, Alembic, Zustand, Axios, Docker]
+    features:
+      - JWT authentication with protected API endpoints
+      - Recipe library with create/edit/delete, tags, filtering, and visibility rules
+      - Cooking mode with step navigation, timer dock, and ingredient–step linkage
+      - Meal planner with month view and daily calorie summary
+      - Grocery list merge, categorization, check/delete, and export/share
+      - Profile settings for calorie goals and dietary preferences
+    impact:
+      - Delivered an end-to-end HCI prototype spanning design, API, and web UI
+      - Deployed live demo for evaluation and code review
+    link: https://github.com/Colby-Frison/SimpleChef
+    demo: https://simple-chef.vercel.app
+  - name: openpilot Testing Exploration
+    type: Academic/Group
+    organization: University of Oklahoma (CS4223 Software Quality and Testing)
+    start: Spring 2026
+    end: Spring 2026
+    description: |
+      Forked exploration and contribution to comma.ai openpilot (release 0.9.8), focused on
+      software quality: layered tests for modeld and pandad, shared pytest harnesses, system
+      contract tests, and fork CI for course-scoped verification.
+    role: Team member (Group C, Cluster 1)
+    technologies: [Python, pytest, C++, Catch2, SCons, GitHub Actions, openpilot]
+    features:
+      - Unit and contract tests for modeld parser math and fill_model_msg message population
+      - Extended modeld daemon integration and Phase C message contracts
+      - Pandad desktop tests: CAN capnp serialization, flash/wrapper mocks, USB protocol gtests
+      - Shared selfdrive/system pytest support harnesses and multi-service IPC smoke tests
+      - System contract suite and coverage comparison tooling
+      - Course CI workflow (our_tests) for reproducible green signal on the team fork
+    impact:
+      - Raised scoped modeld coverage substantially (parser and fill_model_msg targets)
+      - Completed desktop pandad verification gate without requiring Panda hardware
+      - Documented testing plans, trackers, and run commands under docs/testing
+    link: https://github.com/Colby-Frison/openpilot
+    docs: https://github.com/Colby-Frison/openpilot/tree/master/docs/testing
+  - name: Expression Optimizer (Compiler Construction)
+    type: Academic
+    organization: University of Oklahoma (Compiler Construction)
+    status: draft
+    description: |
+      Pre-compiler optimization pass over given expressions in C. Refactored expressions and
+      applied optimization operations before compilation, achieving approximately 50% speedup
+      while remaining single-threaded. Repository currently private; public fork forthcoming.
+    role: Student developer
+    technologies: [C]
+    features:
+      - Expression refactoring prior to compilation
+      - Optimization operations applied in a single-threaded pipeline
+    impact:
+      - Approximately 50% runtime speedup on targeted workloads (single-threaded)
+    notes:
+      - Further details and public repository link to be added when the fork is published
+  - name: Secure Instant Point-to-Point Messaging
+    type: Academic/Group
+    organization: University of Oklahoma (CS5173 Computer Security)
+    start: Spring 2026
+    end: May 2026
+    description: |
+      Two-party secure chat application with authenticated key agreement, AES-GCM messaging,
+      per-message nonces, and HKDF key rotation. Desktop GUI shows ciphertext and plaintext
+      side by side. Built with teammates Johnpaul Nguyen and Jacob Woolbright.
+    role: Team member
+    technologies: [Python, AES-GCM, ECDH, Ed25519, HKDF, Tkinter, CustomTkinter, sockets, cryptography]
+    features:
+      - Authenticated key agreement via ephemeral ECDH (P-384) and Ed25519 identity signatures
+      - 256-bit AES-GCM session keys derived with HKDF-SHA-256 (bonus: no pre-shared passphrase)
+      - Per-message 12-byte random nonces for distinct ciphertext on repeated plaintexts
+      - HKDF ratchet key rotation every five messages for partial forward secrecy
+      - Three-layer architecture: crypto/socket, controller, and Tkinter GUI
+      - GUI message bubbles displaying both ciphertext and plaintext
+      - Automated loopback integration tests for delivery and key rotation
+    impact:
+      - Satisfied all assignment requirements plus authenticated ECDH key agreement bonus
+      - Provides confidentiality, integrity, authenticity, and ciphertext non-determinism
+      - Session-level forward secrecy at handshake; bounded exposure via key ratchet
+    limitations:
+      - Trust-on-first-use (identity keys not persisted or fingerprinted)
+      - Metadata (IPs, timing, approximate lengths) not obfuscated
+    notes:
+      - Report: Computer_Security_report-2.pdf
+      - Public repository link to be added if/when published
   - name: Classroom Q&A
     type: Personal/Academic
     organization: University of Oklahoma

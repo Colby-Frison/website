@@ -1,118 +1,114 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import LeafAccent from '../../motif/LeafAccent';
 import './NavbarMobile.css';
 
-const NavbarMobile = ({ deviceInfo }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const navItems = [
+  { text: 'Home', path: '/' },
+  { text: 'About', path: '/about' },
+  { text: 'Projects', path: '/projects' },
+  { text: 'Contact', path: '/contact' },
+];
+
+const NavbarMobile = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  const closeMenu = () => setMenuOpen(false);
+  const toggleMenu = () => setMenuOpen((open) => !open);
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 30;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+      setScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  // Close menu when route changes
   useEffect(() => {
-    closeMobileMenu();
-  }, [location]);
+    closeMenu();
+  }, [location.pathname]);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [mobileMenuOpen]);
-
-  const navItems = [
-    { text: 'Home', path: '/' },
-    { text: 'About', path: '/about' },
-    { text: 'Projects', path: '/projects' },
-    { text: 'Contact', path: '/contact' },
-  ];
+  }, [menuOpen]);
 
   return (
     <>
-      <nav className={`mobile-navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="mobile-navbar-content">
-          <Link to="/" className="mobile-nav-brand" onClick={closeMobileMenu}>
-            Colby Frison
-          </Link>
-          
-          <button 
-            className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={toggleMobileMenu}
-            aria-label="Toggle navigation menu"
+      <header className={`mobile-nav ${scrolled || menuOpen ? 'is-scrolled' : ''}`}>
+        <div className="mobile-nav-bar">
+          <button
+            type="button"
+            className={`mobile-nav-toggle ${menuOpen ? 'is-open' : ''}`}
+            onClick={toggleMenu}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav-panel"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
           >
-            <span className="mobile-menu-line"></span>
-            <span className="mobile-menu-line"></span>
-            <span className="mobile-menu-line"></span>
+            <span className="mobile-nav-toggle-line" />
+            <span className="mobile-nav-toggle-line" />
+            <span className="mobile-nav-toggle-line" />
           </button>
         </div>
-      </nav>
+      </header>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}>
-        <div className="mobile-menu-content">
-          <nav className="mobile-menu-nav">
-            {navItems.map((item, index) => (
+      <div
+        id="mobile-nav-panel"
+        className={`mobile-nav-panel ${menuOpen ? 'is-open' : ''}`}
+        aria-hidden={!menuOpen}
+      >
+        <nav className="mobile-nav-menu" aria-label="Primary">
+          {navItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
               <Link
-                key={item.text}
+                key={item.path}
                 to={item.path}
-                className={`mobile-menu-link ${location.pathname === item.path ? 'active' : ''}`}
-                onClick={closeMobileMenu}
-                style={{ animationDelay: `${0.1 + index * 0.05}s` }}
+                className={`mobile-nav-item ${isActive ? 'is-active' : ''}`}
+                onClick={closeMenu}
+                style={{ '--item-delay': `${0.06 + index * 0.05}s` }}
+                aria-current={isActive ? 'page' : undefined}
               >
-                {item.text}
+                <LeafAccent size="sm" className="mobile-nav-item-leaf" />
+                <span>{item.text}</span>
               </Link>
-            ))}
-          </nav>
-          
-          <div className="mobile-menu-footer">
-            <div className="mobile-menu-social">
-              <a
-                href="https://github.com/colby-frison"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mobile-menu-social-link"
-                aria-label="GitHub Profile"
-              >
-                <img src="/github.png" alt="GitHub" className="mobile-menu-social-icon" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/colbyfrison"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mobile-menu-social-link"
-                aria-label="LinkedIn Profile"
-              >
-                <img src="/linkedIn.png" alt="LinkedIn" className="mobile-menu-social-icon" />
-              </a>
-            </div>
-          </div>
+            );
+          })}
+        </nav>
+
+        <div className="mobile-nav-footer">
+          <a
+            href="https://github.com/Colby-Frison"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-social"
+            aria-label="GitHub Profile"
+          >
+            <img src="/github.png" alt="" className="mobile-nav-social-icon" />
+            <span>GitHub</span>
+            <span className="mobile-nav-social-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/colby-frison-892680327"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-social"
+            aria-label="LinkedIn Profile"
+          >
+            <img src="/linkedIn.png" alt="" className="mobile-nav-social-icon" />
+            <span>LinkedIn</span>
+            <span className="mobile-nav-social-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
         </div>
       </div>
     </>
