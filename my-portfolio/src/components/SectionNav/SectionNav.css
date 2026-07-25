@@ -1,13 +1,15 @@
 .section-nav {
   display: none;
-  position: sticky;
+  position: fixed;
   top: 110px;
-  align-self: flex-start;
-  flex-shrink: 0;
-  width: 140px;
+  left: 28px;
+  z-index: 900;
+  width: 130px;
 }
 
-@media (min-width: 901px) {
+/* Only shows once there's enough margin beside the centered page content
+   (About/Projects cap out around 760-820px) to avoid ever overlapping it. */
+@media (min-width: 1200px) {
   .section-nav {
     display: block;
   }

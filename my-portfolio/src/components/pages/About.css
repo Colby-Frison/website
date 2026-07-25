@@ -3,15 +3,7 @@
 }
 
 .about-container {
-  max-width: 940px;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-lg);
-}
-
-.about-content {
-  flex: 1;
-  min-width: 0;
+  max-width: 760px;
 }
 
 .about-hero {

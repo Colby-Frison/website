@@ -20,12 +20,14 @@ create table if not exists public.media_items (
   notes text,
   sort_order integer not null default 0,
 
-  -- Cached external metadata (Jikan for anime/manga, OMDB for shows/movies).
+  -- Cached external metadata (OMDB, for shows/movies/anime).
   -- Populated once from the admin UI so public visitors never call third-party APIs.
   poster_url text,
   episode_count integer,
   season_count integer,
   release_year integer,
+  -- 'jikan' kept for backward compatibility with rows saved before anime
+  -- lookup moved to OMDB; new rows only ever use 'omdb'.
   external_source text check (external_source is null or external_source in ('jikan', 'omdb')),
   external_id text,
   external_url text,

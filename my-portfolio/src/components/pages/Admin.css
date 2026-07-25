@@ -313,9 +313,10 @@
   white-space: nowrap;
 }
 
-.admin-lookup-result-year {
+.admin-lookup-result-meta {
   font-size: 0.76rem;
   color: var(--ink-muted);
+  text-transform: capitalize;
 }
 
 /* Filter bar */

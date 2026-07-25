@@ -1,13 +1,13 @@
 /**
- * Jikan (MyAnimeList) and OMDB lookups used only from the Admin UI.
+ * OMDB lookups used only from the Admin UI (shows, movies, and anime —
+ * anime is searched with no `type` filter since it can be either).
  *
- * Design goal: the public About page never calls these — an admin searches
+ * Design goal: the public About page never calls this — an admin searches
  * once, picks a result, and the chosen poster/episode/season data is saved
  * into Supabase. Every export here returns `{ data, error }` and never
  * throws, so a flaky third-party API can't break the admin form.
  */
 
-const JIKAN_BASE = 'https://api.jikan.moe/v4';
 const OMDB_BASE = 'https://www.omdbapi.com/';
 
 const OMDB_API_KEY =
@@ -39,10 +39,9 @@ function delay(ms) {
 const RETRYABLE_STATUSES = new Set([502, 503, 504]);
 
 /**
- * Jikan proxies MyAnimeList and OMDB is a small volunteer-run service —
- * both occasionally return transient 502/503/504s under load. One retry
- * with a short delay clears most of those without the admin needing to
- * manually search again.
+ * OMDB is a small volunteer-run service that occasionally returns transient
+ * 502/503/504s under load. One retry with a short delay clears most of
+ * those without the admin needing to manually search again.
  */
 async function safeFetchJson(url, attemptsLeft = 1) {
   let response;
@@ -98,43 +97,8 @@ async function safeFetchJson(url, attemptsLeft = 1) {
 }
 
 /**
- * @param {'anime' | 'manga'} kind
- */
-export async function searchJikan(kind, query) {
-  const trimmed = query.trim();
-  if (!trimmed) return { data: [], error: null };
-
-  const cacheKey = `jikan:${kind}:${trimmed.toLowerCase()}`;
-  const cached = getCached(cacheKey);
-  if (cached) return { data: cached, error: null };
-
-  const url = `${JIKAN_BASE}/${kind}?q=${encodeURIComponent(trimmed)}&limit=8&sfw=true`;
-  const { data, error } = await safeFetchJson(url);
-  if (error) return { data: [], error };
-
-  const results = (data?.data || []).map((item) => ({
-    externalId: String(item.mal_id),
-    title: item.title,
-    year: item.year || item.published?.prop?.from?.year || item.aired?.prop?.from?.year || null,
-    posterUrl: item.images?.jpg?.image_url || null,
-    episodeCount: kind === 'anime' ? item.episodes ?? null : item.chapters ?? null,
-    externalUrl: item.url || null,
-  }));
-
-  setCached(cacheKey, results);
-  return { data: results, error: null };
-}
-
-export function searchJikanAnime(query) {
-  return searchJikan('anime', query);
-}
-
-export function searchJikanManga(query) {
-  return searchJikan('manga', query);
-}
-
-/**
- * @param {'movie' | 'series'} type
+ * @param {'movie' | 'series' | null} type Pass null/undefined to search
+ *   both movies and series (used for anime, which can be either).
  */
 export async function searchOmdb(query, type) {
   const trimmed = query.trim();
@@ -143,13 +107,14 @@ export async function searchOmdb(query, type) {
     return { data: [], error: 'OMDB_API_KEY is not configured.' };
   }
 
-  const cacheKey = `omdb-search:${type}:${trimmed.toLowerCase()}`;
+  const cacheKey = `omdb-search:${type || 'any'}:${trimmed.toLowerCase()}`;
   const cached = getCached(cacheKey);
   if (cached) return { data: cached, error: null };
 
+  const typeParam = type ? `&type=${type}` : '';
   const url = `${OMDB_BASE}?apikey=${encodeURIComponent(OMDB_API_KEY)}&s=${encodeURIComponent(
     trimmed
-  )}&type=${type}`;
+  )}${typeParam}`;
   const { data, error } = await safeFetchJson(url);
   if (error) return { data: [], error };
 
@@ -167,6 +132,7 @@ export async function searchOmdb(query, type) {
     title: item.Title,
     year: item.Year ? parseInt(item.Year, 10) || null : null,
     posterUrl: item.Poster && item.Poster !== 'N/A' ? item.Poster : null,
+    kind: item.Type || null,
   }));
 
   setCached(cacheKey, results);

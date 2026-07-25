@@ -83,9 +83,8 @@ const About = () => {
   return (
     <div className="interior-page about-page">
       <PageAtmosphere />
+      <SectionNav sections={ABOUT_SECTIONS} ariaLabel="About sections" />
       <div className="interior-page-inner about-container">
-        <SectionNav sections={ABOUT_SECTIONS} ariaLabel="About sections" />
-        <div className="about-content">
         <header className="about-hero" id="about-intro">
           <h1 className="interior-title about-page-title">About</h1>
           <div className="interior-title-rule">
@@ -201,7 +200,6 @@ const About = () => {
             Get in touch
           </Link>
         </p>
-        </div>
       </div>
     </div>
   );

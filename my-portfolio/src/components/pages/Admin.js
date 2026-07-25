@@ -11,7 +11,6 @@ import {
 } from '../../lib/adminNavPreference';
 import {
   EMPTY_MEDIA_FORM,
-  JIKAN_MEDIA_TYPES,
   MEDIA_STATUSES,
   MEDIA_STATUS_LABELS,
   MEDIA_TYPES,
@@ -25,11 +24,17 @@ import {
   fetchOmdbEpisodeTotal,
   getOmdbDetails,
   isOmdbConfigured,
-  searchJikanAnime,
-  searchJikanManga,
   searchOmdb,
 } from '../../lib/externalMedia';
 import './Admin.css';
+
+// Anime is searched with no OMDB `type` filter since a title can be
+// either a movie or a series.
+const OMDB_TYPE_BY_MEDIA_TYPE = {
+  show: 'series',
+  movie: 'movie',
+  anime: null,
+};
 
 const FILTER_ALL = 'all';
 
@@ -65,10 +70,9 @@ const Admin = () => {
   const [filterType, setFilterType] = useState(FILTER_ALL);
   const [filterStatus, setFilterStatus] = useState(FILTER_ALL);
 
-  const isJikanType = JIKAN_MEDIA_TYPES.has(form.media_type);
   const isOmdbType = OMDB_MEDIA_TYPES.has(form.media_type);
   const canFetchEpisodeTotal =
-    form.media_type === 'show' &&
+    (form.media_type === 'show' || form.media_type === 'anime') &&
     form.external_source === 'omdb' &&
     form.external_id &&
     Number(form.season_count) > 0;
@@ -91,14 +95,14 @@ const Admin = () => {
 
   // Live "type as you search" lookup on the Title field itself, like a
   // browser address bar or search box — debounced and cached so typing
-  // doesn't hammer Jikan/OMDB on every keystroke.
+  // doesn't hammer OMDB on every keystroke.
   useEffect(() => {
     if (skipNextLookupRef.current) {
       skipNextLookupRef.current = false;
       return undefined;
     }
 
-    if (!isJikanType && !isOmdbType) {
+    if (!isOmdbType) {
       setLookupResults([]);
       setLookupOpen(false);
       setLookupError(null);
@@ -118,11 +122,7 @@ const Admin = () => {
       setLookupBusy(true);
       setLookupError(null);
 
-      const result = isJikanType
-        ? form.media_type === 'anime'
-          ? await searchJikanAnime(query)
-          : await searchJikanManga(query)
-        : await searchOmdb(query, form.media_type === 'show' ? 'series' : 'movie');
+      const result = await searchOmdb(query, OMDB_TYPE_BY_MEDIA_TYPE[form.media_type]);
 
       if (cancelled) return;
 
@@ -145,7 +145,7 @@ const Admin = () => {
       clearTimeout(timeout);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.title, form.media_type, isJikanType, isOmdbType]);
+  }, [form.title, form.media_type, isOmdbType]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -255,30 +255,10 @@ const Admin = () => {
       setActiveIndex((index) => Math.max(index - 1, 0));
     } else if (event.key === 'Enter' && activeIndex >= 0) {
       event.preventDefault();
-      const result = lookupResults[activeIndex];
-      if (isJikanType) selectJikanResult(result);
-      else selectOmdbResult(result);
+      selectOmdbResult(lookupResults[activeIndex]);
     } else if (event.key === 'Escape') {
       setLookupOpen(false);
     }
-  };
-
-  const selectJikanResult = (result) => {
-    skipNextLookupRef.current = true;
-    setForm((prev) => ({
-      ...prev,
-      title: result.title || prev.title,
-      poster_url: result.posterUrl || '',
-      episode_count: result.episodeCount ?? '',
-      season_count: '',
-      release_year: result.year ?? '',
-      external_source: 'jikan',
-      external_id: result.externalId,
-      external_url: result.externalUrl || '',
-    }));
-    setLookupResults([]);
-    setLookupOpen(false);
-    setEpisodeFetchMessage(null);
   };
 
   const selectOmdbResult = async (result) => {
@@ -559,9 +539,7 @@ const Admin = () => {
                 onKeyDown={handleTitleKeyDown}
                 autoComplete="off"
                 placeholder={
-                  isJikanType
-                    ? 'Start typing to search MyAnimeList…'
-                    : isOmdbType
+                  isOmdbType
                     ? isOmdbConfigured
                       ? 'Start typing to search OMDB…'
                       : 'Title (set OMDB_API_KEY to enable search)'
@@ -570,7 +548,7 @@ const Admin = () => {
                 required
               />
 
-              {(isJikanType || isOmdbType) && lookupOpen && (
+              {isOmdbType && lookupOpen && (
                 <div className="admin-lookup-dropdown">
                   {lookupBusy && <p className="admin-lookup-status">Searching…</p>}
                   {!lookupBusy && lookupError && (
@@ -591,9 +569,7 @@ const Admin = () => {
                               index === activeIndex ? ' is-active' : ''
                             }`}
                             onMouseEnter={() => setActiveIndex(index)}
-                            onClick={() =>
-                              isJikanType ? selectJikanResult(result) : selectOmdbResult(result)
-                            }
+                            onClick={() => selectOmdbResult(result)}
                           >
                             {result.posterUrl ? (
                               <img src={result.posterUrl} alt="" loading="lazy" />
@@ -604,9 +580,11 @@ const Admin = () => {
                             )}
                             <span className="admin-lookup-result-info">
                               <span className="admin-lookup-result-title">{result.title}</span>
-                              {result.year && (
-                                <span className="admin-lookup-result-year">{result.year}</span>
-                              )}
+                              <span className="admin-lookup-result-meta">
+                                {result.year || ''}
+                                {result.year && result.kind ? ' · ' : ''}
+                                {result.kind || ''}
+                              </span>
                             </span>
                           </button>
                         </li>
@@ -616,7 +594,7 @@ const Admin = () => {
                 </div>
               )}
 
-              {!isJikanType && !isOmdbType && (
+              {!isOmdbType && (
                 <p className="admin-field-hint">
                   No automatic lookup for this type — fill in manually below.
                 </p>

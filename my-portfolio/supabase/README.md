@@ -10,10 +10,10 @@
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
 5. Get a free OMDB key at https://www.omdbapi.com/apikey.aspx and add it as `OMDB_API_KEY`
-   (used for movie/TV poster + season lookups in the admin page; anime/manga lookups via
-   Jikan need no key). **OMDB emails a confirmation link — the key returns 401 until you
-   click it.** If movie/show search still fails with a 401 after activating, re-copy the
-   key (watch for stray spaces) and redeploy.
+   (used for poster + episode/season lookups for shows, movies, and anime in the admin
+   page; manga/book/music stay manual-entry only). **OMDB emails a confirmation link — the
+   key returns 401 until you click it.** If search still fails with a 401 after activating,
+   re-copy the key (watch for stray spaces) and redeploy.
 6. For local dev, copy `.env.example` to `.env.local` with the same names
 7. Restart `npm start`, then open `/admin` to sign in and manage entries
 8. Public visitors see the tracker on `/about` (bio/experience/projects stay hardcoded)
@@ -36,19 +36,17 @@ Optional: under Authentication → Providers, keep Email enabled and disable pub
 
 ## Poster / episode metadata
 
-The admin page can search Jikan (anime/manga, no key needed) or OMDB (movies/shows,
-needs `OMDB_API_KEY`) and save the chosen poster, episode/season counts, and a link
-back to the source directly onto the entry. The public tracker only ever reads this
-cached data from Supabase — it never calls Jikan or OMDB itself, so visitor traffic
-can't hit third-party rate limits.
+The admin page can search OMDB (shows, movies, and anime — anime is searched without
+restricting to movie or series, since a title can be either) and save the chosen
+poster, episode/season counts, and a link back to the source directly onto the entry.
+Manga, books, and music are manual-entry only (no matching API). The public tracker
+only ever reads this cached data from Supabase — it never calls OMDB itself, so
+visitor traffic can't hit third-party rate limits.
 
-Both are free, unofficial/community-run APIs, so occasional errors are expected:
+OMDB is a small, free, volunteer-run service, so occasional errors are expected:
 
-- **Jikan 502/503/504** — Jikan proxies MyAnimeList and can time out under load.
-  The admin search retries once automatically; if it still fails, wait a few
-  seconds and search again. Jikan's public API is expected to be retired around
-  October 2026, at which point anime/manga lookup would need a replacement source.
-- **OMDB 401** — almost always an unactivated/incorrect key. See the setup step
-  above.
-- **OMDB 429 / "Request limit reached!"** — the free tier caps at 1,000
-  requests/day; wait until the next day or upgrade the key.
+- **401** — almost always an unactivated/incorrect key. See the setup step above.
+- **502/503/504** — transient upstream issue; the admin search retries once
+  automatically, so most of these resolve without you doing anything.
+- **429 / "Request limit reached!"** — the free tier caps at 1,000 requests/day;
+  wait until the next day or upgrade the key.
