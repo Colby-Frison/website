@@ -1,0 +1,254 @@
+.admin-page {
+  font-family: var(--font-body);
+}
+
+.admin-container {
+  max-width: 760px;
+}
+
+.admin-container--narrow {
+  max-width: 420px;
+}
+
+.admin-hero {
+  margin-bottom: var(--space-lg);
+}
+
+.admin-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.admin-title-inline {
+  text-align: left;
+  margin-bottom: 0;
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.admin-rule-left {
+  justify-content: flex-start;
+  margin-bottom: var(--space-sm);
+}
+
+.admin-subtitle {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.admin-section {
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.admin-section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: var(--space-md);
+}
+
+.admin-section-head .interior-section-title {
+  margin: 0;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.admin-form--grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm) var(--space-md);
+}
+
+.admin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-label--full {
+  grid-column: 1 / -1;
+}
+
+.admin-input,
+.admin-textarea {
+  appearance: none;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--ink-faint);
+  background: rgba(255, 255, 255, 0.35);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  word-spacing: var(--word-spacing-body);
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 0.65rem 0.75rem;
+  outline: none;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.admin-input:focus,
+.admin-textarea:focus {
+  border-color: var(--crimson-mid);
+}
+
+.admin-textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.admin-button {
+  appearance: none;
+  border: 1px solid var(--crimson-mid);
+  background: var(--crimson);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  word-spacing: var(--word-spacing-body);
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+
+.admin-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.admin-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-button--ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: var(--ink-faint);
+}
+
+.admin-button--ghost:hover:not(:disabled) {
+  border-color: var(--crimson-mid);
+  color: var(--crimson);
+  opacity: 1;
+}
+
+.admin-button--danger {
+  background: transparent;
+  color: var(--crimson);
+  border-color: var(--crimson-mid);
+}
+
+.admin-notice {
+  margin: 0;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.admin-notice code {
+  font-size: 0.9em;
+  color: var(--ink);
+}
+
+.admin-message {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.admin-message--error {
+  color: var(--crimson);
+}
+
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.admin-list-item:last-child {
+  padding-bottom: 0;
+}
+
+.admin-list-title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-accent);
+  font-size: 1.15rem;
+  color: var(--crimson);
+}
+
+.admin-list-meta {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.admin-list-notes {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.admin-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.admin-back {
+  margin: var(--space-lg) 0 0;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--ink-faint);
+  text-align: center;
+}
+
+.admin-back a {
+  color: var(--crimson);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--ease-out);
+}
+
+.admin-back a:hover {
+  border-bottom-color: var(--crimson-mid);
+}
+
+@media (max-width: 700px) {
+  .admin-form--grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-title-inline {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+  }
+}

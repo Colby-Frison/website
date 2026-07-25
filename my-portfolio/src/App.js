@@ -8,6 +8,7 @@ import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Projects from './components/pages/Projects';
 import Contact from './components/pages/Contact';
+import Admin from './components/pages/Admin';
 import Footer from './components/Footer/Footer';
 
 // Mobile Components
@@ -23,6 +24,7 @@ import './App.css';
 const AppContent = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isAdminPage = location.pathname === '/admin';
 
   useEffect(() => {
     document.documentElement.classList.toggle('home-hide-scrollbar', isHomePage);
@@ -35,53 +37,54 @@ const AppContent = () => {
 
   return (
     <div className="App">
-      {!isHomePage && (
-        <RenderController 
+      {!isHomePage && !isAdminPage && (
+        <RenderController
           desktopComponent={Navbar}
           mobileComponent={NavbarMobile}
         />
       )}
       <main>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
-              <RenderController 
+              <RenderController
                 desktopComponent={Home}
                 mobileComponent={HomeMobile}
               />
-            } 
+            }
           />
-          <Route 
-            path="/about" 
+          <Route
+            path="/about"
             element={
-              <RenderController 
+              <RenderController
                 desktopComponent={About}
                 mobileComponent={AboutMobile}
               />
-            } 
+            }
           />
-          <Route 
-            path="/projects" 
+          <Route
+            path="/projects"
             element={
-              <RenderController 
+              <RenderController
                 desktopComponent={Projects}
                 mobileComponent={Projects} // Fallback to desktop until mobile version is created
               />
-            } 
+            }
           />
-          <Route 
-            path="/contact" 
+          <Route
+            path="/contact"
             element={
-              <RenderController 
+              <RenderController
                 desktopComponent={Contact}
                 mobileComponent={ContactMobile}
               />
-            } 
+            }
           />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
-      <Footer />
+      {!isAdminPage && <Footer />}
       <DeviceDebugger />
     </div>
   );

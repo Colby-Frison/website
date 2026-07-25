@@ -1,0 +1,120 @@
+.media-tracker {
+  margin-top: 0.25rem;
+}
+
+.media-tracker-empty {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.media-tracker-empty--error {
+  color: var(--crimson);
+}
+
+.media-tracker-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: var(--space-md);
+}
+
+.media-tracker-filter {
+  appearance: none;
+  border: 1px solid var(--ink-faint);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  word-spacing: var(--word-spacing-body);
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.media-tracker-filter:hover {
+  border-color: var(--crimson-mid);
+  color: var(--ink);
+}
+
+.media-tracker-filter.is-active {
+  border-color: var(--crimson-mid);
+  background: var(--crimson-soft);
+  color: var(--crimson);
+}
+
+.media-tracker-group + .media-tracker-group {
+  margin-top: var(--space-md);
+}
+
+.media-tracker-group-title {
+  font-family: var(--font-accent);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 0.65rem;
+  letter-spacing: 0.02em;
+}
+
+.media-tracker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.media-tracker-item {
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--ink-faint);
+}
+
+.media-tracker-item:last-child {
+  padding-bottom: 0;
+}
+
+.media-tracker-item-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+}
+
+.media-tracker-item-title {
+  font-family: var(--font-accent);
+  font-size: 1.12rem;
+  color: var(--crimson);
+  line-height: 1.35;
+}
+
+.media-tracker-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+}
+
+.media-tracker-type {
+  font-style: italic;
+}
+
+.media-tracker-rating {
+  color: var(--ink-soft);
+}
+
+.media-tracker-notes {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.media-tracker--compact .media-tracker-item-title {
+  font-size: 1.05rem;
+}
+
+.media-tracker--compact .media-tracker-notes {
+  font-size: 0.92rem;
+}
