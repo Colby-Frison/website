@@ -3,15 +3,7 @@
 }
 
 .projects-inner {
-  max-width: 1000px;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-lg);
-}
-
-.projects-content {
-  flex: 1;
-  min-width: 0;
+  max-width: 820px;
 }
 
 .projects-list {

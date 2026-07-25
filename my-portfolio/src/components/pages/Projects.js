@@ -363,9 +363,8 @@ const Projects = () => {
   return (
     <div className="interior-page projects-page">
       <PageAtmosphere />
+      <SectionNav sections={sectionNavItems} ariaLabel="Project list" />
       <div className="interior-page-inner projects-inner">
-        <SectionNav sections={sectionNavItems} ariaLabel="Project list" />
-        <div className="projects-content">
         <h1 className="interior-title">My Projects</h1>
         <div className="interior-title-rule">
           <LeafAccent size="sm" settle />
@@ -474,7 +473,6 @@ const Projects = () => {
               </article>
             );
           })}
-        </div>
         </div>
       </div>
     </div>

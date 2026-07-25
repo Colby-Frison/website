@@ -23,9 +23,10 @@ export const MEDIA_STATUS_LABELS = Object.fromEntries(
   MEDIA_STATUSES.map(({ value, label }) => [value, label])
 );
 
-// Types looked up against Jikan (MyAnimeList) vs. OMDB in the admin panel.
-export const JIKAN_MEDIA_TYPES = new Set(['anime', 'manga']);
-export const OMDB_MEDIA_TYPES = new Set(['show', 'movie']);
+// Types the admin panel can search against OMDB. Anime is included since
+// OMDB covers anime movies/series too — it's searched without a `type`
+// filter (see searchOmdb) since an anime title can be either.
+export const OMDB_MEDIA_TYPES = new Set(['show', 'movie', 'anime']);
 
 export const EMPTY_MEDIA_FORM = {
   title: '',
