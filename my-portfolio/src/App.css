@@ -90,6 +90,20 @@ main {
   background: #d11e21;
 }
 
+/* Home: keep scrolling, hide the visual scrollbar */
+html.home-hide-scrollbar,
+body.home-hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.home-hide-scrollbar::-webkit-scrollbar,
+body.home-hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* Selection styles */
 ::selection {
   background-color: rgba(237, 33, 36, 0.3);

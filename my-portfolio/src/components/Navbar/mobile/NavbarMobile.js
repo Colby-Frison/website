@@ -12,21 +12,10 @@ const navItems = [
 
 const NavbarMobile = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((open) => !open);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     closeMenu();
@@ -41,22 +30,18 @@ const NavbarMobile = () => {
 
   return (
     <>
-      <header className={`mobile-nav ${scrolled || menuOpen ? 'is-scrolled' : ''}`}>
-        <div className="mobile-nav-bar">
-          <button
-            type="button"
-            className={`mobile-nav-toggle ${menuOpen ? 'is-open' : ''}`}
-            onClick={toggleMenu}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-nav-panel"
-            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          >
-            <span className="mobile-nav-toggle-line" />
-            <span className="mobile-nav-toggle-line" />
-            <span className="mobile-nav-toggle-line" />
-          </button>
-        </div>
-      </header>
+      <button
+        type="button"
+        className={`mobile-nav-toggle ${menuOpen ? 'is-open' : ''}`}
+        onClick={toggleMenu}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-nav-panel"
+        aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+      >
+        <span className="mobile-nav-toggle-line" />
+        <span className="mobile-nav-toggle-line" />
+        <span className="mobile-nav-toggle-line" />
+      </button>
 
       <div
         id="mobile-nav-panel"

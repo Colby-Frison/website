@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import RenderController from './components/RenderController/RenderController';
 
@@ -23,6 +23,15 @@ import './App.css';
 const AppContent = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('home-hide-scrollbar', isHomePage);
+    document.body.classList.toggle('home-hide-scrollbar', isHomePage);
+    return () => {
+      document.documentElement.classList.remove('home-hide-scrollbar');
+      document.body.classList.remove('home-hide-scrollbar');
+    };
+  }, [isHomePage]);
 
   return (
     <div className="App">
