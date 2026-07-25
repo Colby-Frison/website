@@ -70,16 +70,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
   width: 100%;
+  outline: none;
 }
 
 .media-card:focus-visible {
@@ -97,7 +89,9 @@
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 
-.media-card:hover .media-card-poster {
+.media-card:hover .media-card-poster,
+.media-card:focus-within .media-card-poster,
+.media-card:focus .media-card-poster {
   transform: translateY(-3px);
   box-shadow: 0 12px 26px rgba(33, 29, 30, 0.2);
 }
@@ -107,6 +101,65 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Desktop-only hover reveal: darken the poster and surface notes,
+   rating/episode count, and when it was added — no separate modal. */
+.media-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  background: rgba(12, 9, 9, 0.84);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease-out);
+}
+
+.media-card:hover .media-card-overlay,
+.media-card:focus-within .media-card-overlay,
+.media-card:focus .media-card-overlay {
+  opacity: 1;
+}
+
+.media-card-overlay-notes {
+  margin: 0;
+  color: var(--paper);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.media-card-overlay-stats {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.85rem;
+  color: var(--paper);
+  font-size: 0.82rem;
+}
+
+.media-card-overlay-stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.media-card-overlay-stats svg {
+  font-size: 0.9rem;
+}
+
+.media-card-overlay-added {
+  margin: 0;
+  color: rgba(245, 242, 237, 0.72);
+  font-size: 0.68rem;
+  font-style: italic;
 }
 
 .media-card-poster-fallback {

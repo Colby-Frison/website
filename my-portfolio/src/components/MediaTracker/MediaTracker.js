@@ -3,12 +3,12 @@ import PlaylistPlayRoundedIcon from '@mui/icons-material/PlaylistPlayRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useMediaItems } from '../../hooks/useMediaItems';
 import LeafAccent from '../motif/LeafAccent';
-import MediaDetailModal from './MediaDetailModal';
 import {
   MEDIA_STATUS_LABELS,
   MEDIA_TYPE_LABELS,
   MEDIA_TYPES,
   formatRating,
+  formatRelativeTime,
 } from '../../lib/media';
 import './MediaTracker.css';
 
@@ -22,25 +22,25 @@ const STATUS_DOT_CLASS = {
   dropped: 'media-status-dot--dropped',
 };
 
-const MediaPoster = ({ item }) => {
+const MediaPosterImage = ({ item }) => {
   const [failed, setFailed] = useState(false);
   const showImage = item.poster_url && !failed;
 
+  if (showImage) {
+    return (
+      <img
+        src={item.poster_url}
+        alt=""
+        loading="lazy"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+
   return (
-    <div className="media-card-poster">
-      {showImage ? (
-        <img
-          src={item.poster_url}
-          alt=""
-          loading="lazy"
-          onError={() => setFailed(true)}
-        />
-      ) : (
-        <div className="media-card-poster-fallback" aria-hidden="true">
-          <LeafAccent size="md" settle />
-          <span>{item.title.slice(0, 1).toUpperCase()}</span>
-        </div>
-      )}
+    <div className="media-card-poster-fallback" aria-hidden="true">
+      <LeafAccent size="md" settle />
+      <span>{item.title.slice(0, 1).toUpperCase()}</span>
     </div>
   );
 };
@@ -55,17 +55,45 @@ const MediaCardSkeleton = () => (
   </div>
 );
 
-const MediaCard = ({ item, onSelect }) => {
+const MediaCard = ({ item, compact }) => {
   const rating = formatRating(item.rating);
+  const added = formatRelativeTime(item.created_at);
   const episodeLabel = item.episode_count
     ? `${item.episode_count}`
     : item.season_count
     ? `${item.season_count}s`
     : null;
 
+  // The hover-reveal overlay is a desktop-only enhancement — skip it
+  // entirely on the mobile tracker rather than relying on hover CSS
+  // alone (touch devices don't have a reliable hover state anyway).
+  const showOverlay = !compact && (item.notes || rating || episodeLabel || added);
+
   return (
-    <button type="button" className="media-card" onClick={() => onSelect(item)}>
-      <MediaPoster item={item} />
+    <article className="media-card" tabIndex={showOverlay ? 0 : undefined}>
+      <div className="media-card-poster">
+        <MediaPosterImage item={item} />
+        {showOverlay && (
+          <div className="media-card-overlay">
+            {item.notes && <p className="media-card-overlay-notes">{item.notes}</p>}
+            {(rating || episodeLabel) && (
+              <p className="media-card-overlay-stats">
+                {rating && (
+                  <span>
+                    <StarRoundedIcon fontSize="inherit" /> {rating}
+                  </span>
+                )}
+                {episodeLabel && (
+                  <span>
+                    <PlaylistPlayRoundedIcon fontSize="inherit" /> {episodeLabel}
+                  </span>
+                )}
+              </p>
+            )}
+            {added && <p className="media-card-overlay-added">Added {added}</p>}
+          </div>
+        )}
+      </div>
       <div className="media-card-body">
         <div className="media-card-title-row">
           <span
@@ -95,14 +123,13 @@ const MediaCard = ({ item, onSelect }) => {
           )}
         </div>
       </div>
-    </button>
+    </article>
   );
 };
 
 const MediaTracker = ({ compact = false }) => {
   const { items, loading, error, configured } = useMediaItems();
   const [activeType, setActiveType] = useState('all');
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const availableTypes = useMemo(() => {
     const present = new Set(items.map((item) => item.media_type));
@@ -198,17 +225,13 @@ const MediaTracker = ({ compact = false }) => {
                 </h3>
                 <div className="media-tracker-grid">
                   {group.items.map((item) => (
-                    <MediaCard key={item.id} item={item} onSelect={setSelectedItem} />
+                    <MediaCard key={item.id} item={item} compact={compact} />
                   ))}
                 </div>
               </div>
             ))
           )}
         </>
-      )}
-
-      {selectedItem && (
-        <MediaDetailModal item={selectedItem} onClose={() => setSelectedItem(null)} />
       )}
     </div>
   );

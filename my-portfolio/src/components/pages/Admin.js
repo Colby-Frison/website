@@ -28,12 +28,9 @@ import {
 } from '../../lib/externalMedia';
 import './Admin.css';
 
-// Anime is searched with no OMDB `type` filter since a title can be
-// either a movie or a series.
 const OMDB_TYPE_BY_MEDIA_TYPE = {
   show: 'series',
   movie: 'movie',
-  anime: null,
 };
 
 const FILTER_ALL = 'all';
@@ -72,7 +69,7 @@ const Admin = () => {
 
   const isOmdbType = OMDB_MEDIA_TYPES.has(form.media_type);
   const canFetchEpisodeTotal =
-    (form.media_type === 'show' || form.media_type === 'anime') &&
+    form.media_type === 'show' &&
     form.external_source === 'omdb' &&
     form.external_id &&
     Number(form.season_count) > 0;
