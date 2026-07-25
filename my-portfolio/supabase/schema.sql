@@ -1,5 +1,8 @@
 -- Media tracker schema for the portfolio About section.
--- Run this in the Supabase SQL Editor after creating a project.
+-- Run this in the Supabase SQL Editor for a FRESH project.
+-- If you already ran an earlier version of this file, run
+-- supabase/migrations/0002_add_media_metadata.sql instead (keeps your data).
+--
 -- Then create one Auth user (email/password) in Authentication → Users
 -- for admin login at /admin.
 
@@ -9,13 +12,24 @@ create table if not exists public.media_items (
   id uuid primary key default gen_random_uuid(),
   title text not null,
   media_type text not null
-    check (media_type in ('show', 'movie', 'book', 'music')),
+    check (media_type in ('show', 'movie', 'book', 'music', 'anime', 'manga')),
   status text not null
     check (status in ('planning', 'in_progress', 'completed', 'dropped', 'on_hold')),
   rating numeric(3, 1)
     check (rating is null or (rating >= 0 and rating <= 10)),
   notes text,
   sort_order integer not null default 0,
+
+  -- Cached external metadata (Jikan for anime/manga, OMDB for shows/movies).
+  -- Populated once from the admin UI so public visitors never call third-party APIs.
+  poster_url text,
+  episode_count integer,
+  season_count integer,
+  release_year integer,
+  external_source text check (external_source is null or external_source in ('jikan', 'omdb')),
+  external_id text,
+  external_url text,
+
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

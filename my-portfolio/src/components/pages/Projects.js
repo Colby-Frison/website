@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
+import SectionNav from '../SectionNav/SectionNav';
 import './Projects.css';
 
 const Projects = () => {
@@ -354,10 +355,17 @@ const Projects = () => {
     },
   ];
 
+  const sectionNavItems = projects.map((project) => ({
+    id: `project-${project.id}`,
+    label: project.name,
+  }));
+
   return (
     <div className="interior-page projects-page">
       <PageAtmosphere />
       <div className="interior-page-inner projects-inner">
+        <SectionNav sections={sectionNavItems} ariaLabel="Project list" />
+        <div className="projects-content">
         <h1 className="interior-title">My Projects</h1>
         <div className="interior-title-rule">
           <LeafAccent size="sm" settle />
@@ -373,6 +381,7 @@ const Projects = () => {
             return (
               <article
                 key={project.id}
+                id={`project-${project.id}`}
                 className="project-story section-animate"
                 data-delay={0.08 + index * 0.08}
               >
@@ -465,6 +474,7 @@ const Projects = () => {
               </article>
             );
           })}
+        </div>
         </div>
       </div>
     </div>

@@ -1,12 +1,90 @@
 import React, { useMemo, useState } from 'react';
 import { useMediaItems } from '../../hooks/useMediaItems';
+import LeafAccent from '../motif/LeafAccent';
 import {
   MEDIA_STATUS_LABELS,
   MEDIA_TYPE_LABELS,
   MEDIA_TYPES,
   formatRating,
+  formatRelativeTime,
 } from '../../lib/media';
 import './MediaTracker.css';
+
+const SKELETON_COUNT = 6;
+
+const MediaPoster = ({ item }) => {
+  const [failed, setFailed] = useState(false);
+  const showImage = item.poster_url && !failed;
+
+  return (
+    <div className="media-card-poster">
+      {showImage ? (
+        <img
+          src={item.poster_url}
+          alt=""
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div className="media-card-poster-fallback" aria-hidden="true">
+          <LeafAccent size="md" settle />
+          <span>{item.title.slice(0, 1).toUpperCase()}</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MediaCardSkeleton = () => (
+  <div className="media-card media-card--skeleton" aria-hidden="true">
+    <div className="media-card-poster media-skeleton-block" />
+    <div className="media-card-body">
+      <div className="media-skeleton-line media-skeleton-line--title" />
+      <div className="media-skeleton-line media-skeleton-line--meta" />
+      <div className="media-skeleton-line media-skeleton-line--notes" />
+    </div>
+  </div>
+);
+
+const MediaCard = ({ item }) => {
+  const rating = formatRating(item.rating);
+  const updated = formatRelativeTime(item.updated_at);
+  const episodeLabel = (() => {
+    if (item.media_type === 'manga' && item.episode_count) {
+      return `${item.episode_count} ch`;
+    }
+    if (item.episode_count) {
+      return `${item.episode_count} ep`;
+    }
+    if (item.season_count) {
+      return `${item.season_count} season${item.season_count === 1 ? '' : 's'}`;
+    }
+    return null;
+  })();
+
+  return (
+    <article className="media-card">
+      <MediaPoster item={item} />
+      <div className="media-card-body">
+        <div className="media-card-top">
+          <h4 className="media-card-title">{item.title}</h4>
+          {rating && <span className="media-card-rating">{rating}/10</span>}
+        </div>
+        <div className="media-card-badges">
+          <span className="media-card-badge media-card-badge--type">
+            {MEDIA_TYPE_LABELS[item.media_type] || item.media_type}
+          </span>
+          {episodeLabel && <span className="media-card-badge">{episodeLabel}</span>}
+          {item.release_year && (
+            <span className="media-card-badge">{item.release_year}</span>
+          )}
+        </div>
+        {item.notes && <p className="media-card-notes">{item.notes}</p>}
+        {updated && <p className="media-card-updated">Updated {updated}</p>}
+      </div>
+    </article>
+  );
+};
 
 const MediaTracker = ({ compact = false }) => {
   const { items, loading, error, configured } = useMediaItems();
@@ -37,6 +115,8 @@ const MediaTracker = ({ compact = false }) => {
       .map((status) => ({ status, items: buckets[status] }));
   }, [filtered]);
 
+  const showSkeleton = configured && loading && items.length === 0;
+
   return (
     <div className={`media-tracker${compact ? ' media-tracker--compact' : ''}`}>
       {!configured && (
@@ -45,14 +125,19 @@ const MediaTracker = ({ compact = false }) => {
         </p>
       )}
 
-      {configured && loading && (
-        <p className="media-tracker-empty">Loading tracker…</p>
-      )}
-
       {configured && !loading && error && (
         <p className="media-tracker-empty media-tracker-empty--error">
           Could not load tracker: {error}
         </p>
+      )}
+
+      {showSkeleton && (
+        <div className="media-tracker-grid">
+          {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <MediaCardSkeleton key={index} />
+          ))}
+        </div>
       )}
 
       {configured && !loading && !error && items.length === 0 && (
@@ -97,29 +182,11 @@ const MediaTracker = ({ compact = false }) => {
                 <h3 className="media-tracker-group-title">
                   {MEDIA_STATUS_LABELS[group.status] || group.status}
                 </h3>
-                <ul className="media-tracker-list">
-                  {group.items.map((item) => {
-                    const rating = formatRating(item.rating);
-                    return (
-                      <li key={item.id} className="media-tracker-item">
-                        <div className="media-tracker-item-top">
-                          <span className="media-tracker-item-title">{item.title}</span>
-                          <span className="media-tracker-item-meta">
-                            <span className="media-tracker-type">
-                              {MEDIA_TYPE_LABELS[item.media_type] || item.media_type}
-                            </span>
-                            {rating && (
-                              <span className="media-tracker-rating">{rating}/10</span>
-                            )}
-                          </span>
-                        </div>
-                        {item.notes && (
-                          <p className="media-tracker-notes">{item.notes}</p>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+                <div className="media-tracker-grid">
+                  {group.items.map((item) => (
+                    <MediaCard key={item.id} item={item} />
+                  ))}
+                </div>
               </div>
             ))
           )}
