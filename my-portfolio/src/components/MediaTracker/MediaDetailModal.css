@@ -10,10 +10,12 @@
   animation: mediaModalFadeIn 0.2s var(--ease-out);
 }
 
+/* Fixed size, locked aspect ratio — content never resizes the window.
+   Anything that doesn't fit (long notes) scrolls internally instead. */
 .media-modal {
   position: relative;
-  width: 100%;
-  max-width: 760px;
+  width: min(760px, 92vw);
+  aspect-ratio: 2 / 1;
   max-height: 85vh;
   background: var(--paper);
   border: 1px solid var(--ink-faint);
@@ -195,7 +197,11 @@
 }
 
 @media (max-width: 620px) {
+  /* Stacked layout gets its own locked ratio (taller than wide) rather
+     than the desktop landscape shape — still fixed, still non-growing. */
   .media-modal {
+    width: min(420px, 92vw);
+    aspect-ratio: 3 / 4;
     max-height: 90vh;
   }
 
@@ -205,9 +211,8 @@
   }
 
   .media-modal-poster {
-    flex: 0 0 auto;
+    flex: 0 0 42%;
     width: 100%;
-    aspect-ratio: 16 / 9;
   }
 
   .media-modal-notes {
