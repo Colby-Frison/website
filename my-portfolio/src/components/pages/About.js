@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
+import MediaTracker from '../MediaTracker/MediaTracker';
 import './About.css';
 
 const About = () => {
@@ -166,7 +167,19 @@ const About = () => {
           </div>
         </section>
 
-        <p className="about-next section-animate" data-delay="0.3">
+        <section className="about-section section-animate" data-delay="0.3">
+          <div className="about-section-head">
+            <LeafAccent size="sm" />
+            <h2 className="interior-section-title">Currently Watching</h2>
+          </div>
+          <p className="about-tracker-intro">
+            A live list of shows, movies, and other media I am tracking—updated from the
+            site admin without redeploying.
+          </p>
+          <MediaTracker />
+        </section>
+
+        <p className="about-next section-animate" data-delay="0.36">
           <Link to="/projects" className="about-next-link">
             View projects
           </Link>
