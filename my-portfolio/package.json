@@ -21,9 +21,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node scripts/with-supabase-env.js react-scripts start",
-    "build": "node scripts/with-supabase-env.js react-scripts build",
-    "test": "node scripts/with-supabase-env.js react-scripts test",
+    "start": "node scripts/with-app-env.js react-scripts start",
+    "build": "node scripts/with-app-env.js react-scripts build",
+    "test": "node scripts/with-app-env.js react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

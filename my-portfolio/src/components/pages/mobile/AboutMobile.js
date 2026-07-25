@@ -159,8 +159,8 @@ const AboutMobile = () => {
             <h2 className="interior-section-title">Currently Watching</h2>
           </div>
           <p className="about-mobile-tracker-intro">
-            A live list of shows, movies, and other media I am tracking—updated from the
-            site admin without redeploying.
+            A live list of shows, movies, anime, and more that I am tracking—updated
+            from the site admin without redeploying.
           </p>
           <MediaTracker compact />
         </section>

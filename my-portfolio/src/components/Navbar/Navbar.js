@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  getAdminNavPreference,
+  subscribeAdminNavPreference,
+} from '../../lib/adminNavPreference';
 import './Navbar.css';
 
-const navItems = [
+const baseNavItems = [
   { text: 'Home', path: '/' },
   { text: 'About', path: '/about' },
   { text: 'Projects', path: '/projects' },
@@ -11,6 +15,7 @@ const navItems = [
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [showAdminLink, setShowAdminLink] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -22,6 +27,15 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    setShowAdminLink(getAdminNavPreference());
+    return subscribeAdminNavPreference(setShowAdminLink);
+  }, []);
+
+  const navItems = showAdminLink
+    ? [...baseNavItems, { text: 'Admin', path: '/admin' }]
+    : baseNavItems;
 
   return (
     <header className={`site-nav ${scrolled ? 'is-scrolled' : ''}`}>

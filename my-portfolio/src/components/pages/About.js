@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom';
 import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
 import MediaTracker from '../MediaTracker/MediaTracker';
+import SectionNav from '../SectionNav/SectionNav';
 import './About.css';
+
+const ABOUT_SECTIONS = [
+  { id: 'about-intro', label: 'Intro' },
+  { id: 'about-education', label: 'Education' },
+  { id: 'about-experience', label: 'Experience' },
+  { id: 'about-skills', label: 'Skills' },
+  { id: 'about-tracker', label: 'Currently Watching' },
+];
 
 const About = () => {
   useEffect(() => {
@@ -74,8 +83,9 @@ const About = () => {
   return (
     <div className="interior-page about-page">
       <PageAtmosphere />
+      <SectionNav sections={ABOUT_SECTIONS} ariaLabel="About sections" />
       <div className="interior-page-inner about-container">
-        <header className="about-hero">
+        <header className="about-hero" id="about-intro">
           <h1 className="interior-title about-page-title">About</h1>
           <div className="interior-title-rule">
             <LeafAccent size="sm" settle />
@@ -88,7 +98,7 @@ const About = () => {
           </p>
         </header>
 
-        <section className="about-section section-animate" data-delay="0.12">
+        <section className="about-section section-animate" data-delay="0.12" id="about-education">
           <div className="about-section-head">
             <LeafAccent size="sm" />
             <h2 className="interior-section-title">Education</h2>
@@ -114,7 +124,7 @@ const About = () => {
           </div>
         </section>
 
-        <section className="about-section section-animate" data-delay="0.18">
+        <section className="about-section section-animate" data-delay="0.18" id="about-experience">
           <div className="about-section-head">
             <LeafAccent size="sm" />
             <h2 className="interior-section-title">Experience</h2>
@@ -142,7 +152,7 @@ const About = () => {
           </div>
         </section>
 
-        <section className="about-section section-animate" data-delay="0.24">
+        <section className="about-section section-animate" data-delay="0.24" id="about-skills">
           <div className="about-section-head">
             <LeafAccent size="sm" />
             <h2 className="interior-section-title">Skills</h2>
@@ -167,14 +177,14 @@ const About = () => {
           </div>
         </section>
 
-        <section className="about-section section-animate" data-delay="0.3">
+        <section className="about-section section-animate" data-delay="0.3" id="about-tracker">
           <div className="about-section-head">
             <LeafAccent size="sm" />
             <h2 className="interior-section-title">Currently Watching</h2>
           </div>
           <p className="about-tracker-intro">
-            A live list of shows, movies, and other media I am tracking—updated from the
-            site admin without redeploying.
+            A live list of shows, movies, anime, and more that I am tracking—updated from
+            the site admin without redeploying.
           </p>
           <MediaTracker />
         </section>
