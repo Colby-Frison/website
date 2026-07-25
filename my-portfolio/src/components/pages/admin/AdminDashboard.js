@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import LeafAccent from '../../motif/LeafAccent';
 import {
   getAdminNavPreference,
@@ -13,7 +12,7 @@ import './AdminDashboard.css';
 // take more — add another { id, label, component } here later.
 const ADMIN_VIEWS = [{ id: 'tracker', label: 'Media Tracker', component: TrackerView }];
 
-const AdminDashboard = ({ user, onSignOut }) => {
+const AdminDashboard = ({ onSignOut }) => {
   const [activeViewId, setActiveViewId] = useState(ADMIN_VIEWS[0].id);
   const [navShortcut, setNavShortcut] = useState(() => getAdminNavPreference());
 
@@ -49,7 +48,6 @@ const AdminDashboard = ({ user, onSignOut }) => {
         </nav>
 
         <div className="admin-sidebar-footer">
-          <p className="admin-sidebar-user">{user.email}</p>
           <label className="admin-checkbox">
             <input type="checkbox" checked={navShortcut} onChange={handleToggleNavShortcut} />
             Show Admin link in navbar
@@ -57,9 +55,6 @@ const AdminDashboard = ({ user, onSignOut }) => {
           <button type="button" className="admin-button admin-button--ghost" onClick={onSignOut}>
             Sign out
           </button>
-          <Link to="/about" className="admin-sidebar-back">
-            View About page
-          </Link>
         </div>
       </aside>
 
