@@ -141,10 +141,10 @@ const Admin = () => {
         <div className="interior-page-inner admin-container">
           <h1 className="interior-title">Admin</h1>
           <p className="admin-notice">
-            Supabase is not configured. Copy <code>.env.example</code> to{' '}
-            <code>.env.local</code>, add your project URL and anon key, then restart the
-            app. Run <code>supabase/schema.sql</code> in the Supabase SQL editor and
-            create an Auth user for login.
+            Supabase is not configured. Set <code>SUPABASE_URL</code> and{' '}
+            <code>SUPABASE_ANON_KEY</code> (Vercel env or <code>.env.local</code>), then
+            redeploy / restart. Run <code>supabase/schema.sql</code> in the Supabase SQL
+            editor and create an Auth user for login.
           </p>
           <p className="admin-back">
             <Link to="/about">Back to About</Link>
