@@ -137,9 +137,6 @@ export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
           <span className="media-card-badge">
             {MEDIA_TYPE_LABELS[item.media_type] || item.media_type}
           </span>
-          {item.release_year && (
-            <span className="media-card-badge">{item.release_year}</span>
-          )}
           {episodeLabel && (
             <span className="media-card-badge media-card-badge--icon">
               <PlaylistPlayRoundedIcon fontSize="inherit" />
