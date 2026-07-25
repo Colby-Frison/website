@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import PageAtmosphere from '../../motif/PageAtmosphere';
 import LeafAccent from '../../motif/LeafAccent';
 import MediaTracker from '../../MediaTracker/MediaTracker';
+import { useSiteSettings } from '../../../hooks/useSiteSettings';
 import './AboutMobile.css';
 
 const AboutMobile = () => {
+  const { trackerVisible } = useSiteSettings();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -153,17 +156,19 @@ const AboutMobile = () => {
           </div>
         </section>
 
-        <section className="about-mobile-section section-animate" data-delay="0.3">
-          <div className="about-mobile-section-head">
-            <LeafAccent size="sm" />
-            <h2 className="interior-section-title">Currently Watching</h2>
-          </div>
-          <p className="about-mobile-tracker-intro">
-            A live list of shows, movies, manga, and books that I am tracking—updated
-            from the site admin without redeploying.
-          </p>
-          <MediaTracker compact />
-        </section>
+        {trackerVisible && (
+          <section className="about-mobile-section section-animate" data-delay="0.3">
+            <div className="about-mobile-section-head">
+              <LeafAccent size="sm" />
+              <h2 className="interior-section-title">Currently Watching</h2>
+            </div>
+            <p className="about-mobile-tracker-intro">
+              A live list of shows, movies, manga, and books that I am tracking—updated
+              from the site admin without redeploying.
+            </p>
+            <MediaTracker compact />
+          </section>
+        )}
 
         <p className="about-mobile-next section-animate" data-delay="0.36">
           <Link to="/projects">View projects</Link>
