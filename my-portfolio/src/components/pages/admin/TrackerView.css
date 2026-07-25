@@ -1,0 +1,14 @@
+.tracker-view-title {
+  text-align: left;
+  margin-bottom: 0.4rem;
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.tracker-visibility-toggle {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}

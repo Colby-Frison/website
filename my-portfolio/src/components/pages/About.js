@@ -4,18 +4,25 @@ import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
 import MediaTracker from '../MediaTracker/MediaTracker';
 import SectionNav from '../SectionNav/SectionNav';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 import './About.css';
 
 // Kept to at most 12 characters so they fit the vertical nav cleanly.
-const ABOUT_SECTIONS = [
+const BASE_ABOUT_SECTIONS = [
   { id: 'about-intro', label: 'Intro' },
   { id: 'about-education', label: 'Education' },
   { id: 'about-experience', label: 'Experience' },
   { id: 'about-skills', label: 'Skills' },
-  { id: 'about-tracker', label: 'Watching' },
 ];
 
+const TRACKER_SECTION = { id: 'about-tracker', label: 'Watching' };
+
 const About = () => {
+  const { trackerVisible } = useSiteSettings();
+  const aboutSections = trackerVisible
+    ? [...BASE_ABOUT_SECTIONS, TRACKER_SECTION]
+    : BASE_ABOUT_SECTIONS;
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -84,7 +91,7 @@ const About = () => {
   return (
     <div className="interior-page about-page">
       <PageAtmosphere />
-      <SectionNav sections={ABOUT_SECTIONS} ariaLabel="About sections" />
+      <SectionNav sections={aboutSections} ariaLabel="About sections" />
       <div className="interior-page-inner about-container">
         <header className="about-hero" id="about-intro">
           <h1 className="interior-title about-page-title">About</h1>
@@ -178,17 +185,19 @@ const About = () => {
           </div>
         </section>
 
-        <section className="about-section section-animate" data-delay="0.3" id="about-tracker">
-          <div className="about-section-head">
-            <LeafAccent size="sm" />
-            <h2 className="interior-section-title">Currently Watching</h2>
-          </div>
-          <p className="about-tracker-intro">
-            A live list of shows, movies, manga, and books that I am tracking—updated
-            from the site admin without redeploying.
-          </p>
-          <MediaTracker />
-        </section>
+        {trackerVisible && (
+          <section className="about-section section-animate" data-delay="0.3" id="about-tracker">
+            <div className="about-section-head">
+              <LeafAccent size="sm" />
+              <h2 className="interior-section-title">Currently Watching</h2>
+            </div>
+            <p className="about-tracker-intro">
+              A live list of shows, movies, manga, and books that I am tracking—updated
+              from the site admin without redeploying.
+            </p>
+            <MediaTracker />
+          </section>
+        )}
 
         <p className="about-next section-animate" data-delay="0.36">
           <Link to="/projects" className="about-next-link">

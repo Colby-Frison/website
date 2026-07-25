@@ -1,10 +1,13 @@
 # Supabase setup (media tracker)
 
 1. Create a free project at https://supabase.com
-2. Open **SQL Editor** and run [`schema.sql`](./schema.sql) for a fresh project, or
-   [`migrations/0002_add_media_metadata.sql`](./migrations/0002_add_media_metadata.sql)
-   if you already created `media_items` from an earlier version of this file
-   (adds poster/episode columns and anime/manga types without touching existing rows)
+2. Open **SQL Editor** and run [`schema.sql`](./schema.sql) for a fresh project. If you
+   already have `media_items`, run whichever migrations you're missing instead (each is
+   safe to run multiple times and never touches existing rows):
+   - [`migrations/0002_add_media_metadata.sql`](./migrations/0002_add_media_metadata.sql) —
+     poster/episode columns and anime/manga types
+   - [`migrations/0003_add_site_settings.sql`](./migrations/0003_add_site_settings.sql) —
+     the `site_settings` table used by the admin "show tracker on About" toggle
 3. In **Authentication → Users**, create one email/password user (your admin login)
 4. Connect the project in **Vercel → Settings → Environment Variables** (Supabase integration), or set manually:
    - `SUPABASE_URL`
@@ -50,3 +53,11 @@ OMDB is a small, free, volunteer-run service, so occasional errors are expected:
   automatically, so most of these resolve without you doing anything.
 - **429 / "Request limit reached!"** — the free tier caps at 1,000 requests/day;
   wait until the next day or upgrade the key.
+
+## Hiding the tracker
+
+The admin dashboard's Media Tracker view has a "Show the tracker section on the About
+page" checkbox. It reads/writes a single row in `site_settings` (`tracker_visible`),
+which the About page checks before rendering the section at all — turning it off hides
+the section (and its entry in the vertical nav) for visitors without deleting any
+tracked entries. Requires `migrations/0003_add_site_settings.sql` to have been run.

@@ -70,16 +70,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
   width: 100%;
+  cursor: pointer;
 }
 
 .media-card:focus-visible {
@@ -170,6 +162,38 @@
   font-style: italic;
 }
 
+/* Admin-only edit/delete affordances — always visible (not hover-gated)
+   so they work reliably on touch as well as mouse. */
+.media-card-admin-actions {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.media-card-admin-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 16, 16, 0.55);
+  color: var(--paper);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.media-card-admin-action--delete:hover {
+  background: var(--crimson);
+  color: var(--paper);
+}
+
 .media-card-poster-fallback {
   width: 100%;
   height: 100%;
@@ -192,40 +216,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-}
-
-.media-card-title-row {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.media-status-dot {
-  flex-shrink: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ink-muted);
-}
-
-.media-status-dot--active {
-  background: #2fae5b;
-}
-
-.media-status-dot--planning {
-  background: var(--ink-muted);
-}
-
-.media-status-dot--completed {
-  background: var(--crimson);
-}
-
-.media-status-dot--hold {
-  background: #d99a2b;
-}
-
-.media-status-dot--dropped {
-  background: rgba(33, 29, 30, 0.3);
 }
 
 .media-card-title {
