@@ -5,11 +5,14 @@
   left: 28px;
   z-index: 900;
   width: 130px;
+  padding-right: 16px;
+  box-sizing: content-box;
 }
 
 /* Only shows once there's enough margin beside the centered page content
-   (About/Projects cap out around 760-820px) to avoid ever overlapping it. */
-@media (min-width: 1200px) {
+   (About/Projects cap out around 760-820px) to keep a comfortable gap
+   between the nav and the content column, not just avoid overlapping it. */
+@media (min-width: 1320px) {
   .section-nav {
     display: block;
   }

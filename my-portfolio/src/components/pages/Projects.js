@@ -4,8 +4,9 @@ import LeafAccent from '../motif/LeafAccent';
 import SectionNav from '../SectionNav/SectionNav';
 import './Projects.css';
 
-const Projects = () => {
+const Projects = ({ deviceInfo }) => {
   const [expandedId, setExpandedId] = useState(null);
+  const isMobile = Boolean(deviceInfo?.isMobile);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,6 +39,7 @@ const Projects = () => {
     {
       id: 1,
       name: 'SimpleChef',
+      navLabel: 'SimpleChef',
       shortDescription:
         'A full-stack cooking assistant with recipes, step-by-step cooking, meal planning, and grocery lists—built as an HCI course prototype.',
       fullDescription: `SimpleChef combines recipe management, guided cooking, meal planning, and grocery list generation in one system. Built for CS4063 Human–Computer Interaction (Spring 2026) as an academic prototype with a React + Vite web app, FastAPI backend, and PostgreSQL. Live demo available for evaluation.`,
@@ -92,6 +94,7 @@ const Projects = () => {
     {
       id: 2,
       name: 'openpilot Testing Exploration',
+      navLabel: 'openpilot',
       shortDescription:
         'Exploration and contribution to comma.ai openpilot focused on software quality—layered tests for modeld and pandad, shared harnesses, and course CI.',
       fullDescription: `Fork of openpilot (release 0.9.8) for CS4223 Software Quality and Testing at the University of Oklahoma. Our team scoped testing work around selfdrive/modeld, assignment-listed pandad files, and system/, adding unit/contract tests, shared pytest infrastructure, coverage tooling, and documentation under docs/testing.`,
@@ -137,6 +140,7 @@ const Projects = () => {
     {
       id: 3,
       name: 'Expression Optimizer',
+      navLabel: 'Optimizer',
       shortDescription:
         'Compiler Construction project that refactors and optimizes expressions in C before compilation, achieving about 50% speedup single-threaded.',
       fullDescription: `For Compiler Construction, I built a pre-compiler optimization pass over given expressions in C. The pipeline refactors expressions and applies optimization operations before the compiler runs, improving runtime by approximately 50% while remaining single-threaded. The repository is still private while a public fork is prepared; more details will follow.`,
@@ -159,6 +163,7 @@ const Projects = () => {
     {
       id: 4,
       name: 'Secure Instant Messaging',
+      navLabel: 'Secure Chat',
       shortDescription:
         'Point-to-point encrypted chat with authenticated ECDH key agreement, AES-GCM, and rotating session keys—built for Computer Security.',
       fullDescription: `CS5173 Computer Security (Spring 2026) team project with Johnpaul Nguyen and Jacob Woolbright. We built a two-party secure messaging app in Python: authenticated ephemeral ECDH (P-384) with Ed25519 signatures derives a 256-bit AES-GCM session key via HKDF (no pre-shared passphrase). Per-message random nonces keep repeated plaintexts from producing identical ciphertext, and an HKDF ratchet rotates keys every five messages. A Tkinter GUI shows ciphertext and plaintext side by side for every send and receive.`,
@@ -203,6 +208,7 @@ const Projects = () => {
     {
       id: 5,
       name: 'Classroom Q&A',
+      navLabel: 'Classroom',
       shortDescription:
         'A web application enabling students to anonymously ask questions during class, enhancing classroom engagement through real-time interaction.',
       fullDescription: `Started as a side project for practicing databases and websockets, this application evolved into a practical tool used in actual classroom settings. It removes barriers to student participation by allowing anonymous questions while providing professors with an efficient way to manage classroom interactions.`,
@@ -257,6 +263,7 @@ const Projects = () => {
     {
       id: 6,
       name: 'FreshStart',
+      navLabel: 'FreshStart',
       shortDescription:
         'A comprehensive web application that helps users plan, build, and maintain home gardens or small farms, featuring AI-powered recommendations and interactive design tools.',
       fullDescription: `FreshStart is designed to make growing fresh food accessible to everyone by providing an intuitive platform for garden and farm planning. The application combines modern technology with practical farming knowledge to help users create successful growing spaces.`,
@@ -306,6 +313,7 @@ const Projects = () => {
     {
       id: 7,
       name: 'SmartWrite',
+      navLabel: 'SmartWrite',
       shortDescription:
         'An innovative note-taking application that combines handwriting recognition with AI-assisted writing features to transform and enhance the learning experience.',
       fullDescription: `SmartWrite is a sophisticated note-taking platform that bridges the gap between traditional handwritten notes and digital organization. The application uses advanced AI technology to help students and professionals better manage and understand their notes.`,
@@ -357,13 +365,14 @@ const Projects = () => {
 
   const sectionNavItems = projects.map((project) => ({
     id: `project-${project.id}`,
-    label: project.name,
+    // Kept to at most 12 characters so labels fit the vertical nav cleanly.
+    label: (project.navLabel || project.name).slice(0, 12),
   }));
 
   return (
     <div className="interior-page projects-page">
       <PageAtmosphere />
-      <SectionNav sections={sectionNavItems} ariaLabel="Project list" />
+      {!isMobile && <SectionNav sections={sectionNavItems} ariaLabel="Project list" />}
       <div className="interior-page-inner projects-inner">
         <h1 className="interior-title">My Projects</h1>
         <div className="interior-title-rule">
