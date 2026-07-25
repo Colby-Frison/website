@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import LeafAccent from '../../motif/LeafAccent';
+import {
+  getAdminNavPreference,
+  subscribeAdminNavPreference,
+} from '../../../lib/adminNavPreference';
 import './NavbarMobile.css';
 
-const navItems = [
+const baseNavItems = [
   { text: 'Home', path: '/' },
   { text: 'About', path: '/about' },
   { text: 'Projects', path: '/projects' },
@@ -12,7 +16,12 @@ const navItems = [
 
 const NavbarMobile = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showAdminLink, setShowAdminLink] = useState(false);
   const location = useLocation();
+
+  const navItems = showAdminLink
+    ? [...baseNavItems, { text: 'Admin', path: '/admin' }]
+    : baseNavItems;
 
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((open) => !open);
@@ -20,6 +29,11 @@ const NavbarMobile = () => {
   useEffect(() => {
     closeMenu();
   }, [location.pathname]);
+
+  useEffect(() => {
+    setShowAdminLink(getAdminNavPreference());
+    return subscribeAdminNavPreference(setShowAdminLink);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
