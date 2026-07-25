@@ -36,10 +36,20 @@ const SectionNav = ({ sections, ariaLabel = 'Section navigation' }) => {
   const handleClick = (id) => (event) => {
     event.preventDefault();
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setActiveId(id);
-    }
+    if (!element) return;
+
+    // The site navbar is fixed to the top of the viewport, so a plain
+    // scrollIntoView would land the section heading right underneath it.
+    // Offset by the navbar's actual rendered height (plus a little
+    // breathing room) instead of a hardcoded guess.
+    const navbar = document.querySelector('.site-nav');
+    const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 0;
+    const gap = 16;
+    const targetTop =
+      element.getBoundingClientRect().top + window.scrollY - navbarHeight - gap;
+
+    window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
+    setActiveId(id);
   };
 
   return (
