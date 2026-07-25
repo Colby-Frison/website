@@ -36,7 +36,15 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function safeFetchJson(url) {
+const RETRYABLE_STATUSES = new Set([502, 503, 504]);
+
+/**
+ * Jikan proxies MyAnimeList and OMDB is a small volunteer-run service —
+ * both occasionally return transient 502/503/504s under load. One retry
+ * with a short delay clears most of those without the admin needing to
+ * manually search again.
+ */
+async function safeFetchJson(url, attemptsLeft = 1) {
   let response;
   try {
     response = await fetch(url);
@@ -45,10 +53,40 @@ async function safeFetchJson(url) {
   }
 
   if (!response.ok) {
+    if (RETRYABLE_STATUSES.has(response.status) && attemptsLeft > 0) {
+      await delay(900);
+      return safeFetchJson(url, attemptsLeft - 1);
+    }
+
+    let body = null;
+    try {
+      body = await response.json();
+    } catch (parseError) {
+      body = null;
+    }
+    const bodyMessage = body?.Error || body?.message;
+
+    if (response.status === 401) {
+      return {
+        data: null,
+        error:
+          bodyMessage ||
+          'Invalid or unactivated API key (401). Check the key value, and make sure you clicked the activation link in the confirmation email.',
+      };
+    }
+
     if (response.status === 429) {
       return { data: null, error: 'Rate limited — wait a moment and try again.' };
     }
-    return { data: null, error: `Request failed (${response.status}).` };
+
+    if (RETRYABLE_STATUSES.has(response.status)) {
+      return {
+        data: null,
+        error: `The service is temporarily unavailable (${response.status}). Try again in a moment.`,
+      };
+    }
+
+    return { data: null, error: bodyMessage || `Request failed (${response.status}).` };
   }
 
   try {
@@ -116,10 +154,12 @@ export async function searchOmdb(query, type) {
   if (error) return { data: [], error };
 
   if (data?.Response === 'False') {
-    if (data.Error === 'Request limit reached!') {
-      return { data: [], error: 'OMDB daily request limit reached.' };
+    const message = data.Error || '';
+    // "Movie/Series not found!" just means no matches — not a real error.
+    if (/not found/i.test(message)) {
+      return { data: [], error: null };
     }
-    return { data: [], error: null };
+    return { data: [], error: message || 'OMDB request failed.' };
   }
 
   const results = (data?.Search || []).map((item) => ({
