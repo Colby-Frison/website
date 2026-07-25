@@ -201,30 +201,44 @@
   color: var(--crimson);
 }
 
-/* External lookup panel */
-.admin-lookup {
-  border: 1px dashed var(--ink-faint);
-  padding: 0.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+/* Title field with inline autocomplete dropdown */
+.admin-title-field {
+  position: relative;
 }
 
-.admin-lookup-label {
+.admin-lookup-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: var(--paper);
+  border: 1px solid var(--ink-faint);
+  box-shadow: 0 10px 28px rgba(33, 29, 30, 0.14);
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.4rem;
+}
+
+.admin-lookup-status {
   margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  padding: 0.4rem 0.3rem;
   color: var(--ink-muted);
+  font-size: 0.85rem;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
-.admin-lookup-row {
-  display: flex;
-  gap: 0.5rem;
+.admin-lookup-status--error {
+  color: var(--crimson);
 }
 
-.admin-lookup-row .admin-input {
-  flex: 1;
+.admin-field-hint {
+  margin: 0.3rem 0 0;
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .admin-lookup-results {
@@ -236,6 +250,14 @@
   gap: 0.5rem;
   max-height: 260px;
   overflow-y: auto;
+}
+
+.admin-lookup-results--dropdown {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+  overflow: visible;
+  gap: 0.25rem;
 }
 
 .admin-lookup-result {
@@ -251,8 +273,10 @@
   transition: border-color 0.2s var(--ease-out);
 }
 
-.admin-lookup-result:hover {
+.admin-lookup-result:hover,
+.admin-lookup-result.is-active {
   border-color: var(--crimson-mid);
+  background: var(--crimson-soft);
 }
 
 .admin-lookup-result img {

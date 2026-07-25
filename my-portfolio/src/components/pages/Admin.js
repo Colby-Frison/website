@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
@@ -49,10 +49,14 @@ const Admin = () => {
   const [formBusy, setFormBusy] = useState(false);
   const [formMessage, setFormMessage] = useState(null);
 
-  const [externalQuery, setExternalQuery] = useState('');
-  const [externalResults, setExternalResults] = useState([]);
-  const [externalBusy, setExternalBusy] = useState(false);
-  const [externalMessage, setExternalMessage] = useState(null);
+  const [lookupResults, setLookupResults] = useState([]);
+  const [lookupOpen, setLookupOpen] = useState(false);
+  const [lookupBusy, setLookupBusy] = useState(false);
+  const [lookupError, setLookupError] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const skipNextLookupRef = useRef(false);
+  const titleFieldRef = useRef(null);
+
   const [episodeFetchBusy, setEpisodeFetchBusy] = useState(false);
   const [episodeFetchMessage, setEpisodeFetchMessage] = useState(null);
 
@@ -60,6 +64,14 @@ const Admin = () => {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filterType, setFilterType] = useState(FILTER_ALL);
   const [filterStatus, setFilterStatus] = useState(FILTER_ALL);
+
+  const isJikanType = JIKAN_MEDIA_TYPES.has(form.media_type);
+  const isOmdbType = OMDB_MEDIA_TYPES.has(form.media_type);
+  const canFetchEpisodeTotal =
+    form.media_type === 'show' &&
+    form.external_source === 'omdb' &&
+    form.external_id &&
+    Number(form.season_count) > 0;
 
   useEffect(() => {
     document.title = 'Admin · Media Tracker';
@@ -77,13 +89,73 @@ const Admin = () => {
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
-  const isJikanType = JIKAN_MEDIA_TYPES.has(form.media_type);
-  const isOmdbType = OMDB_MEDIA_TYPES.has(form.media_type);
-  const canFetchEpisodeTotal =
-    form.media_type === 'show' &&
-    form.external_source === 'omdb' &&
-    form.external_id &&
-    Number(form.season_count) > 0;
+  // Live "type as you search" lookup on the Title field itself, like a
+  // browser address bar or search box — debounced and cached so typing
+  // doesn't hammer Jikan/OMDB on every keystroke.
+  useEffect(() => {
+    if (skipNextLookupRef.current) {
+      skipNextLookupRef.current = false;
+      return undefined;
+    }
+
+    if (!isJikanType && !isOmdbType) {
+      setLookupResults([]);
+      setLookupOpen(false);
+      setLookupError(null);
+      return undefined;
+    }
+
+    const query = form.title.trim();
+    if (query.length < 2) {
+      setLookupResults([]);
+      setLookupOpen(false);
+      setLookupError(null);
+      return undefined;
+    }
+
+    let cancelled = false;
+    const timeout = setTimeout(async () => {
+      setLookupBusy(true);
+      setLookupError(null);
+
+      const result = isJikanType
+        ? form.media_type === 'anime'
+          ? await searchJikanAnime(query)
+          : await searchJikanManga(query)
+        : await searchOmdb(query, form.media_type === 'show' ? 'series' : 'movie');
+
+      if (cancelled) return;
+
+      setLookupBusy(false);
+      setActiveIndex(-1);
+
+      if (result.error) {
+        setLookupError(result.error);
+        setLookupResults([]);
+        setLookupOpen(true);
+        return;
+      }
+
+      setLookupResults(result.data);
+      setLookupOpen(true);
+    }, 450);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.title, form.media_type, isJikanType, isOmdbType]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (titleFieldRef.current && !titleFieldRef.current.contains(event.target)) {
+        setLookupOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -110,21 +182,28 @@ const Admin = () => {
     const result = await signIn(email.trim(), password);
     if (result.error) {
       setLoginMessage(result.error);
+    } else {
+      // First successful login on this device: surface the Admin shortcut
+      // in the navbar automatically so there's no need to remember the URL.
+      setAdminNavPreference(true);
+      setNavShortcut(true);
     }
     setLoginBusy(false);
   };
 
   const resetForm = () => {
+    skipNextLookupRef.current = true;
     setForm(EMPTY_MEDIA_FORM);
     setEditingId(null);
     setFormMessage(null);
-    setExternalQuery('');
-    setExternalResults([]);
-    setExternalMessage(null);
+    setLookupResults([]);
+    setLookupOpen(false);
+    setLookupError(null);
     setEpisodeFetchMessage(null);
   };
 
   const startEdit = (item) => {
+    skipNextLookupRef.current = true;
     setEditingId(item.id);
     setForm({
       title: item.title || '',
@@ -141,9 +220,9 @@ const Admin = () => {
       external_url: item.external_url || '',
     });
     setFormMessage(null);
-    setExternalQuery(item.title || '');
-    setExternalResults([]);
-    setExternalMessage(null);
+    setLookupResults([]);
+    setLookupOpen(false);
+    setLookupError(null);
     setEpisodeFetchMessage(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -153,54 +232,39 @@ const Admin = () => {
     setForm((prev) => ({ ...prev, [field]: value }));
 
     if (field === 'media_type') {
-      setExternalResults([]);
-      setExternalMessage(null);
       setEpisodeFetchMessage(null);
     }
   };
 
-  const handleExternalSearch = async (event) => {
-    event.preventDefault();
-    const query = externalQuery.trim() || form.title.trim();
-    if (!query) {
-      setExternalMessage('Enter a title to search.');
-      return;
-    }
-
-    setExternalBusy(true);
-    setExternalMessage(null);
-    setExternalResults([]);
-
-    let result;
-    if (isJikanType) {
-      result =
-        form.media_type === 'anime'
-          ? await searchJikanAnime(query)
-          : await searchJikanManga(query);
-    } else if (isOmdbType) {
-      result = await searchOmdb(query, form.media_type === 'show' ? 'series' : 'movie');
-    } else {
-      setExternalBusy(false);
-      setExternalMessage('No external lookup available for this type.');
-      return;
-    }
-
-    setExternalBusy(false);
-
-    if (result.error) {
-      setExternalMessage(result.error);
-      return;
-    }
-
-    if (result.data.length === 0) {
-      setExternalMessage('No matches found.');
-      return;
-    }
-
-    setExternalResults(result.data);
+  const handleTitleChange = (event) => {
+    setForm((prev) => ({ ...prev, title: event.target.value }));
   };
 
-  const applyJikanResult = (result) => {
+  const handleTitleFocus = () => {
+    if (lookupResults.length > 0 || lookupError) setLookupOpen(true);
+  };
+
+  const handleTitleKeyDown = (event) => {
+    if (!lookupOpen || lookupResults.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((index) => Math.min(index + 1, lookupResults.length - 1));
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex((index) => Math.max(index - 1, 0));
+    } else if (event.key === 'Enter' && activeIndex >= 0) {
+      event.preventDefault();
+      const result = lookupResults[activeIndex];
+      if (isJikanType) selectJikanResult(result);
+      else selectOmdbResult(result);
+    } else if (event.key === 'Escape') {
+      setLookupOpen(false);
+    }
+  };
+
+  const selectJikanResult = (result) => {
+    skipNextLookupRef.current = true;
     setForm((prev) => ({
       ...prev,
       title: result.title || prev.title,
@@ -212,23 +276,25 @@ const Admin = () => {
       external_id: result.externalId,
       external_url: result.externalUrl || '',
     }));
-    setExternalResults([]);
+    setLookupResults([]);
+    setLookupOpen(false);
     setEpisodeFetchMessage(null);
   };
 
-  const applyOmdbResult = async (result) => {
-    setExternalBusy(true);
-    setExternalMessage(null);
+  const selectOmdbResult = async (result) => {
+    setLookupBusy(true);
+    setLookupError(null);
 
     const { data: details, error } = await getOmdbDetails(result.externalId);
 
-    setExternalBusy(false);
+    setLookupBusy(false);
 
     if (error || !details) {
-      setExternalMessage(error || 'Could not load details for this title.');
+      setLookupError(error || 'Could not load details for this title.');
       return;
     }
 
+    skipNextLookupRef.current = true;
     setForm((prev) => ({
       ...prev,
       title: details.title || prev.title,
@@ -240,7 +306,8 @@ const Admin = () => {
       external_id: details.externalId,
       external_url: details.externalUrl || '',
     }));
-    setExternalResults([]);
+    setLookupResults([]);
+    setLookupOpen(false);
     setEpisodeFetchMessage(null);
   };
 
@@ -481,87 +548,79 @@ const Admin = () => {
               </select>
             </label>
 
-            {(isJikanType || isOmdbType) && (
-              <div className="admin-label--full admin-lookup">
-                <p className="admin-lookup-label">
-                  {isJikanType
-                    ? 'Look up on MyAnimeList (Jikan)'
-                    : isOmdbConfigured
-                    ? 'Look up on OMDB'
-                    : 'OMDB lookup unavailable'}
-                </p>
-                {isOmdbType && !isOmdbConfigured ? (
-                  <p className="admin-notice">
-                    Set <code>OMDB_API_KEY</code> to enable movie/show lookups. You can
-                    still fill this entry in manually below.
-                  </p>
-                ) : (
-                  <>
-                    <div className="admin-lookup-row">
-                      <input
-                        className="admin-input"
-                        type="text"
-                        placeholder="Search by title…"
-                        value={externalQuery}
-                        onChange={(event) => setExternalQuery(event.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className="admin-button admin-button--ghost"
-                        onClick={handleExternalSearch}
-                        disabled={externalBusy}
-                      >
-                        {externalBusy ? 'Searching…' : 'Search'}
-                      </button>
-                    </div>
-
-                    {externalMessage && (
-                      <p className="admin-message admin-message--muted">{externalMessage}</p>
-                    )}
-
-                    {externalResults.length > 0 && (
-                      <ul className="admin-lookup-results">
-                        {externalResults.map((result) => (
-                          <li key={result.externalId}>
-                            <button
-                              type="button"
-                              className="admin-lookup-result"
-                              onClick={() =>
-                                isJikanType ? applyJikanResult(result) : applyOmdbResult(result)
-                              }
-                            >
-                              {result.posterUrl ? (
-                                <img src={result.posterUrl} alt="" loading="lazy" />
-                              ) : (
-                                <span className="admin-lookup-result-noimg" aria-hidden="true">
-                                  {result.title.slice(0, 1).toUpperCase()}
-                                </span>
-                              )}
-                              <span className="admin-lookup-result-info">
-                                <span className="admin-lookup-result-title">{result.title}</span>
-                                {result.year && (
-                                  <span className="admin-lookup-result-year">{result.year}</span>
-                                )}
-                              </span>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-
-            <label className="admin-label admin-label--full">
+            <label className="admin-label admin-label--full admin-title-field" ref={titleFieldRef}>
               Title
               <input
                 className="admin-input"
                 type="text"
                 value={form.title}
-                onChange={handleFormChange('title')}
+                onChange={handleTitleChange}
+                onFocus={handleTitleFocus}
+                onKeyDown={handleTitleKeyDown}
+                autoComplete="off"
+                placeholder={
+                  isJikanType
+                    ? 'Start typing to search MyAnimeList…'
+                    : isOmdbType
+                    ? isOmdbConfigured
+                      ? 'Start typing to search OMDB…'
+                      : 'Title (set OMDB_API_KEY to enable search)'
+                    : 'Title'
+                }
                 required
               />
+
+              {(isJikanType || isOmdbType) && lookupOpen && (
+                <div className="admin-lookup-dropdown">
+                  {lookupBusy && <p className="admin-lookup-status">Searching…</p>}
+                  {!lookupBusy && lookupError && (
+                    <p className="admin-lookup-status admin-lookup-status--error">
+                      {lookupError}
+                    </p>
+                  )}
+                  {!lookupBusy && !lookupError && lookupResults.length === 0 && (
+                    <p className="admin-lookup-status">No matches found.</p>
+                  )}
+                  {!lookupBusy && lookupResults.length > 0 && (
+                    <ul className="admin-lookup-results admin-lookup-results--dropdown">
+                      {lookupResults.map((result, index) => (
+                        <li key={result.externalId}>
+                          <button
+                            type="button"
+                            className={`admin-lookup-result${
+                              index === activeIndex ? ' is-active' : ''
+                            }`}
+                            onMouseEnter={() => setActiveIndex(index)}
+                            onClick={() =>
+                              isJikanType ? selectJikanResult(result) : selectOmdbResult(result)
+                            }
+                          >
+                            {result.posterUrl ? (
+                              <img src={result.posterUrl} alt="" loading="lazy" />
+                            ) : (
+                              <span className="admin-lookup-result-noimg" aria-hidden="true">
+                                {result.title.slice(0, 1).toUpperCase()}
+                              </span>
+                            )}
+                            <span className="admin-lookup-result-info">
+                              <span className="admin-lookup-result-title">{result.title}</span>
+                              {result.year && (
+                                <span className="admin-lookup-result-year">{result.year}</span>
+                              )}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
+              {!isJikanType && !isOmdbType && (
+                <p className="admin-field-hint">
+                  No automatic lookup for this type — fill in manually below.
+                </p>
+              )}
             </label>
 
             <label className="admin-label">

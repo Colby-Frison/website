@@ -1,13 +1,13 @@
 .section-nav {
   display: none;
-  position: fixed;
-  top: 140px;
-  left: 20px;
-  z-index: 900;
-  width: 150px;
+  position: sticky;
+  top: 110px;
+  align-self: flex-start;
+  flex-shrink: 0;
+  width: 140px;
 }
 
-@media (min-width: 1450px) {
+@media (min-width: 901px) {
   .section-nav {
     display: block;
   }

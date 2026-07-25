@@ -37,7 +37,7 @@ const AppContent = () => {
 
   return (
     <div className="App">
-      {!isHomePage && !isAdminPage && (
+      {!isHomePage && (
         <RenderController
           desktopComponent={Navbar}
           mobileComponent={NavbarMobile}
