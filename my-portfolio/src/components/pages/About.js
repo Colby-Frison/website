@@ -6,12 +6,13 @@ import MediaTracker from '../MediaTracker/MediaTracker';
 import SectionNav from '../SectionNav/SectionNav';
 import './About.css';
 
+// Kept to at most 12 characters so they fit the vertical nav cleanly.
 const ABOUT_SECTIONS = [
   { id: 'about-intro', label: 'Intro' },
   { id: 'about-education', label: 'Education' },
   { id: 'about-experience', label: 'Experience' },
   { id: 'about-skills', label: 'Skills' },
-  { id: 'about-tracker', label: 'Currently Watching' },
+  { id: 'about-tracker', label: 'Tracker' },
 ];
 
 const About = () => {
