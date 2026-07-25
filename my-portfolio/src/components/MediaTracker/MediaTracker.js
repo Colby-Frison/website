@@ -1,16 +1,26 @@
 import React, { useMemo, useState } from 'react';
+import PlaylistPlayRoundedIcon from '@mui/icons-material/PlaylistPlayRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { useMediaItems } from '../../hooks/useMediaItems';
 import LeafAccent from '../motif/LeafAccent';
+import MediaDetailModal from './MediaDetailModal';
 import {
   MEDIA_STATUS_LABELS,
   MEDIA_TYPE_LABELS,
   MEDIA_TYPES,
   formatRating,
-  formatRelativeTime,
 } from '../../lib/media';
 import './MediaTracker.css';
 
 const SKELETON_COUNT = 6;
+
+const STATUS_DOT_CLASS = {
+  in_progress: 'media-status-dot--active',
+  planning: 'media-status-dot--planning',
+  completed: 'media-status-dot--completed',
+  on_hold: 'media-status-dot--hold',
+  dropped: 'media-status-dot--dropped',
+};
 
 const MediaPoster = ({ item }) => {
   const [failed, setFailed] = useState(false);
@@ -41,54 +51,58 @@ const MediaCardSkeleton = () => (
     <div className="media-card-body">
       <div className="media-skeleton-line media-skeleton-line--title" />
       <div className="media-skeleton-line media-skeleton-line--meta" />
-      <div className="media-skeleton-line media-skeleton-line--notes" />
     </div>
   </div>
 );
 
-const MediaCard = ({ item }) => {
+const MediaCard = ({ item, onSelect }) => {
   const rating = formatRating(item.rating);
-  const updated = formatRelativeTime(item.updated_at);
-  const episodeLabel = (() => {
-    if (item.media_type === 'manga' && item.episode_count) {
-      return `${item.episode_count} ch`;
-    }
-    if (item.episode_count) {
-      return `${item.episode_count} ep`;
-    }
-    if (item.season_count) {
-      return `${item.season_count} season${item.season_count === 1 ? '' : 's'}`;
-    }
-    return null;
-  })();
+  const episodeLabel = item.episode_count
+    ? `${item.episode_count}`
+    : item.season_count
+    ? `${item.season_count}s`
+    : null;
 
   return (
-    <article className="media-card">
+    <button type="button" className="media-card" onClick={() => onSelect(item)}>
       <MediaPoster item={item} />
       <div className="media-card-body">
-        <div className="media-card-top">
-          <h4 className="media-card-title">{item.title}</h4>
-          {rating && <span className="media-card-rating">{rating}/10</span>}
+        <div className="media-card-title-row">
+          <span
+            className={`media-status-dot ${STATUS_DOT_CLASS[item.status] || ''}`}
+            aria-hidden="true"
+          />
+          <span className="media-card-title">{item.title}</span>
         </div>
         <div className="media-card-badges">
-          <span className="media-card-badge media-card-badge--type">
+          <span className="media-card-badge">
             {MEDIA_TYPE_LABELS[item.media_type] || item.media_type}
           </span>
-          {episodeLabel && <span className="media-card-badge">{episodeLabel}</span>}
           {item.release_year && (
             <span className="media-card-badge">{item.release_year}</span>
           )}
+          {episodeLabel && (
+            <span className="media-card-badge media-card-badge--icon">
+              <PlaylistPlayRoundedIcon fontSize="inherit" />
+              {episodeLabel}
+            </span>
+          )}
+          {rating && (
+            <span className="media-card-badge media-card-badge--icon">
+              <StarRoundedIcon fontSize="inherit" />
+              {rating}
+            </span>
+          )}
         </div>
-        {item.notes && <p className="media-card-notes">{item.notes}</p>}
-        {updated && <p className="media-card-updated">Updated {updated}</p>}
       </div>
-    </article>
+    </button>
   );
 };
 
 const MediaTracker = ({ compact = false }) => {
   const { items, loading, error, configured } = useMediaItems();
   const [activeType, setActiveType] = useState('all');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const availableTypes = useMemo(() => {
     const present = new Set(items.map((item) => item.media_type));
@@ -184,13 +198,17 @@ const MediaTracker = ({ compact = false }) => {
                 </h3>
                 <div className="media-tracker-grid">
                   {group.items.map((item) => (
-                    <MediaCard key={item.id} item={item} />
+                    <MediaCard key={item.id} item={item} onSelect={setSelectedItem} />
                   ))}
                 </div>
               </div>
             ))
           )}
         </>
+      )}
+
+      {selectedItem && (
+        <MediaDetailModal item={selectedItem} onClose={() => setSelectedItem(null)} />
       )}
     </div>
   );
