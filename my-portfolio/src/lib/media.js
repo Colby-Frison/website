@@ -1,10 +1,8 @@
 export const MEDIA_TYPES = [
-  { value: 'show', label: 'TV Show' },
+  { value: 'show', label: 'TV' },
   { value: 'movie', label: 'Movie' },
-  { value: 'anime', label: 'Anime' },
   { value: 'manga', label: 'Manga' },
   { value: 'book', label: 'Book' },
-  { value: 'music', label: 'Music' },
 ];
 
 export const MEDIA_STATUSES = [
@@ -23,10 +21,10 @@ export const MEDIA_STATUS_LABELS = Object.fromEntries(
   MEDIA_STATUSES.map(({ value, label }) => [value, label])
 );
 
-// Types the admin panel can search against OMDB. Anime is included since
-// OMDB covers anime movies/series too — it's searched without a `type`
-// filter (see searchOmdb) since an anime title can be either.
-export const OMDB_MEDIA_TYPES = new Set(['show', 'movie', 'anime']);
+// Types the admin panel can search against OMDB (anime just gets filed
+// under TV or Movie — OMDB doesn't distinguish anime as its own type
+// anyway). Manga/books have no matching API and stay manual-entry only.
+export const OMDB_MEDIA_TYPES = new Set(['show', 'movie']);
 
 export const EMPTY_MEDIA_FORM = {
   title: '',

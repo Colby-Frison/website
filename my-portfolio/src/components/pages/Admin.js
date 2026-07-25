@@ -28,12 +28,9 @@ import {
 } from '../../lib/externalMedia';
 import './Admin.css';
 
-// Anime is searched with no OMDB `type` filter since a title can be
-// either a movie or a series.
 const OMDB_TYPE_BY_MEDIA_TYPE = {
   show: 'series',
   movie: 'movie',
-  anime: null,
 };
 
 const FILTER_ALL = 'all';
@@ -72,7 +69,7 @@ const Admin = () => {
 
   const isOmdbType = OMDB_MEDIA_TYPES.has(form.media_type);
   const canFetchEpisodeTotal =
-    (form.media_type === 'show' || form.media_type === 'anime') &&
+    form.media_type === 'show' &&
     form.external_source === 'omdb' &&
     form.external_id &&
     Number(form.season_count) > 0;
@@ -289,18 +286,21 @@ const Admin = () => {
     setLookupResults([]);
     setLookupOpen(false);
     setEpisodeFetchMessage(null);
+
+    // Series-like result: fetch the exact episode count automatically
+    // rather than waiting for a manual click.
+    if (details.seasonCount) {
+      runEpisodeFetch(details.externalId, details.seasonCount);
+    }
   };
 
-  const handleFetchEpisodeTotal = async () => {
-    if (!canFetchEpisodeTotal) return;
+  const runEpisodeFetch = async (externalId, seasonCount) => {
+    if (!seasonCount || seasonCount < 1) return;
 
     setEpisodeFetchBusy(true);
     setEpisodeFetchMessage(null);
 
-    const { data, error, partial } = await fetchOmdbEpisodeTotal(
-      form.external_id,
-      Number(form.season_count)
-    );
+    const { data, error, partial } = await fetchOmdbEpisodeTotal(externalId, seasonCount);
 
     setEpisodeFetchBusy(false);
 
@@ -313,8 +313,13 @@ const Admin = () => {
     setEpisodeFetchMessage(
       partial
         ? `Got ${data} episodes (some seasons could not be fetched).`
-        : `Got ${data} episodes across ${form.season_count} seasons.`
+        : `Got ${data} episodes across ${seasonCount} seasons.`
     );
+  };
+
+  const handleFetchEpisodeTotal = () => {
+    if (!canFetchEpisodeTotal) return;
+    runEpisodeFetch(form.external_id, Number(form.season_count));
   };
 
   const handleSave = async (event) => {
@@ -626,14 +631,28 @@ const Admin = () => {
             </label>
 
             <label className="admin-label">
-              {form.media_type === 'manga' ? 'Chapters' : 'Episodes'}
+              <span className="admin-label-row">
+                {form.media_type === 'manga' ? 'Chapters' : 'Episodes'}
+                {episodeFetchBusy && (
+                  <span className="admin-spinner" role="status" aria-label="Fetching episode count" />
+                )}
+              </span>
               <input
                 className="admin-input"
                 type="number"
                 min="0"
                 value={form.episode_count}
                 onChange={handleFormChange('episode_count')}
+                placeholder={episodeFetchBusy ? 'Fetching…' : undefined}
               />
+              {canFetchEpisodeTotal && !episodeFetchBusy && (
+                <button type="button" className="admin-inline-link" onClick={handleFetchEpisodeTotal}>
+                  Refresh episode count
+                </button>
+              )}
+              {episodeFetchMessage && (
+                <span className="admin-message admin-message--muted">{episodeFetchMessage}</span>
+              )}
             </label>
 
             <label className="admin-label">
@@ -646,24 +665,6 @@ const Admin = () => {
                 onChange={handleFormChange('season_count')}
               />
             </label>
-
-            {canFetchEpisodeTotal && (
-              <div className="admin-label--full">
-                <button
-                  type="button"
-                  className="admin-button admin-button--ghost"
-                  onClick={handleFetchEpisodeTotal}
-                  disabled={episodeFetchBusy}
-                >
-                  {episodeFetchBusy
-                    ? 'Fetching episode count…'
-                    : `Fetch exact episode count (${form.season_count} seasons)`}
-                </button>
-                {episodeFetchMessage && (
-                  <p className="admin-message admin-message--muted">{episodeFetchMessage}</p>
-                )}
-              </div>
-            )}
 
             <label className="admin-label">
               Year

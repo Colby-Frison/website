@@ -12,7 +12,7 @@ const ABOUT_SECTIONS = [
   { id: 'about-education', label: 'Education' },
   { id: 'about-experience', label: 'Experience' },
   { id: 'about-skills', label: 'Skills' },
-  { id: 'about-tracker', label: 'Tracker' },
+  { id: 'about-tracker', label: 'Watching' },
 ];
 
 const About = () => {
@@ -184,8 +184,8 @@ const About = () => {
             <h2 className="interior-section-title">Currently Watching</h2>
           </div>
           <p className="about-tracker-intro">
-            A live list of shows, movies, anime, and more that I am tracking—updated from
-            the site admin without redeploying.
+            A live list of shows, movies, manga, and books that I am tracking—updated
+            from the site admin without redeploying.
           </p>
           <MediaTracker />
         </section>

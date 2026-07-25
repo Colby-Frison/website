@@ -1,6 +1,5 @@
 /**
- * OMDB lookups used only from the Admin UI (shows, movies, and anime —
- * anime is searched with no `type` filter since it can be either).
+ * OMDB lookups used only from the Admin UI (shows and movies).
  *
  * Design goal: the public About page never calls this — an admin searches
  * once, picks a result, and the chosen poster/episode/season data is saved
@@ -98,7 +97,7 @@ async function safeFetchJson(url, attemptsLeft = 1) {
 
 /**
  * @param {'movie' | 'series' | null} type Pass null/undefined to search
- *   both movies and series (used for anime, which can be either).
+ *   both movies and series.
  */
 export async function searchOmdb(query, type) {
   const trimmed = query.trim();
