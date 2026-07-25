@@ -287,7 +287,10 @@ const TrackerView = () => {
     setEpisodeFetchBusy(true);
     setEpisodeFetchMessage(null);
 
-    const { data, error, partial } = await fetchOmdbEpisodeTotal(externalId, seasonCount);
+    const { data, error, partial, probedPastCap } = await fetchOmdbEpisodeTotal(
+      externalId,
+      seasonCount
+    );
 
     setEpisodeFetchBusy(false);
 
@@ -297,11 +300,15 @@ const TrackerView = () => {
     }
 
     setForm((prev) => ({ ...prev, episode_count: data }));
-    setEpisodeFetchMessage(
-      partial
-        ? `Got ${data} episodes (some seasons could not be fetched).`
-        : `Got ${data} episodes across ${seasonCount} seasons.`
-    );
+    if (partial) {
+      setEpisodeFetchMessage(`Got ${data} episodes (some seasons could not be fetched).`);
+    } else if (probedPastCap) {
+      setEpisodeFetchMessage(
+        `Got ${data} episodes across ${seasonCount} seasons (verified past OMDB's 100-episode season limit).`
+      );
+    } else {
+      setEpisodeFetchMessage(`Got ${data} episodes across ${seasonCount} seasons.`);
+    }
   };
 
   const handleFetchEpisodeTotal = () => {

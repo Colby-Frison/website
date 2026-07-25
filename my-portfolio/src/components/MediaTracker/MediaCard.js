@@ -4,7 +4,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PlaylistPlayRoundedIcon from '@mui/icons-material/PlaylistPlayRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import LeafAccent from '../motif/LeafAccent';
-import { MEDIA_TYPE_LABELS, formatRating, formatRelativeTime } from '../../lib/media';
+import { MEDIA_TYPE_LABELS, formatRating } from '../../lib/media';
 import './MediaTracker.css';
 
 const MediaPosterImage = ({ item }) => {
@@ -48,7 +48,6 @@ export const MediaCardSkeleton = () => (
  */
 export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
   const rating = formatRating(item.rating);
-  const added = formatRelativeTime(item.created_at);
   const episodeLabel = item.episode_count
     ? `${item.episode_count}`
     : item.season_count
@@ -60,7 +59,7 @@ export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
   // The hover-reveal overlay is a desktop-only enhancement — skip it
   // entirely on the mobile tracker rather than relying on hover CSS
   // alone (touch devices don't have a reliable hover state anyway).
-  const showOverlay = !compact && (item.notes || rating || episodeLabel || added);
+  const showOverlay = !compact && (item.notes || rating || episodeLabel);
 
   const handleCardClick = () => {
     if (onEdit) onEdit(item);
@@ -129,7 +128,6 @@ export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
                 )}
               </p>
             )}
-            {added && <p className="media-card-overlay-added">Added {added}</p>}
           </div>
         )}
       </div>

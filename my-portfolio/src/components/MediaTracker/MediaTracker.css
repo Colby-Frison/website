@@ -155,13 +155,6 @@
   font-size: 0.9rem;
 }
 
-.media-card-overlay-added {
-  margin: 0;
-  color: rgba(245, 242, 237, 0.72);
-  font-size: 0.68rem;
-  font-style: italic;
-}
-
 /* Admin-only edit/delete affordances — always visible (not hover-gated)
    so they work reliably on touch as well as mouse. */
 .media-card-admin-actions {
