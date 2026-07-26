@@ -174,9 +174,82 @@ export async function getOmdbDetails(imdbId) {
 }
 
 /**
+ * OMDB's Season endpoint truncates the Episodes array at 100 items
+ * (https://github.com/omdbapi/OMDb-API/issues/106). Long single-season
+ * shows (Naruto, One Piece, etc.) therefore need per-episode probes
+ * (`Season=N&Episode=M`) to discover the real end of the season.
+ */
+const OMDB_SEASON_EPISODE_CAP = 100;
+const OMDB_EPISODE_PROBE_CEILING = 5000;
+
+async function omdbEpisodeExists(imdbId, season, episode) {
+  const url = `${OMDB_BASE}?apikey=${encodeURIComponent(
+    OMDB_API_KEY
+  )}&i=${encodeURIComponent(imdbId)}&Season=${season}&Episode=${episode}`;
+  const { data, error } = await safeFetchJson(url);
+  if (error || !data || data.Response === 'False') return false;
+  return true;
+}
+
+/**
+ * Count episodes for one season. When OMDB returns a full 100-item page,
+ * exponentially then binary-search Episode=N until the first missing
+ * episode to recover the true total.
+ */
+async function countEpisodesForSeason(imdbId, season, episodes) {
+  const listed = episodes.length;
+  if (listed === 0) return 0;
+  if (listed < OMDB_SEASON_EPISODE_CAP) return listed;
+
+  let maxListed = 0;
+  for (const ep of episodes) {
+    const n = parseInt(ep.Episode, 10);
+    if (!Number.isNaN(n) && n > maxListed) maxListed = n;
+  }
+
+  let lastKnown = Math.max(maxListed, listed);
+
+  // Exponential search for the first missing episode number.
+  let gap = 32;
+  let upper = lastKnown + gap;
+  while (lastKnown < OMDB_EPISODE_PROBE_CEILING) {
+    // eslint-disable-next-line no-await-in-loop
+    await delay(350);
+    // eslint-disable-next-line no-await-in-loop
+    const exists = await omdbEpisodeExists(imdbId, season, upper);
+    if (!exists) break;
+    lastKnown = upper;
+    gap = Math.min(gap * 2, 256);
+    upper = Math.min(lastKnown + gap, OMDB_EPISODE_PROBE_CEILING + 1);
+  }
+
+  if (lastKnown >= OMDB_EPISODE_PROBE_CEILING) {
+    return lastKnown;
+  }
+
+  // Binary search (lastKnown, upper) for the first missing episode.
+  let lo = lastKnown + 1;
+  let hi = upper;
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    // eslint-disable-next-line no-await-in-loop
+    await delay(350);
+    // eslint-disable-next-line no-await-in-loop
+    if (await omdbEpisodeExists(imdbId, season, mid)) {
+      lo = mid + 1;
+    } else {
+      hi = mid;
+    }
+  }
+
+  return lo - 1;
+}
+
+/**
  * Sums episode counts across every season of an OMDB series. Bounded to
- * `totalSeasons`, so at most N sequential requests — only ever triggered by
- * an explicit admin action, never by a public page visit. Tolerant of
+ * `totalSeasons`, so at most N season requests (plus a few probes when a
+ * season hits OMDB's 100-episode list cap). Only ever triggered by an
+ * explicit admin action, never by a public page visit. Tolerant of
  * individual season failures: skips that season and reports a partial
  * result instead of aborting the whole lookup.
  */
@@ -190,6 +263,7 @@ export async function fetchOmdbEpisodeTotal(imdbId, totalSeasons) {
 
   let episodeTotal = 0;
   let failedSeasons = 0;
+  let probedPastCap = false;
 
   for (let season = 1; season <= totalSeasons; season += 1) {
     const url = `${OMDB_BASE}?apikey=${encodeURIComponent(
@@ -201,7 +275,11 @@ export async function fetchOmdbEpisodeTotal(imdbId, totalSeasons) {
     if (error || !data || data.Response === 'False' || !Array.isArray(data.Episodes)) {
       failedSeasons += 1;
     } else {
-      episodeTotal += data.Episodes.length;
+      if (data.Episodes.length >= OMDB_SEASON_EPISODE_CAP) {
+        probedPastCap = true;
+      }
+      // eslint-disable-next-line no-await-in-loop
+      episodeTotal += await countEpisodesForSeason(imdbId, season, data.Episodes);
     }
 
     if (season < totalSeasons) {
@@ -218,5 +296,6 @@ export async function fetchOmdbEpisodeTotal(imdbId, totalSeasons) {
     data: episodeTotal,
     error: null,
     partial: failedSeasons > 0,
+    probedPastCap,
   };
 }

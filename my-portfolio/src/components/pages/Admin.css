@@ -2,6 +2,12 @@
   font-family: var(--font-body);
 }
 
+/* Dashboard needs vertical scroll; keep horizontal clip from interior-page. */
+.admin-page--dashboard {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .admin-container {
   max-width: 920px;
 }
