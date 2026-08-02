@@ -9,15 +9,16 @@ const RESUME_FILENAME = 'Colby_Frison_Resume.pdf';
 /**
  * Compact resume entry point: opens a preview modal or downloads the PDF.
  * Modal is portaled to document.body so it isn't clipped by section transforms.
+ * Pass downloadOnly for mobile (no modal).
  */
-const ResumeViewer = ({ className = '' }) => {
+const ResumeViewer = ({ className = '', downloadOnly = false }) => {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef(null);
 
   const close = () => setOpen(false);
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open || downloadOnly) return undefined;
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') close();
@@ -30,7 +31,24 @@ const ResumeViewer = ({ className = '' }) => {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = '';
     };
-  }, [open]);
+  }, [open, downloadOnly]);
+
+  if (downloadOnly) {
+    return (
+      <div className={`resume-viewer resume-viewer--download-only ${className}`.trim()}>
+        <a
+          className="resume-viewer-download"
+          href={RESUME_HREF}
+          download={RESUME_FILENAME}
+        >
+          Download Resume
+          <span className="resume-viewer-trigger-mark" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      </div>
+    );
+  }
 
   const modal =
     open &&
