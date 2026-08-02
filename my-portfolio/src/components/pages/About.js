@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageAtmosphere from '../motif/PageAtmosphere';
 import LeafAccent from '../motif/LeafAccent';
 import MediaTracker from '../MediaTracker/MediaTracker';
+import ResumeViewer from '../ResumeViewer/ResumeViewer';
 import SectionNav from '../SectionNav/SectionNav';
 import { useSiteSettings } from '../../hooks/useSiteSettings';
 import './About.css';
@@ -104,6 +105,9 @@ const About = () => {
             full-stack products and thoughtful interfaces. Currently interning in IT at
             ConocoPhillips.
           </p>
+          <div className="section-animate" data-delay="0.08">
+            <ResumeViewer />
+          </div>
         </header>
 
         <section className="about-section section-animate" data-delay="0.12" id="about-education">

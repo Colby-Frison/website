@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageAtmosphere from '../../motif/PageAtmosphere';
 import LeafAccent from '../../motif/LeafAccent';
 import MediaTracker from '../../MediaTracker/MediaTracker';
+import ResumeViewer from '../../ResumeViewer/ResumeViewer';
 import { useSiteSettings } from '../../../hooks/useSiteSettings';
 import './AboutMobile.css';
 
@@ -89,6 +90,9 @@ const AboutMobile = () => {
             full-stack products and thoughtful interfaces. Currently interning in IT at
             ConocoPhillips.
           </p>
+          <div className="section-animate" data-delay="0.08">
+            <ResumeViewer />
+          </div>
         </header>
 
         <section className="about-mobile-section section-animate" data-delay="0.12">
