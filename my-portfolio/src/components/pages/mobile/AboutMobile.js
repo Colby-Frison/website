@@ -113,7 +113,7 @@ const AboutMobile = () => {
             internship in Automation &amp; AI Development at ConocoPhillips.
           </p>
           <div className="section-animate" data-delay="0.08">
-            <ResumeViewer />
+            <ResumeViewer downloadOnly />
           </div>
         </header>
 
