@@ -139,25 +139,33 @@ const Projects = ({ deviceInfo }) => {
     },
     {
       id: 3,
-      name: 'Expression Optimizer',
-      navLabel: 'Optimizer',
+      name: 'Tensor Compiler Optimization Pipeline',
+      navLabel: 'Tensor Opt',
       shortDescription:
-        'Compiler Construction project that refactors and optimizes expressions in C before compilation, achieving about 50% speedup single-threaded.',
-      fullDescription: `For Compiler Construction, I built a pre-compiler optimization pass over given expressions in C. The pipeline refactors expressions and applies optimization operations before the compiler runs, improving runtime by approximately 50% while remaining single-threaded. The repository is still private while a public fork is prepared; more details will follow.`,
+        'Schedule-driven compiler pipeline that lowers YAML-defined tensor kernels through AST passes into executable C-built for Compiler Construction.',
+      fullDescription: `For Compiler Construction (Fall 2025), I built a schedule-driven optimization pipeline that transforms YAML-defined tensor kernels through AST lowering passes into executable C. The system implements hoisting, modulo simplification, pointer-dereference lowering, and kernel-to-SSA passes to improve generated code quality, with CLI verification and benchmarking workflows to validate correctness and compare optimization variants reproducibly. A public repository is forthcoming.`,
       type: 'Academic Project',
-      technologies: ['C', 'Python3', 'shell', 'OSACA', 'LLVM'],
+      technologies: ['C', 'Python', 'YAML', 'AST', 'SSA', 'LLVM', 'CLI tooling'],
       links: [],
       features: [
-        'Expression refactoring prior to compilation',
-        'Optimization operations in a single-threaded pipeline',
+        'YAML-defined tensor kernels lowered through AST transformation passes',
+        'Hoisting, modulo simplification, and pointer-dereference lowering',
+        'Kernel-to-SSA pass for improved generated code quality',
+        'CLI verification and benchmarking across optimization variants',
       ],
       impact: [
-        'Approximately 50% runtime speedup on targeted workloads (single-threaded)',
+        'Produced a reproducible optimization pipeline from schedule specs to executable C',
+        'Enabled correctness checks and variant comparison via CLI workflows',
       ],
       role: 'Student Developer',
       contributions: [
-        'Implemented expression refactoring and optimization logic in C',
-        'Measured single-threaded performance gains against the baseline',
+        'Implemented AST lowering and SSA-oriented optimization passes',
+        'Built verification and benchmarking tooling for the pipeline',
+      ],
+      architecture: [
+        'Schedule-driven front end over YAML kernel definitions',
+        'Multi-pass AST lowering into C codegen',
+        'CLI harness for correctness and performance comparison',
       ],
     },
     {
@@ -210,8 +218,8 @@ const Projects = ({ deviceInfo }) => {
       name: 'Classroom Q&A',
       navLabel: 'Classroom',
       shortDescription:
-        'A web application enabling students to anonymously ask questions during class, enhancing classroom engagement through real-time interaction.',
-      fullDescription: `Started as a side project for practicing databases and websockets, this application evolved into a practical tool used in actual classroom settings. It removes barriers to student participation by allowing anonymous questions while providing professors with an efficient way to manage classroom interactions.`,
+        'Full-stack anonymous classroom Q&A app with real-time sync—deployed and used in a live university course.',
+      fullDescription: `Developed and deployed a full-stack anonymous classroom Q&A app used in a live university course environment (March-May 2025). Started as practice with databases and real-time sync, then evolved into a practical tool that removes barriers to student participation while giving professors an efficient way to manage classroom questions.`,
       type: 'Personal/Academic Project',
       technologies: [
         'TypeScript',
@@ -265,8 +273,8 @@ const Projects = ({ deviceInfo }) => {
       name: 'FreshStart',
       navLabel: 'FreshStart',
       shortDescription:
-        'A comprehensive web application that helps users plan, build, and maintain home gardens or small farms, featuring AI-powered recommendations and interactive design tools.',
-      fullDescription: `FreshStart is designed to make growing fresh food accessible to everyone by providing an intuitive platform for garden and farm planning. The application combines modern technology with practical farming knowledge to help users create successful growing spaces.`,
+        'Award-winning MERN farm-planning app with interactive layout tools, ML yield prediction, and LLM task generation-2nd place at Hacklahoma 2024.',
+      fullDescription: `FreshStart helps users plan, build, and maintain a home garden or small farm. Built at Hacklahoma 2024, it placed 2nd out of 200+ participants. The app combines a MERN stack with machine learning for crop yield prediction and an LLM for personalized farm task generation.`,
       type: 'Hackathon Project',
       technologies: [
         'MongoDB',
@@ -289,7 +297,7 @@ const Projects = ({ deviceInfo }) => {
           label: 'View on Devpost',
         },
       ],
-      achievements: ['2nd place at Hacklahoma 2024'],
+      achievements: ['2nd place at Hacklahoma 2024 (200+ participants)'],
       features: [
         'Farm Mapping Layout Tool with drag-and-drop functionality',
         'ML-powered crop yield prediction system',
@@ -298,16 +306,15 @@ const Projects = ({ deviceInfo }) => {
         'Interactive farm creation and management dashboard',
       ],
       impact: [
+        '2nd place out of 200+ participants at Hacklahoma 2024',
         'Helps users efficiently plan and manage gardens/farms',
         'Reduces research time through AI-powered recommendations',
-        'Makes agriculture more accessible to beginners',
       ],
       role: 'Front-end Lead Developer',
       contributions: [
-        'Led front-end development efforts',
-        'Implemented drag-and-drop farm layout system',
-        'Integrated ML models for yield prediction',
-        'Created intuitive user interface for farm planning',
+        'Led front-end development for the award-winning farm planning web app',
+        'Built interactive farm planning UI on the MERN stack',
+        'Integrated machine learning for yield prediction and an LLM for task generation',
       ],
     },
     {
@@ -379,8 +386,8 @@ const Projects = ({ deviceInfo }) => {
           <LeafAccent size="sm" settle />
         </div>
         <p className="interior-lede">
-          Recent work that reflects my interests in software development, AI, and building tools
-          people can actually use.
+          Recent work across automation, compilers, secure systems, and full-stack tools people
+          can actually use.
         </p>
 
         <div className="projects-list">

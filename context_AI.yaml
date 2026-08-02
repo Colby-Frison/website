@@ -2,7 +2,7 @@ personal:
   name: Colby Frison
   contact:
     email: Colby.p.frison-1@ou.edu
-    phone: 832 763-7988
+    phone: (832) 763-7988
     github: github.com/Colby-Frison
   pronouns: null
 
@@ -10,21 +10,27 @@ education:
   degree: Bachelor of Science in Computer Science
   institution: University of Oklahoma, Gallogly College of Engineering
   location: Norman, OK
-  graduation: Expected May 2027
-  gpa: 3.70/4.00
+  graduation: Expected December 2026
+  gpa: 3.76/4.00
   honors:
     - President's Honor Roll (Spring 2025)
   minors: []
   certificates: []
-  notable_courses: []
+  notable_courses:
+    - Compiler Construction
+    - Data Structures & Algorithms
+    - Software Engineering
+    - Computer Organization
+    - Programming Languages
   notes:
     - Rigorous academic schedule balanced with extracurriculars
 
 skills:
-  languages: [C++, Java, Python, HTML/CSS, Matlab]
+  languages: [C, C++, Java, Python, TypeScript, JavaScript, HTML/CSS, PowerShell]
+  technologies: [Power Automate Desktop, UiPath, React, Next.js, Node.js, Express, Git, GitHub, CI/CD]
   dev_tools: [Git, GitHub, VSCode, IntelliJ, Eclipse]
   operating_systems: [Windows, Linux]
-  focus_areas: [Software Development, User Interface (UI), Full-Stack Development, Game Development, AI, Machine Learning, Graphic Design, UI/UX, Data Science, Quality Assurance, Project Management]
+  focus_areas: [Compiler Design, AST Transformations, SSA, RPA, Process Automation, Automation & AI, Full-Stack Development, Machine Learning, Software Development, UI/UX]
   certifications: []
   soft_skills:
     - Time management
@@ -43,25 +49,25 @@ skills:
 
 work_experience:
   - title: IT Intern
+    team: Automation & AI Development
     employer: ConocoPhillips
+    location: Bartlesville, Ok
     start: May 2026
-    end: Present
+    end: July 2026
     details:
-      - Further information regarding this role is to be disclosed
+      - Enabled Power Automate Desktop adoption by evaluating platform gaps against existing RPA tooling and supporting platform integration
+      - Migrated preexisting UiPath workflows into Power Automate Desktop pilot projects to validate feasibility and guide platform decisions
+      - Documented capability differences across RPA platforms to inform evaluation and adoption planning for the Automation & AI team
+    technologies: [Power Automate Desktop, UiPath, RPA]
   - title: Engineering Ambassador
     employer: University of Oklahoma, Gallogly College of Engineering
     location: Norman, OK
-    start: March 2024
-    end: Present
+    start: March 2025
+    end: Aug. 2025
     details:
-      - Recruit prospective students for the College of Engineering, providing detailed information about all engineering majors and departmental opportunities
-      - Lead campus tours of the engineering facilities, engaging with students and families to showcase resources and student life
-      - Conduct research on peer institutions and high schools to inform and improve recruitment strategies
-      - Develop strong communication and presentation skills by answering questions and representing the college at outreach events
-      - Sole Computer Science ambassador, fielding all CS-related questions
-      - Regular use of Microsoft environment (basic level)
-      - Required to have broad knowledge of all engineering majors and department resources
-      - Research and analyze recruitment strategies from other colleges and high schools
+      - Served as sole Computer Science ambassador, communicating complex technical concepts to prospective students and families
+      - Led campus tours of engineering facilities and provided detailed information about engineering majors and departmental opportunities
+      - Conducted research on peer institutions and high schools to inform college recruitment strategies
   - title: Teacher's Assistant
     employer: Houston Museum of Natural Science
     location: Sugar Land, TX
@@ -76,98 +82,22 @@ work_experience:
       - Demonstrated ability to manage groups and communicate complex topics to young audiences
 
 projects:
-  - name: SimpleChef
-    type: Academic/Group
-    organization: University of Oklahoma (CS4063 Human–Computer Interaction)
-    start: Spring 2026
-    end: Spring 2026
-    description: |
-      Full-stack cooking assistant combining recipe management, step-by-step cooking mode,
-      meal planning, and grocery list generation. Academic HCI course prototype with live demo.
-    role: Team member / full-stack contributor
-    technologies: [React, TypeScript, Vite, FastAPI, PostgreSQL, SQLAlchemy, Alembic, Zustand, Axios, Docker]
-    features:
-      - JWT authentication with protected API endpoints
-      - Recipe library with create/edit/delete, tags, filtering, and visibility rules
-      - Cooking mode with step navigation, timer dock, and ingredient–step linkage
-      - Meal planner with month view and daily calorie summary
-      - Grocery list merge, categorization, check/delete, and export/share
-      - Profile settings for calorie goals and dietary preferences
-    impact:
-      - Delivered an end-to-end HCI prototype spanning design, API, and web UI
-      - Deployed live demo for evaluation and code review
-    link: https://github.com/Colby-Frison/SimpleChef
-    demo: https://simple-chef.vercel.app
-  - name: openpilot Testing Exploration
-    type: Academic/Group
-    organization: University of Oklahoma (CS4223 Software Quality and Testing)
-    start: Spring 2026
-    end: Spring 2026
-    description: |
-      Forked exploration and contribution to comma.ai openpilot (release 0.9.8), focused on
-      software quality: layered tests for modeld and pandad, shared pytest harnesses, system
-      contract tests, and fork CI for course-scoped verification.
-    role: Team member (Group C, Cluster 1)
-    technologies: [Python, pytest, C++, Catch2, SCons, GitHub Actions, openpilot]
-    features:
-      - Unit and contract tests for modeld parser math and fill_model_msg message population
-      - Extended modeld daemon integration and Phase C message contracts
-      - Pandad desktop tests: CAN capnp serialization, flash/wrapper mocks, USB protocol gtests
-      - Shared selfdrive/system pytest support harnesses and multi-service IPC smoke tests
-      - System contract suite and coverage comparison tooling
-      - Course CI workflow (our_tests) for reproducible green signal on the team fork
-    impact:
-      - Raised scoped modeld coverage substantially (parser and fill_model_msg targets)
-      - Completed desktop pandad verification gate without requiring Panda hardware
-      - Documented testing plans, trackers, and run commands under docs/testing
-    link: https://github.com/Colby-Frison/openpilot
-    docs: https://github.com/Colby-Frison/openpilot/tree/master/docs/testing
-  - name: Expression Optimizer (Compiler Construction)
+  - name: Tensor Compiler Optimization Pipeline
     type: Academic
-    organization: University of Oklahoma (Compiler Construction)
-    status: draft
+    organization: University of Oklahoma
+    start: Fall 2025
+    end: Fall 2025
     description: |
-      Pre-compiler optimization pass over given expressions in C. Refactored expressions and
-      applied optimization operations before compilation, achieving approximately 50% speedup
-      while remaining single-threaded. Repository currently private; public fork forthcoming.
-    role: Student developer
-    technologies: [C]
+      Schedule-driven optimization pipeline that transforms YAML-defined tensor kernels through AST lowering passes into executable C. Implements hoisting, modulo simplification, pointer-dereference lowering, and kernel-to-SSA passes, with CLI verification and benchmarking workflows.
+    role: Solo Developer
+    technologies: [C, Python, YAML, AST, SSA]
     features:
-      - Expression refactoring prior to compilation
-      - Optimization operations applied in a single-threaded pipeline
-    impact:
-      - Approximately 50% runtime speedup on targeted workloads (single-threaded)
+      - YAML-defined tensor kernels lowered through AST transformation passes
+      - Hoisting, modulo simplification, and pointer-dereference lowering
+      - Kernel-to-SSA pass for improved generated code quality
+      - CLI verification and benchmarking across optimization variants
     notes:
-      - Further details and public repository link to be added when the fork is published
-  - name: Secure Instant Point-to-Point Messaging
-    type: Academic/Group
-    organization: University of Oklahoma (CS5173 Computer Security)
-    start: Spring 2026
-    end: May 2026
-    description: |
-      Two-party secure chat application with authenticated key agreement, AES-GCM messaging,
-      per-message nonces, and HKDF key rotation. Desktop GUI shows ciphertext and plaintext
-      side by side. Built with teammates Johnpaul Nguyen and Jacob Woolbright.
-    role: Team member
-    technologies: [Python, AES-GCM, ECDH, Ed25519, HKDF, Tkinter, CustomTkinter, sockets, cryptography]
-    features:
-      - Authenticated key agreement via ephemeral ECDH (P-384) and Ed25519 identity signatures
-      - 256-bit AES-GCM session keys derived with HKDF-SHA-256 (bonus: no pre-shared passphrase)
-      - Per-message 12-byte random nonces for distinct ciphertext on repeated plaintexts
-      - HKDF ratchet key rotation every five messages for partial forward secrecy
-      - Three-layer architecture: crypto/socket, controller, and Tkinter GUI
-      - GUI message bubbles displaying both ciphertext and plaintext
-      - Automated loopback integration tests for delivery and key rotation
-    impact:
-      - Satisfied all assignment requirements plus authenticated ECDH key agreement bonus
-      - Provides confidentiality, integrity, authenticity, and ciphertext non-determinism
-      - Session-level forward secrecy at handshake; bounded exposure via key ratchet
-    limitations:
-      - Trust-on-first-use (identity keys not persisted or fingerprinted)
-      - Metadata (IPs, timing, approximate lengths) not obfuscated
-    notes:
-      - Report: Computer_Security_report-2.pdf
-      - Public repository link to be added if/when published
+      - Public repository forthcoming
   - name: Classroom Q&A
     type: Personal/Academic
     organization: University of Oklahoma
@@ -260,9 +190,7 @@ extracurriculars:
     start: Aug 2023
     end: Dec 2024
     description:
-      - Developed strong time management skills balancing rigorous band schedule with academic commitments
-      - Collaborated effectively in fast-paced, high-pressure performance environments
-      - Demonstrated preparation and resilience through challenging performances and conditions
+      - Balanced a rigorous rehearsal and performance schedule with full-time coursework, collaborating under high-pressure game-day conditions
   - name: Engineer's Club at OU
     role: Member
     description: Participates in engineering-related events and networking

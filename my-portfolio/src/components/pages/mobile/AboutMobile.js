@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageAtmosphere from '../../motif/PageAtmosphere';
 import LeafAccent from '../../motif/LeafAccent';
 import MediaTracker from '../../MediaTracker/MediaTracker';
+import ResumeViewer from '../../ResumeViewer/ResumeViewer';
 import { useSiteSettings } from '../../../hooks/useSiteSettings';
 import './AboutMobile.css';
 
@@ -33,11 +34,27 @@ const AboutMobile = () => {
   }, []);
 
   const skills = {
-    languages: ['C/C++', 'Java', 'Python', 'JavaScript', 'TypeScript', 'HTML/CSS', 'Matlab'],
-    tools: ['Git', 'GitHub', 'VSCode', 'IntelliJ', 'Eclipse', 'Docker'],
+    languages: ['C', 'C++', 'Java', 'Python', 'TypeScript', 'JavaScript', 'HTML/CSS', 'PowerShell'],
+    technologies: [
+      'Power Automate Desktop',
+      'UiPath',
+      'React',
+      'Next.js',
+      'Node.js',
+      'Express',
+      'Firebase',
+      'MongoDB',
+      'Tailwind CSS',
+      'Git',
+      'GitHub',
+      'CI/CD',
+    ],
     platforms: ['Windows', 'Linux'],
     focus: [
+      'RPA',
+      'Process Automation',
       'Full-Stack Development',
+      'Machine Learning',
       'Software Quality & Testing',
       'UI/UX',
       'AI & Machine Learning',
@@ -49,27 +66,33 @@ const AboutMobile = () => {
   const workExperience = [
     {
       title: 'IT Intern',
-      company: 'ConocoPhillips',
-      period: 'May 2026 — Present',
-      details: ['Further information regarding this role is to be disclosed.'],
+      company: 'ConocoPhillips · Automation & AI Development · Bartlesville, OK',
+      period: 'May 2026 - July 2026',
+      details: [
+        'Enabled Power Automate adoption by evaluating platform gaps against existing RPA tools and supporting enterprise platform integration',
+        'Migrated existing UiPath workflows into Power Automate Desktop pilot projects to validate feasibility and guide platform decisions',
+        'Documented capability differences across RPA platforms to inform evaluation and adoption planning for the Automation & AI team',
+      ],
     },
     {
       title: 'Engineering Ambassador',
-      company: 'University of Oklahoma, Gallogly College of Engineering',
-      period: 'March 2024 — Present',
+      company: 'University of Oklahoma, Gallogly College of Engineering · Norman, OK',
+      period: 'March 2025 - August 2025',
       details: [
-        'Recruit prospective students and lead engineering facility tours',
-        'Sole Computer Science ambassador for CS-related outreach',
-        'Research peer institutions to improve recruitment strategies',
+        'Served as sole Computer Science ambassador, communicating complex technical concepts to prospective students and families',
+        'Led campus tours of engineering facilities and provided detailed information about engineering majors and departmental opportunities',
+        'Conducted research on peer institutions and high schools to inform college recruitment strategies',
+        'Supported Engineering Days and high school camps through workshop guidance, event operations, and student engagement',
       ],
     },
     {
       title: "Teacher's Assistant",
-      company: 'Houston Museum of Natural Science',
-      period: 'March 2020 — May 2024',
+      company: 'Houston Museum of Natural Science · Sugar Land, TX',
+      period: 'March 2020 - May 2024',
       details: [
-        'Led summer camp classes independently and mentored junior staff',
-        'Developed educational materials for science-focused programs',
+        "Independently led and managed summer camp classes in the instructor's absence, demonstrating leadership and adaptability",
+        'Developed lesson plans and educational materials for science-focused programs',
+        'Mentored students and junior staff, fostering an engaging learning environment',
       ],
     },
   ];
@@ -85,10 +108,13 @@ const AboutMobile = () => {
           </div>
           <p className="about-mobile-bio section-animate" data-delay="0.05">
             Computer Science student at the University of Oklahoma. I care about building
-            software people can trust and use—from secure systems and quality testing to
-            full-stack products and thoughtful interfaces. Currently interning in IT at
-            ConocoPhillips.
+            software people can trust and use-from automation and compiler work to
+            full-stack products and thoughtful interfaces. Recently completed an IT
+            internship in Automation &amp; AI Development at ConocoPhillips.
           </p>
+          <div className="section-animate" data-delay="0.08">
+            <ResumeViewer />
+          </div>
         </header>
 
         <section className="about-mobile-section section-animate" data-delay="0.12">
@@ -101,10 +127,10 @@ const AboutMobile = () => {
             University of Oklahoma · Gallogly College of Engineering · Norman, OK
           </p>
           <p className="about-mobile-meta">
-            <span>Graduation</span> May 2027
+            <span>Graduation</span> Expected December 2026
           </p>
           <p className="about-mobile-meta">
-            <span>GPA</span> 3.70 / 4.00
+            <span>GPA</span> 3.76 / 4.00
           </p>
           <p className="about-mobile-honor">President&apos;s Honor Roll · Spring 2025</p>
         </section>
@@ -143,15 +169,15 @@ const AboutMobile = () => {
             <p>{skills.languages.join(' · ')}</p>
           </div>
           <div className="about-mobile-skill">
-            <h4>Tools</h4>
-            <p>{skills.tools.join(' · ')}</p>
+            <h4>Technologies</h4>
+            <p>{skills.technologies.join(' · ')}</p>
           </div>
           <div className="about-mobile-skill">
             <h4>Platforms</h4>
             <p>{skills.platforms.join(' · ')}</p>
           </div>
           <div className="about-mobile-skill">
-            <h4>Focus</h4>
+            <h4>Concepts</h4>
             <p>{skills.focus.join(' · ')}</p>
           </div>
         </section>
