@@ -82,6 +82,22 @@ work_experience:
       - Demonstrated ability to manage groups and communicate complex topics to young audiences
 
 projects:
+  - name: Tensor Compiler Optimization Pipeline
+    type: Academic
+    organization: University of Oklahoma
+    start: Fall 2025
+    end: Fall 2025
+    description: |
+      Schedule-driven optimization pipeline that transforms YAML-defined tensor kernels through AST lowering passes into executable C. Implements hoisting, modulo simplification, pointer-dereference lowering, and kernel-to-SSA passes, with CLI verification and benchmarking workflows.
+    role: Solo Developer
+    technologies: [C, Python, YAML, AST, SSA]
+    features:
+      - YAML-defined tensor kernels lowered through AST transformation passes
+      - Hoisting, modulo simplification, and pointer-dereference lowering
+      - Kernel-to-SSA pass for improved generated code quality
+      - CLI verification and benchmarking across optimization variants
+    notes:
+      - Public repository forthcoming
   - name: Classroom Q&A
     type: Personal/Academic
     organization: University of Oklahoma
