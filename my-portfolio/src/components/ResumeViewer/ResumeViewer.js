@@ -1,4 +1,6 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import './ResumeViewer.css';
 
 const RESUME_HREF = '/resume.pdf';
@@ -6,34 +8,77 @@ const RESUME_FILENAME = 'Colby_Frison_Resume.pdf';
 
 /**
  * Compact resume entry point: opens a preview modal or downloads the PDF.
+ * Modal is portaled to document.body so it isn't clipped by section transforms.
  */
 const ResumeViewer = ({ className = '' }) => {
   const [open, setOpen] = useState(false);
-  const titleId = useId();
-  const closeRef = useRef(null);
-  const previouslyFocused = useRef(null);
+  const dialogRef = useRef(null);
 
   const close = () => setOpen(false);
 
   useEffect(() => {
     if (!open) return undefined;
 
-    previouslyFocused.current = document.activeElement;
-    document.body.style.overflow = 'hidden';
     const onKeyDown = (event) => {
       if (event.key === 'Escape') close();
     };
-    window.addEventListener('keydown', onKeyDown);
-    closeRef.current?.focus();
+    document.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.focus();
 
     return () => {
+      document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKeyDown);
-      if (previouslyFocused.current instanceof HTMLElement) {
-        previouslyFocused.current.focus();
-      }
     };
   }, [open]);
+
+  const modal =
+    open &&
+    createPortal(
+      <div className="resume-modal-backdrop" onMouseDown={close}>
+        <div
+          className="resume-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="resume-modal-title"
+          tabIndex={-1}
+          ref={dialogRef}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          <button
+            type="button"
+            className="resume-modal-close"
+            onClick={close}
+            aria-label="Close"
+          >
+            <CloseRoundedIcon fontSize="small" />
+          </button>
+
+          <div className="resume-modal-content">
+            <div className="resume-modal-toolbar">
+              <h2 id="resume-modal-title" className="resume-modal-title">
+                Resume
+              </h2>
+              <a
+                className="resume-modal-link"
+                href={RESUME_HREF}
+                download={RESUME_FILENAME}
+              >
+                Download PDF ↗
+              </a>
+            </div>
+            <div className="resume-modal-frame-wrap">
+              <iframe
+                className="resume-modal-frame"
+                src={`${RESUME_HREF}#view=FitH`}
+                title="Colby Frison resume"
+              />
+            </div>
+          </div>
+        </div>
+      </div>,
+      document.body
+    );
 
   return (
     <div className={`resume-viewer ${className}`.trim()}>
@@ -57,51 +102,7 @@ const ResumeViewer = ({ className = '' }) => {
       >
         Download
       </a>
-
-      {open && (
-        <div
-          className="resume-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) close();
-          }}
-        >
-          <div className="resume-modal-panel">
-            <header className="resume-modal-header">
-              <h2 id={titleId} className="resume-modal-title">
-                Resume
-              </h2>
-              <div className="resume-modal-actions">
-                <a
-                  className="resume-modal-download"
-                  href={RESUME_HREF}
-                  download={RESUME_FILENAME}
-                >
-                  Download PDF
-                </a>
-                <button
-                  ref={closeRef}
-                  type="button"
-                  className="resume-modal-close"
-                  onClick={close}
-                  aria-label="Close resume preview"
-                >
-                  Close
-                </button>
-              </div>
-            </header>
-            <div className="resume-modal-frame-wrap">
-              <iframe
-                className="resume-modal-frame"
-                src={`${RESUME_HREF}#view=FitH`}
-                title="Colby Frison resume"
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {modal}
     </div>
   );
 };
