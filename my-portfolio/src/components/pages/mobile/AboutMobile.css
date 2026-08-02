@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--paper);
+  background: transparent;
 }
 
 .about-mobile-job h3 {
