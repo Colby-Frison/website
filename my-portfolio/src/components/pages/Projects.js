@@ -41,7 +41,7 @@ const Projects = ({ deviceInfo }) => {
       name: 'SimpleChef',
       navLabel: 'SimpleChef',
       shortDescription:
-        'A full-stack cooking assistant with recipes, step-by-step cooking, meal planning, and grocery lists—built as an HCI course prototype.',
+        'A full-stack cooking assistant with recipes, step-by-step cooking, meal planning, and grocery lists-built as an HCI course prototype.',
       fullDescription: `SimpleChef combines recipe management, guided cooking, meal planning, and grocery list generation in one system. Built for CS4063 Human–Computer Interaction (Spring 2026) as an academic prototype with a React + Vite web app, FastAPI backend, and PostgreSQL. Live demo available for evaluation.`,
       type: 'Academic Project',
       technologies: [
@@ -96,7 +96,7 @@ const Projects = ({ deviceInfo }) => {
       name: 'openpilot Testing Exploration',
       navLabel: 'openpilot',
       shortDescription:
-        'Exploration and contribution to comma.ai openpilot focused on software quality—layered tests for modeld and pandad, shared harnesses, and course CI.',
+        'Exploration and contribution to comma.ai openpilot focused on software quality-layered tests for modeld and pandad, shared harnesses, and course CI.',
       fullDescription: `Fork of openpilot (release 0.9.8) for CS4223 Software Quality and Testing at the University of Oklahoma. Our team scoped testing work around selfdrive/modeld, assignment-listed pandad files, and system/, adding unit/contract tests, shared pytest infrastructure, coverage tooling, and documentation under docs/testing.`,
       type: 'Academic / Open Source Contribution',
       technologies: ['Python', 'pytest', 'C++', 'Catch2', 'SCons', 'GitHub Actions', 'openpilot'],
@@ -173,7 +173,7 @@ const Projects = ({ deviceInfo }) => {
       name: 'Secure Instant Messaging',
       navLabel: 'Secure Chat',
       shortDescription:
-        'Point-to-point encrypted chat with authenticated ECDH key agreement, AES-GCM, and rotating session keys—built for Computer Security.',
+        'Point-to-point encrypted chat with authenticated ECDH key agreement, AES-GCM, and rotating session keys-built for Computer Security.',
       fullDescription: `CS5173 Computer Security (Spring 2026) team project with Johnpaul Nguyen and Jacob Woolbright. We built a two-party secure messaging app in Python: authenticated ephemeral ECDH (P-384) with Ed25519 signatures derives a 256-bit AES-GCM session key via HKDF (no pre-shared passphrase). Per-message random nonces keep repeated plaintexts from producing identical ciphertext, and an HKDF ratchet rotates keys every five messages. A Tkinter GUI shows ciphertext and plaintext side by side for every send and receive.`,
       type: 'Academic Project',
       technologies: [
@@ -218,7 +218,7 @@ const Projects = ({ deviceInfo }) => {
       name: 'Classroom Q&A',
       navLabel: 'Classroom',
       shortDescription:
-        'Full-stack anonymous classroom Q&A app with real-time sync—deployed and used in a live university course.',
+        'Full-stack anonymous classroom Q&A app with real-time sync-deployed and used in a live university course.',
       fullDescription: `Developed and deployed a full-stack anonymous classroom Q&A app used in a live university course environment (March-May 2025). Started as practice with databases and real-time sync, then evolved into a practical tool that removes barriers to student participation while giving professors an efficient way to manage classroom questions.`,
       type: 'Personal/Academic Project',
       technologies: [

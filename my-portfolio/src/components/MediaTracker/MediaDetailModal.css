@@ -10,7 +10,7 @@
   animation: mediaModalFadeIn 0.2s var(--ease-out);
 }
 
-/* Fixed size, locked aspect ratio — content never resizes the window.
+/* Fixed size, locked aspect ratio - content never resizes the window.
    Anything that doesn't fit (long notes) scrolls internally instead. */
 .media-modal {
   position: relative;
@@ -130,7 +130,7 @@
   color: var(--crimson);
 }
 
-/* Kept plain — no border/background box — so it reads like the rest
+/* Kept plain - no border/background box - so it reads like the rest
    of the info panel rather than standing out as a distinct field. */
 .media-modal-notes {
   flex: 1;
@@ -198,7 +198,7 @@
 
 @media (max-width: 620px) {
   /* Stacked layout gets its own locked ratio (taller than wide) rather
-     than the desktop landscape shape — still fixed, still non-growing. */
+     than the desktop landscape shape - still fixed, still non-growing. */
   .media-modal {
     width: min(420px, 92vw);
     aspect-ratio: 3 / 4;

@@ -1,7 +1,7 @@
 /**
  * OMDB lookups used only from the Admin UI (shows and movies).
  *
- * Design goal: the public About page never calls this — an admin searches
+ * Design goal: the public About page never calls this - an admin searches
  * once, picks a result, and the chosen poster/episode/season data is saved
  * into Supabase. Every export here returns `{ data, error }` and never
  * throws, so a flaky third-party API can't break the admin form.
@@ -74,7 +74,7 @@ async function safeFetchJson(url, attemptsLeft = 1) {
     }
 
     if (response.status === 429) {
-      return { data: null, error: 'Rate limited — wait a moment and try again.' };
+      return { data: null, error: 'Rate limited - wait a moment and try again.' };
     }
 
     if (RETRYABLE_STATUSES.has(response.status)) {
@@ -119,7 +119,7 @@ export async function searchOmdb(query, type) {
 
   if (data?.Response === 'False') {
     const message = data.Error || '';
-    // "Movie/Series not found!" just means no matches — not a real error.
+    // "Movie/Series not found!" just means no matches - not a real error.
     if (/not found/i.test(message)) {
       return { data: [], error: null };
     }

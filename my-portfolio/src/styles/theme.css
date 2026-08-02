@@ -14,7 +14,7 @@
 
   --font-display: 'Ounen-mouhitsu', serif;
   --font-accent: '和風ぽっぷ', serif;
-  /* Same as Home directory links (.directory-name) — preferred body text */
+  /* Same as Home directory links (.directory-name) - preferred body text */
   --font-body: '和風ぽっぷ', serif;
   /* 和風ぽっぷ has a very tight space glyph; widen word gaps for readability */
   --word-spacing-body: 0.22em;

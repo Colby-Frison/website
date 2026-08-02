@@ -4,7 +4,7 @@
  * OMDB_API_KEY is a plain project env var you add yourself. This wrapper
  * copies those onto REACT_APP_* before start/build/test.
  *
- * Never map SUPABASE_SERVICE_ROLE_KEY (or other secrets) into REACT_APP_* —
+ * Never map SUPABASE_SERVICE_ROLE_KEY (or other secrets) into REACT_APP_* -
  * that key bypasses RLS and must stay server-side only.
  */
 const { spawn } = require('child_process');

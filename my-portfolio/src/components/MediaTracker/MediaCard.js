@@ -56,7 +56,7 @@ export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
 
   const isAdminCard = Boolean(onEdit || onDelete);
 
-  // The hover-reveal overlay is a desktop-only enhancement — skip it
+  // The hover-reveal overlay is a desktop-only enhancement - skip it
   // entirely on the mobile tracker rather than relying on hover CSS
   // alone (touch devices don't have a reliable hover state anyway).
   const showOverlay = !compact && (item.notes || rating || episodeLabel);
@@ -78,7 +78,7 @@ export const MediaCard = ({ item, compact, onSelect, onEdit, onDelete }) => {
     onDelete(item);
   };
 
-  // A plain button can't contain a nested delete <button> (invalid HTML —
+  // A plain button can't contain a nested delete <button> (invalid HTML -
   // browsers will otherwise silently reparent it out). Use a div with the
   // button role/keyboard handling instead so the delete action can nest
   // safely inside.

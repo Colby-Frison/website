@@ -3,7 +3,7 @@ import './SectionNav.css';
 
 /**
  * Fixed vertical table-of-contents for long interior pages (About, Projects).
- * Desktop-only — mobile pages already use a compact layout and hamburger nav.
+ * Desktop-only - mobile pages already use a compact layout and hamburger nav.
  */
 const SectionNav = ({ sections, ariaLabel = 'Section navigation' }) => {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? null);

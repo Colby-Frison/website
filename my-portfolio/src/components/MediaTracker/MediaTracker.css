@@ -64,7 +64,7 @@
   gap: var(--space-md) var(--space-sm);
 }
 
-/* Card: no enclosing border/panel — just a rounded poster with title
+/* Card: no enclosing border/panel - just a rounded poster with title
    and meta below it, like a native media-library tile. */
 .media-card {
   display: flex;
@@ -104,7 +104,7 @@
 }
 
 /* Desktop-only hover reveal: darken the poster and surface notes,
-   rating/episode count, and when it was added — no separate modal. */
+   rating/episode count, and when it was added - no separate modal. */
 .media-card-overlay {
   position: absolute;
   inset: 0;
@@ -155,7 +155,7 @@
   font-size: 0.9rem;
 }
 
-/* Admin-only edit/delete affordances — always visible (not hover-gated)
+/* Admin-only edit/delete affordances - always visible (not hover-gated)
    so they work reliably on touch as well as mouse. */
 .media-card-admin-actions {
   position: absolute;

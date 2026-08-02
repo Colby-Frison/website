@@ -3,7 +3,7 @@ import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
 const CACHE_TTL_MS = 30 * 1000;
 
-// Same module-level cache pattern as useMediaItems — shared across the
+// Same module-level cache pattern as useMediaItems - shared across the
 // About page and the admin dashboard so both don't each issue their own
 // query, and so toggling the setting in admin can force a fresh read.
 let cache = { data: null, timestamp: 0 };
@@ -48,7 +48,7 @@ export function useSiteSettings() {
     if (!mountedRef.current) return;
 
     if (queryError) {
-      // Missing row/table shouldn't hide the tracker — default to visible.
+      // Missing row/table shouldn't hide the tracker - default to visible.
       setError(queryError.message);
     } else if (data) {
       cache = { data, timestamp: Date.now() };
