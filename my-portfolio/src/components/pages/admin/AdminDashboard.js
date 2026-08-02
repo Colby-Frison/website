@@ -9,7 +9,7 @@ import '../Admin.css';
 import './AdminDashboard.css';
 
 // One entry today, but the shell (sidebar + view switcher) is built to
-// take more — add another { id, label, component } here later.
+// take more - add another { id, label, component } here later.
 const ADMIN_VIEWS = [{ id: 'tracker', label: 'Media Tracker', component: TrackerView }];
 
 const AdminDashboard = ({ onSignOut }) => {

@@ -40,7 +40,7 @@ const ModalPoster = ({ item }) => {
 };
 
 /**
- * Rendered via a portal straight onto document.body — several ancestor
+ * Rendered via a portal straight onto document.body - several ancestor
  * elements up the tree (the fade-in `.section-animate` sections) set a
  * CSS `transform`, which makes them the containing block for any
  * `position: fixed` descendant. Without the portal, the backdrop would

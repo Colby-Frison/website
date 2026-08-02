@@ -75,7 +75,7 @@ const TrackerView = () => {
   }, [searchInput]);
 
   // Live "type as you search" lookup on the Title field itself, like a
-  // browser address bar or search box — debounced and cached so typing
+  // browser address bar or search box - debounced and cached so typing
   // doesn't hammer OMDB on every keystroke.
   useEffect(() => {
     if (skipNextLookupRef.current) {
@@ -506,7 +506,7 @@ const TrackerView = () => {
 
             {!isOmdbType && (
               <p className="admin-field-hint">
-                No automatic lookup for this type — fill in manually below.
+                No automatic lookup for this type - fill in manually below.
               </p>
             )}
           </label>

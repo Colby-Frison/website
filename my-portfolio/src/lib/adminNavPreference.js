@@ -4,7 +4,7 @@
  * /admin URL. Combined with Supabase's default persisted session, this
  * means no repeated logins on that device.
  *
- * Purely a UI convenience — the link itself is harmless to show, since
+ * Purely a UI convenience - the link itself is harmless to show, since
  * /admin still requires a valid Supabase session to read or write data.
  */
 const STORAGE_KEY = 'portfolio_admin_nav_visible';
@@ -22,7 +22,7 @@ export function setAdminNavPreference(visible) {
   try {
     window.localStorage.setItem(STORAGE_KEY, visible ? '1' : '0');
   } catch (storageError) {
-    // Storage disabled (e.g. private browsing) — preference just won't persist.
+    // Storage disabled (e.g. private browsing) - preference just won't persist.
   }
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }

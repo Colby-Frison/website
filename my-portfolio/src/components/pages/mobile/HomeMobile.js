@@ -58,7 +58,7 @@ const HomeMobile = () => {
   const handleNavigate = useCallback(
     (path) => (event) => {
       if (!ENABLE_PETAL_TRANSITIONS) {
-        // Full-speed navigation — no exit delay
+        // Full-speed navigation - no exit delay
         return;
       }
 
@@ -86,7 +86,7 @@ const HomeMobile = () => {
         contentReady ? 'home-mobile-page--content-ready' : ''
       }`}
     >
-      {/* Petal intro/exit transition — gated by ENABLE_PETAL_TRANSITIONS (see petalFeatures.js / DEV_LOG.md) */}
+      {/* Petal intro/exit transition - gated by ENABLE_PETAL_TRANSITIONS (see petalFeatures.js / DEV_LOG.md) */}
       {ENABLE_PETAL_TRANSITIONS && gustActive && (
         <>
           <FallingLeaves count={120} mode="intro" layer="behind" />

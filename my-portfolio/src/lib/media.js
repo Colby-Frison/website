@@ -22,7 +22,7 @@ export const MEDIA_STATUS_LABELS = Object.fromEntries(
 );
 
 // Types the admin panel can search against OMDB (anime just gets filed
-// under TV or Movie — OMDB doesn't distinguish anime as its own type
+// under TV or Movie - OMDB doesn't distinguish anime as its own type
 // anyway). Manga/books have no matching API and stay manual-entry only.
 export const OMDB_MEDIA_TYPES = new Set(['show', 'movie']);
 

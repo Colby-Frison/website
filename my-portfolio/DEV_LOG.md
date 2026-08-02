@@ -5,8 +5,8 @@
 **Status:** Partially active on Home only
 
 **Where:**
-- `src/components/motif/FallingLeaves.js` + `FallingLeaves.css` — petal renderer
-- `src/components/motif/petalFeatures.js` — feature flags
+- `src/components/motif/FallingLeaves.js` + `FallingLeaves.css` - petal renderer
+- `src/components/motif/petalFeatures.js` - feature flags
 - Wired from `Home.js` / `HomeMobile.js`
 
 ### Flags (`petalFeatures.js`)
@@ -18,7 +18,7 @@
 
 ### Transition code (kept, currently disabled)
 
-Intro/exit gust logic still lives in Home components behind `ENABLE_PETAL_TRANSITIONS`. It uses two layers (`behind` / `front`), dense petal counts, linear gust speed, and steeper spawn. **Do not delete** — set the flag to `true` to restore.
+Intro/exit gust logic still lives in Home components behind `ENABLE_PETAL_TRANSITIONS`. It uses two layers (`behind` / `front`), dense petal counts, linear gust speed, and steeper spawn. **Do not delete** - set the flag to `true` to restore.
 
 **To re-enable page petal transitions:** set `ENABLE_PETAL_TRANSITIONS = true` in `petalFeatures.js`. Note that exit will again delay route changes until the gust finishes.
 

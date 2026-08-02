@@ -35,7 +35,7 @@
   user-select: none;
 }
 
-/* Hidden until a dedicated atmosphere asset replaces bonsai.png — see DEV_LOG.md */
+/* Hidden until a dedicated atmosphere asset replaces bonsai.png - see DEV_LOG.md */
 .page-atmosphere__watermark--hidden {
   display: none;
 }
