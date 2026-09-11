@@ -4,11 +4,12 @@ import PageAtmosphere from '../../motif/PageAtmosphere';
 import LeafAccent from '../../motif/LeafAccent';
 import MediaTracker from '../../MediaTracker/MediaTracker';
 import ResumeViewer from '../../ResumeViewer/ResumeViewer';
-import { useSiteSettings } from '../../../hooks/useSiteSettings';
+import { useSiteSettings, FORCE_HIDE_PUBLIC_TRACKER } from '../../../hooks/useSiteSettings';
 import './AboutMobile.css';
 
 const AboutMobile = () => {
-  const { trackerVisible } = useSiteSettings();
+  const { trackerVisible: trackerSetting } = useSiteSettings();
+  const trackerVisible = !FORCE_HIDE_PUBLIC_TRACKER && trackerSetting;
 
   useEffect(() => {
     const observer = new IntersectionObserver(

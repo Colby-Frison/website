@@ -5,7 +5,7 @@ import LeafAccent from '../motif/LeafAccent';
 import MediaTracker from '../MediaTracker/MediaTracker';
 import ResumeViewer from '../ResumeViewer/ResumeViewer';
 import SectionNav from '../SectionNav/SectionNav';
-import { useSiteSettings } from '../../hooks/useSiteSettings';
+import { useSiteSettings, FORCE_HIDE_PUBLIC_TRACKER } from '../../hooks/useSiteSettings';
 import './About.css';
 
 // Kept to at most 12 characters so they fit the vertical nav cleanly.
@@ -19,7 +19,8 @@ const BASE_ABOUT_SECTIONS = [
 const TRACKER_SECTION = { id: 'about-tracker', label: 'Watching' };
 
 const About = () => {
-  const { trackerVisible } = useSiteSettings();
+  const { trackerVisible: trackerSetting } = useSiteSettings();
+  const trackerVisible = !FORCE_HIDE_PUBLIC_TRACKER && trackerSetting;
   const aboutSections = trackerVisible
     ? [...BASE_ABOUT_SECTIONS, TRACKER_SECTION]
     : BASE_ABOUT_SECTIONS;

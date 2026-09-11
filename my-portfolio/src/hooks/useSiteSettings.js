@@ -3,6 +3,10 @@ import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
 const CACHE_TTL_MS = 30 * 1000;
 
+// HOTFIX: hide Currently Watching on public About pages while the DB is broken.
+// Admin still sees the real site_settings value. Flip to false to restore.
+export const FORCE_HIDE_PUBLIC_TRACKER = true;
+
 // Same module-level cache pattern as useMediaItems - shared across the
 // About page and the admin dashboard so both don't each issue their own
 // query, and so toggling the setting in admin can force a fresh read.
@@ -15,7 +19,7 @@ async function fetchSettings() {
 
 export function useSiteSettings() {
   const [trackerVisible, setTrackerVisibleState] = useState(
-    cache.data ? cache.data.tracker_visible : true
+    cache.data ? cache.data.tracker_visible : false
   );
   const [loading, setLoading] = useState(isSupabaseConfigured && !cache.data);
   const [error, setError] = useState(null);
