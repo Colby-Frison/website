@@ -6,28 +6,40 @@
  *
  * Never map SUPABASE_SERVICE_ROLE_KEY (or other secrets) into REACT_APP_* -
  * that key bypasses RLS and must stay server-side only.
+ *
+ * HOTFIX: skip mapping Supabase env vars while SUPABASE_FORCE_DISABLED is on
+ * in src/lib/supabase.js — keeps broken integration values out of the build.
  */
 const { spawn } = require('child_process');
 
 const env = { ...process.env };
 
-// Prefer the standard Supabase / Vercel integration names when present.
-if (env.SUPABASE_URL) {
-  env.REACT_APP_SUPABASE_URL = env.SUPABASE_URL;
-}
-if (env.SUPABASE_ANON_KEY) {
-  env.REACT_APP_SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
-}
-if (env.OMDB_API_KEY) {
-  env.REACT_APP_OMDB_API_KEY = env.OMDB_API_KEY;
+// Keep in sync with SUPABASE_FORCE_DISABLED in src/lib/supabase.js
+const SUPABASE_FORCE_DISABLED = true;
+
+if (!SUPABASE_FORCE_DISABLED) {
+  // Prefer the standard Supabase / Vercel integration names when present.
+  if (env.SUPABASE_URL) {
+    env.REACT_APP_SUPABASE_URL = env.SUPABASE_URL;
+  }
+  if (env.SUPABASE_ANON_KEY) {
+    env.REACT_APP_SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY;
+  }
+
+  // Fallbacks for Next.js-style public aliases if those were imported instead.
+  if (!env.REACT_APP_SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_URL) {
+    env.REACT_APP_SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
+  }
+  if (!env.REACT_APP_SUPABASE_ANON_KEY && env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    env.REACT_APP_SUPABASE_ANON_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  }
+} else {
+  delete env.REACT_APP_SUPABASE_URL;
+  delete env.REACT_APP_SUPABASE_ANON_KEY;
 }
 
-// Fallbacks for Next.js-style public aliases if those were imported instead.
-if (!env.REACT_APP_SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_URL) {
-  env.REACT_APP_SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
-}
-if (!env.REACT_APP_SUPABASE_ANON_KEY && env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-  env.REACT_APP_SUPABASE_ANON_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+if (env.OMDB_API_KEY) {
+  env.REACT_APP_OMDB_API_KEY = env.OMDB_API_KEY;
 }
 
 const args = process.argv.slice(2);
