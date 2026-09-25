@@ -8,8 +8,9 @@ import { useSiteSettings, FORCE_HIDE_PUBLIC_TRACKER } from '../../../hooks/useSi
 import './AboutMobile.css';
 
 const AboutMobile = () => {
-  const { trackerVisible: trackerSetting } = useSiteSettings();
-  const trackerVisible = !FORCE_HIDE_PUBLIC_TRACKER && trackerSetting;
+  const { trackerVisible: trackerSetting, loading: settingsLoading } = useSiteSettings();
+  const trackerVisible =
+    !FORCE_HIDE_PUBLIC_TRACKER && !settingsLoading && Boolean(trackerSetting);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -30,16 +30,6 @@ const MediaPosterImage = ({ item }) => {
   );
 };
 
-export const MediaCardSkeleton = () => (
-  <div className="media-card media-card--skeleton" aria-hidden="true">
-    <div className="media-card-poster media-skeleton-block" />
-    <div className="media-card-body">
-      <div className="media-skeleton-line media-skeleton-line--title" />
-      <div className="media-skeleton-line media-skeleton-line--meta" />
-    </div>
-  </div>
-);
-
 /**
  * Shared media card used by both the public tracker (About page) and the
  * admin dashboard, so the two look identical. `onSelect` opens the

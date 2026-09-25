@@ -52,8 +52,8 @@ export function useSiteSettings() {
     if (!mountedRef.current) return;
 
     if (queryError) {
-      // Missing row/table shouldn't hide the tracker - default to visible.
       setError(queryError.message);
+      setTrackerVisibleState(false);
     } else if (data) {
       cache = { data, timestamp: Date.now() };
       setTrackerVisibleState(data.tracker_visible);

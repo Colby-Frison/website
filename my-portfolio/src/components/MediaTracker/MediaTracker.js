@@ -1,11 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { useMediaItems } from '../../hooks/useMediaItems';
 import MediaDetailModal from './MediaDetailModal';
-import { MediaCard, MediaCardSkeleton } from './MediaCard';
+import { MediaCard } from './MediaCard';
 import { MEDIA_STATUS_LABELS, MEDIA_TYPES } from '../../lib/media';
 import './MediaTracker.css';
-
-const SKELETON_COUNT = 6;
 
 const MediaTracker = ({ compact = false }) => {
   const { items, loading, error, configured } = useMediaItems();
@@ -37,8 +35,6 @@ const MediaTracker = ({ compact = false }) => {
       .map((status) => ({ status, items: buckets[status] }));
   }, [filtered]);
 
-  const showSkeleton = configured && loading && items.length === 0;
-
   return (
     <div className={`media-tracker${compact ? ' media-tracker--compact' : ''}`}>
       {!configured && (
@@ -51,15 +47,6 @@ const MediaTracker = ({ compact = false }) => {
         <p className="media-tracker-empty media-tracker-empty--error">
           Could not load tracker: {error}
         </p>
-      )}
-
-      {showSkeleton && (
-        <div className="media-tracker-grid">
-          {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <MediaCardSkeleton key={index} />
-          ))}
-        </div>
       )}
 
       {configured && !loading && !error && items.length === 0 && (

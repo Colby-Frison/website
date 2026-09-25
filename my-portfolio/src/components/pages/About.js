@@ -19,8 +19,9 @@ const BASE_ABOUT_SECTIONS = [
 const TRACKER_SECTION = { id: 'about-tracker', label: 'Watching' };
 
 const About = () => {
-  const { trackerVisible: trackerSetting } = useSiteSettings();
-  const trackerVisible = !FORCE_HIDE_PUBLIC_TRACKER && trackerSetting;
+  const { trackerVisible: trackerSetting, loading: settingsLoading } = useSiteSettings();
+  const trackerVisible =
+    !FORCE_HIDE_PUBLIC_TRACKER && !settingsLoading && Boolean(trackerSetting);
   const aboutSections = trackerVisible
     ? [...BASE_ABOUT_SECTIONS, TRACKER_SECTION]
     : BASE_ABOUT_SECTIONS;
